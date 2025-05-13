@@ -4,5 +4,7 @@ class Language {
   final String value;
 
   Language(this.name, this.icon)
-    : value = name.toLowerCase().replaceAll(' ', '-');
+    : value = name.toLowerCase().replaceAll(' ', '-'); 
 }
+
+final defaultLanguage = Language('English', '🇬🇧');
