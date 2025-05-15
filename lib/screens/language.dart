@@ -4,6 +4,7 @@ import 'package:vocabulary_game/models/language.dart';
 import 'package:vocabulary_game/providers/settings_provider.dart';
 import 'package:vocabulary_game/widgets/highlighted_text.dart';
 import 'package:vocabulary_game/widgets/new_language.dart';
+import 'package:vocabulary_game/widgets/notification_banners.dart';
 
 class LanguageScreen extends ConsumerStatefulWidget {
   const LanguageScreen({super.key});
@@ -41,7 +42,7 @@ class _LanguageScreenState extends ConsumerState<LanguageScreen> {
                 final error = await ref
                     .read(settingsProvider.notifier)
                     .deleteLanguage(language);
-                if (error == null && mounted) {
+                if (error == null && context.mounted) {
                   Navigator.of(context).pop();
                 }
               },
@@ -77,35 +78,51 @@ class _LanguageScreenState extends ConsumerState<LanguageScreen> {
           ),
         ],
       ),
-      body: ListView.builder(
-        itemCount: languages.length,
-        itemBuilder: (ctx, index) {
-          final isSelected = languages[index].value == learningLanguage.value;
-
-          return ListTile(
-            onTap:
-                isSelected
-                    ? () => {}
-                    : () => ref
-                        .read(settingsProvider.notifier)
-                        .changeLearningLanguage(languages[index].value),
-            leading: RichText(text: TextSpan(text: languages[index].icon)),
-            title:
-                isSelected
-                    ? Highlightedtext(languages[index].name)
-                    : Text(languages[index].name),
-            trailing:
-                isSelected
-                    ? Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 12),
-                      child: Icon(Icons.check, color: Color.fromARGB(255, 45, 130, 48)),
-                    )
-                    : IconButton(
-                      onPressed: () => showDeleteDialog(languages[index]),
-                      icon: Icon(Icons.delete, color: const Color.fromARGB(255, 219, 121, 121)),
-                    ),
-          );
-        },
+      body: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          NotificationBanners(),
+          Expanded(
+            flex: 1,
+            child: ListView.builder(
+              itemCount: languages.length,
+              itemBuilder: (ctx, index) {
+                final isSelected =
+                    languages[index].value == learningLanguage.value;
+            
+                return ListTile(
+                  onTap:
+                      isSelected
+                          ? () => {}
+                          : () => ref
+                              .read(settingsProvider.notifier)
+                              .changeLearningLanguage(languages[index].value),
+                  leading: RichText(text: TextSpan(text: languages[index].icon)),
+                  title:
+                      isSelected
+                          ? Highlightedtext(languages[index].name)
+                          : Text(languages[index].name),
+                  trailing:
+                      isSelected
+                          ? Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 12),
+                            child: Icon(
+                              Icons.check,
+                              color: Color.fromARGB(255, 45, 130, 48),
+                            ),
+                          )
+                          : IconButton(
+                            onPressed: () => showDeleteDialog(languages[index]),
+                            icon: Icon(
+                              Icons.delete,
+                              color: const Color.fromARGB(255, 219, 121, 121),
+                            ),
+                          ),
+                );
+              },
+            ),
+          ),
+        ],
       ),
     );
   }

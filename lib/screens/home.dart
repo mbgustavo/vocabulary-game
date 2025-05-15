@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabulary_game/providers/settings_provider.dart';
 import 'package:vocabulary_game/screens/language.dart';
 import 'package:vocabulary_game/screens/vocabulary.dart';
+import 'package:vocabulary_game/widgets/notification_banners.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -27,10 +28,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         settings['learning_language'] == null) {
       content = const Text("Loading...");
     } else {
-      final learningLanguage = ref.read(settingsProvider.notifier).getLearningLanguage();
+      final learningLanguage =
+          ref.read(settingsProvider.notifier).getLearningLanguage();
       content = Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
+        children: [
           const Text('Welcome to Vocabulary Game!'),
           SizedBox(height: 20),
           Text('You are learning ${learningLanguage.name}'),
@@ -60,7 +62,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
     return Scaffold(
       appBar: AppBar(title: const Text('Vocabulary Game')),
-      body: Center(child: content),
+      body: Stack(children: [NotificationBanners(), Center(child: content)]),
     );
   }
 }
