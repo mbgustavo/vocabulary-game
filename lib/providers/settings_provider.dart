@@ -1,35 +1,22 @@
-import 'dart:convert';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:vocabulary_game/storage/interface.dart';
+import 'package:vocabulary_game/storage/pref_reader_writer.dart';
 import 'package:vocabulary_game/models/language.dart';
 import 'package:vocabulary_game/providers/notifications_provider.dart';
 
 class SettingsNotifier extends StateNotifier<Map<String, dynamic>> {
   SettingsNotifier(this.ref) : super({}) {
+    storage = PrefStorage();
     loadLanguages();
   }
 
   final Ref ref;
-  late SharedPreferences _pref;
+  late StorageInterface storage;
   int? _loadingErrorNotification;
-
-  Map<String, String> languageToMap(Language language) => {
-    'name': language.name,
-    'icon': language.icon,
-  };
-
-  Language mapToLanguage(dynamic language) =>
-      Language(language['name']!, language['icon']!);
 
   Future<void> loadLanguages() async {
     try {
-      _pref = await SharedPreferences.getInstance();
-      final languagesJson = _pref.getString('languages');
-      final languagesMap =
-          ((languagesJson != null ? jsonDecode(languagesJson) : [])
-              as List<dynamic>);
-      final languages = languagesMap.map(mapToLanguage).toList();
+      final languages = await storage.getLanguages();
       if (languages.isEmpty) {
         state = {
           ...state,
@@ -39,7 +26,7 @@ class SettingsNotifier extends StateNotifier<Map<String, dynamic>> {
         return;
       } else {
         final learningLanguage =
-            _pref.getString('learning_language') ?? languages[0].value;
+            await storage.getLearningLanguage() ?? languages[0].value;
         state = {
           ...state,
           'languages': languages,
@@ -71,20 +58,20 @@ class SettingsNotifier extends StateNotifier<Map<String, dynamic>> {
 
   Future<String?> addLanguage(Language newLanguage) async {
     try {
+      if (newLanguage.name == "") {
+        throw 'Language name cannot be empty';
+      }
+
       List<Language> currentLanguages = [...getLanguages()];
       final conflictingLanguages = currentLanguages.where(
         (language) => language.value == newLanguage.value,
       );
       if (conflictingLanguages.isNotEmpty) {
-        return 'Language already exists';
+        throw 'Language already exists';
       }
 
-      currentLanguages.add(newLanguage);
-      await _pref.setString(
-        'languages',
-        jsonEncode(currentLanguages.map(languageToMap).toList()),
-      );
-      state = {...state, 'languages': currentLanguages};
+      final newLanguages = await storage.addLanguage(newLanguage);
+      state = {...state, 'languages': newLanguages};
       return null;
     } catch (e) {
       return e.toString();
@@ -93,13 +80,7 @@ class SettingsNotifier extends StateNotifier<Map<String, dynamic>> {
 
   Future<String?> deleteLanguage(Language language) async {
     try {
-      final remainingLanguages =
-          getLanguages().where((l) => l.value != language.value).toList();
-
-      await _pref.setString(
-        'languages',
-        jsonEncode(remainingLanguages.map(languageToMap).toList()),
-      );
+      final remainingLanguages = await storage.deleteLanguage(language);
       state = {...state, 'languages': remainingLanguages};
       return null;
     } catch (e) {
@@ -108,8 +89,18 @@ class SettingsNotifier extends StateNotifier<Map<String, dynamic>> {
   }
 
   Future<void> changeLearningLanguage(String newLanguage) async {
-    await _pref.setString('learning_language', newLanguage);
-    state = {...state, 'learning_language': newLanguage};
+    try {
+      storage.setLearningLanguage(newLanguage);
+      state = {...state, 'learning_language': newLanguage};
+    } catch (e) {
+      ref.read(notificationsProvider.notifier).pushNotification(
+        CustomNotification(
+          'Failed to change learning language: ${e.toString()}',
+          type: NotificationType.error,
+          isDismissable: false,
+        ),
+      );
+    }
   }
 
   Language getLearningLanguage() {

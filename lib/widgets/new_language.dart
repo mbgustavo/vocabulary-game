@@ -36,7 +36,6 @@ class _NewLanguageState extends ConsumerState<NewLanguage> {
         _error = error;
       });
 
-      print(error);
       if (error == null && mounted) {
         Navigator.of(context).pop();
       }

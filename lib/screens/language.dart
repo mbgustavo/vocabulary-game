@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabulary_game/models/language.dart';
+import 'package:vocabulary_game/providers/notifications_provider.dart';
 import 'package:vocabulary_game/providers/settings_provider.dart';
 import 'package:vocabulary_game/widgets/highlighted_text.dart';
 import 'package:vocabulary_game/widgets/new_language.dart';
@@ -42,7 +43,18 @@ class _LanguageScreenState extends ConsumerState<LanguageScreen> {
                 final error = await ref
                     .read(settingsProvider.notifier)
                     .deleteLanguage(language);
-                if (error == null && context.mounted) {
+                if (error != null) {
+                  ref
+                      .read(notificationsProvider.notifier)
+                      .pushNotification(
+                        CustomNotification(
+                          'Failed to load languages: $error',
+                          type: NotificationType.error,
+                          isDismissable: false,
+                        ),
+                      );
+                }
+                if (context.mounted) {
                   Navigator.of(context).pop();
                 }
               },
@@ -89,7 +101,7 @@ class _LanguageScreenState extends ConsumerState<LanguageScreen> {
               itemBuilder: (ctx, index) {
                 final isSelected =
                     languages[index].value == learningLanguage.value;
-            
+
                 return ListTile(
                   onTap:
                       isSelected
@@ -97,7 +109,9 @@ class _LanguageScreenState extends ConsumerState<LanguageScreen> {
                           : () => ref
                               .read(settingsProvider.notifier)
                               .changeLearningLanguage(languages[index].value),
-                  leading: RichText(text: TextSpan(text: languages[index].icon)),
+                  leading: RichText(
+                    text: TextSpan(text: languages[index].icon),
+                  ),
                   title:
                       isSelected
                           ? Highlightedtext(languages[index].name)
