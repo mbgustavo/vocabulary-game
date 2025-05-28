@@ -1,4 +1,5 @@
 import 'package:vocabulary_game/models/language.dart';
+import 'package:vocabulary_game/models/word.dart';
 
 abstract class StorageInterface {
   // Get all languages from data storage
@@ -15,4 +16,7 @@ abstract class StorageInterface {
 
   // Set the current learning language value from storage
   Future<void> setLearningLanguage(String newLanguage);
+
+  // Get all vocabulary
+  Future<List<Word>> getVocabulary();
 }

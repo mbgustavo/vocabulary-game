@@ -1,31 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:vocabulary_game/providers/vocabulary_provider.dart';
 
-class VocabularyScreen extends StatefulWidget {
+class VocabularyScreen extends ConsumerStatefulWidget {
   const VocabularyScreen({super.key});
 
   @override
-  State<VocabularyScreen> createState() => _VocabularyScreenState();
+  ConsumerState<VocabularyScreen> createState() => _VocabularyScreenState();
 }
 
-class _VocabularyScreenState extends State<VocabularyScreen> {
-  final List<String> _words = [];
-  final TextEditingController _controller = TextEditingController();
-
-  // void _addWord() {
-  //   if (_controller.text.isNotEmpty) {
-  //     setState(() {
-  //       _words.add(_controller.text);
-  //       _controller.clear();
-  //     });
-  //   }
-  // }
-
-  // void _removeWord(int index) {
-  //   setState(() {
-  //     _words.removeAt(index);
-  //   });
-  // }
-
+class _VocabularyScreenState extends ConsumerState<VocabularyScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

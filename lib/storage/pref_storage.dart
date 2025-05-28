@@ -1,7 +1,8 @@
 import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:vocabulary_game/storage/interface.dart';
+import 'package:vocabulary_game/models/word.dart';
+import 'package:vocabulary_game/storage/storage_interface.dart';
 import 'package:vocabulary_game/models/language.dart';
 
 class PrefStorage extends StorageInterface {
@@ -9,6 +10,9 @@ class PrefStorage extends StorageInterface {
 
   Language _mapToLanguage(dynamic language) =>
       Language(language['name']!, language['icon']!);
+
+  Word _mapToWord(dynamic word) =>
+      Word(word['language']!, word['input']!, word['translation']!, examples: word['examples'], level: word['level']);
 
   Map<String, String> _languageToMap(Language language) => {
     'name': language.name,
@@ -81,5 +85,18 @@ class PrefStorage extends StorageInterface {
     }
 
     await _pref!.setString('learning_language', newLanguage);
+  }
+
+  @override
+  Future<List<Word>> getVocabulary() async {
+    if (_pref == null) {
+      await _initialize();
+    }
+
+    final vocabularyJson = _pref!.getString('vocabulary');
+    final vocabularyMap =
+        ((vocabularyJson != null ? jsonDecode(vocabularyJson) : [])
+            as List<dynamic>);
+    return vocabularyMap.map(_mapToWord).toList();
   }
 }

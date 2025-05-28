@@ -1,22 +1,23 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:vocabulary_game/storage/interface.dart';
-import 'package:vocabulary_game/storage/pref_reader_writer.dart';
+import 'package:vocabulary_game/storage/storage_interface.dart';
+import 'package:vocabulary_game/storage/pref_storage.dart';
 import 'package:vocabulary_game/models/language.dart';
 import 'package:vocabulary_game/providers/notifications_provider.dart';
 
 class SettingsNotifier extends StateNotifier<Map<String, dynamic>> {
   SettingsNotifier(this.ref) : super({}) {
-    storage = PrefStorage();
+    _storage = PrefStorage();
+    state = {'loading': true};
     loadLanguages();
   }
 
   final Ref ref;
-  late StorageInterface storage;
+  late StorageInterface _storage;
   int? _loadingErrorNotification;
 
   Future<void> loadLanguages() async {
     try {
-      final languages = await storage.getLanguages();
+      final languages = await _storage.getLanguages();
       if (languages.isEmpty) {
         state = {
           ...state,
@@ -26,7 +27,7 @@ class SettingsNotifier extends StateNotifier<Map<String, dynamic>> {
         return;
       } else {
         final learningLanguage =
-            await storage.getLearningLanguage() ?? languages[0].value;
+            await _storage.getLearningLanguage() ?? languages[0].value;
         state = {
           ...state,
           'languages': languages,
@@ -49,6 +50,8 @@ class SettingsNotifier extends StateNotifier<Map<String, dynamic>> {
               isDismissable: false,
             ),
           );
+    } finally {
+      state = {...state, 'loading': false};
     }
   }
 
@@ -70,7 +73,7 @@ class SettingsNotifier extends StateNotifier<Map<String, dynamic>> {
         throw 'Language already exists';
       }
 
-      final newLanguages = await storage.addLanguage(newLanguage);
+      final newLanguages = await _storage.addLanguage(newLanguage);
       state = {...state, 'languages': newLanguages};
       return null;
     } catch (e) {
@@ -80,7 +83,7 @@ class SettingsNotifier extends StateNotifier<Map<String, dynamic>> {
 
   Future<String?> deleteLanguage(Language language) async {
     try {
-      final remainingLanguages = await storage.deleteLanguage(language);
+      final remainingLanguages = await _storage.deleteLanguage(language);
       state = {...state, 'languages': remainingLanguages};
       return null;
     } catch (e) {
@@ -90,7 +93,7 @@ class SettingsNotifier extends StateNotifier<Map<String, dynamic>> {
 
   Future<void> changeLearningLanguage(String newLanguage) async {
     try {
-      storage.setLearningLanguage(newLanguage);
+      _storage.setLearningLanguage(newLanguage);
       state = {...state, 'learning_language': newLanguage};
     } catch (e) {
       ref.read(notificationsProvider.notifier).pushNotification(

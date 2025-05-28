@@ -15,12 +15,6 @@ class LanguageScreen extends ConsumerStatefulWidget {
 }
 
 class _LanguageScreenState extends ConsumerState<LanguageScreen> {
-  @override
-  void initState() {
-    super.initState();
-    ref.read(settingsProvider.notifier).loadLanguages();
-  }
-
   void showDeleteDialog(Language language) {
     showDialog(
       context: context,
