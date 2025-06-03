@@ -24,6 +24,7 @@ class SettingsNotifier extends StateNotifier<Map<String, dynamic>> {
           'languages': [defaultLanguage],
           'learning_language': defaultLanguage.value,
         };
+        addLanguage(defaultLanguage);
         return;
       } else {
         final learningLanguage =
@@ -100,7 +101,7 @@ class SettingsNotifier extends StateNotifier<Map<String, dynamic>> {
         CustomNotification(
           'Failed to change learning language: ${e.toString()}',
           type: NotificationType.error,
-          isDismissable: false,
+          isDismissable: true,
         ),
       );
     }
