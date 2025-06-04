@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:vocabulary_game/models/word.dart';
 import 'package:vocabulary_game/storage/storage_interface.dart';
 import 'package:vocabulary_game/storage/pref_storage.dart';
 import 'package:vocabulary_game/providers/notifications_provider.dart';
@@ -38,6 +39,30 @@ class VocabularyNotifier extends StateNotifier<Map<String, dynamic>> {
           );
     } finally {
       state = {...state, 'loading': false};
+    }
+  }
+
+  List<Word> getVocabulary() {
+    return (state['vocabulary'] ?? []) as List<Word>;
+  }
+
+  Future<String?> saveWord(Word word) async {
+    try {
+      final vocabulary = await _storage.saveWord(word);
+      state = {...state, 'vocabulary': vocabulary};
+      return null;
+    } catch (e) {
+      return e.toString();
+    }
+  }
+
+  Future<String?> deleteWord(Word word) async {
+    try {
+      final remainingVocabulary = await _storage.deleteWord(word);
+      state = {...state, 'vocabulary': remainingVocabulary};
+      return null;
+    } catch (e) {
+      return e.toString();
     }
   }
 }

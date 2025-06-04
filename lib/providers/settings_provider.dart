@@ -114,6 +114,14 @@ class SettingsNotifier extends StateNotifier<Map<String, dynamic>> {
       orElse: () => defaultLanguage,
     );
   }
+
+  Language getLanguage(String language) {
+    final languages = state['languages'] as List<Language>;
+    return languages.firstWhere(
+      (l) => l.value == language,
+      orElse: () => defaultLanguage,
+    );
+  }
 }
 
 final settingsProvider = StateNotifierProvider<SettingsNotifier, Map>(

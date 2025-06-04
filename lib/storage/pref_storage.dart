@@ -11,12 +11,36 @@ class PrefStorage extends StorageInterface {
   Language _mapToLanguage(dynamic language) =>
       Language(language['name']!, language['icon']!);
 
-  Word _mapToWord(dynamic word) =>
-      Word(word['language']!, word['input']!, word['translation']!, examples: word['examples'], level: word['level']);
+  Word _mapToWord(dynamic word) {
+    WordLevel level;
+    try {
+      level = WordLevel.values.byName(word['level'] ?? 'beginner');
+    } catch (e) {
+      level = WordLevel.beginner; // Default to beginner if parsing fails
+    }
+
+    return Word(
+      language: word['language']!,
+      input: word['input']!,
+      translation: word['translation']!,
+      examples: List<String>.from(word['examples'] ?? []),
+      level: level,
+      id: word['id'],
+    );
+  }
 
   Map<String, String> _languageToMap(Language language) => {
     'name': language.name,
     'icon': language.icon,
+  };
+
+  Map<String, dynamic> _wordToMap(Word word) => {
+    'language': word.language,
+    'input': word.input,
+    'translation': word.translation,
+    'examples': word.examples,
+    'level': word.level.name,
+    'id': word.id,
   };
 
   Future<void> _initialize() async {
@@ -94,9 +118,54 @@ class PrefStorage extends StorageInterface {
     }
 
     final vocabularyJson = _pref!.getString('vocabulary');
+    print(vocabularyJson);
     final vocabularyMap =
         ((vocabularyJson != null ? jsonDecode(vocabularyJson) : [])
             as List<dynamic>);
+    print(vocabularyMap);
+    print(vocabularyMap.map(_mapToWord).toList());
+    print("ok");
     return vocabularyMap.map(_mapToWord).toList();
+  }
+
+  @override
+  Future<List<Word>> saveWord(Word word) async {
+    if (_pref == null) {
+      await _initialize();
+    }
+
+    final vocabulary = await getVocabulary();
+    final existingIndex = vocabulary.indexWhere((w) => w.id == word.id);
+
+    if (existingIndex != -1) {
+      vocabulary[existingIndex] = word; // Update existing word
+    } else {
+      vocabulary.add(word); // Add new word
+    }
+
+    await _pref!.setString(
+      'vocabulary',
+      jsonEncode(vocabulary.map(_wordToMap).toList()),
+    );
+
+    return vocabulary;
+  }
+
+  @override
+  Future<List<Word>> deleteWord(Word word) async {
+    if (_pref == null) {
+      await _initialize();
+    }
+
+    final currentVocabulary = await getVocabulary();
+    final remainingVocabulary =
+        currentVocabulary.where((w) => w.id != word.id).toList();
+
+    await _pref!.setString(
+      'vocabulary',
+      jsonEncode(remainingVocabulary.map(_wordToMap).toList()),
+    );
+
+    return remainingVocabulary;
   }
 }

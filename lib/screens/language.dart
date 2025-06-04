@@ -42,7 +42,7 @@ class _LanguageScreenState extends ConsumerState<LanguageScreen> {
                       .read(notificationsProvider.notifier)
                       .pushNotification(
                         CustomNotification(
-                          'Failed to load languages: $error',
+                          'Failed to delete language: $error',
                           type: NotificationType.error,
                           isDismissable: false,
                         ),

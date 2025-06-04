@@ -19,4 +19,10 @@ abstract class StorageInterface {
 
   // Get all vocabulary
   Future<List<Word>> getVocabulary();
+
+  // Add or update word and return updated vocabulary
+  Future<List<Word>> saveWord(Word word);
+
+  // Add or update word and return updated vocabulary
+  Future<List<Word>> deleteWord(Word word);
 }
