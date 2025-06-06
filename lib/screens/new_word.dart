@@ -19,6 +19,7 @@ class _NewWordScreenState extends ConsumerState<NewWordScreen> {
   String _enteredInput = '';
   String _enteredTranslation = '';
   String _selectedLanguage = '';
+  WordLevel _selectedLevel = WordLevel.beginner;
   final List<String> _examples = [''];
 
   @override
@@ -28,7 +29,10 @@ class _NewWordScreenState extends ConsumerState<NewWordScreen> {
       _enteredInput = widget.initialWord!.input;
       _enteredTranslation = widget.initialWord!.translation;
       _selectedLanguage = widget.initialWord!.language;
+      _selectedLevel = widget.initialWord!.level;
       _examples.addAll(widget.initialWord!.examples);
+    } else {
+      _selectedLanguage = ref.read(settingsProvider)["learning_language"];
     }
   }
 
@@ -40,6 +44,7 @@ class _NewWordScreenState extends ConsumerState<NewWordScreen> {
         language: _selectedLanguage,
         input: _enteredInput,
         translation: _enteredTranslation,
+        level: _selectedLevel,
         examples: examplesToSave,
         id: widget.initialWord?.id,
       );
@@ -70,7 +75,6 @@ class _NewWordScreenState extends ConsumerState<NewWordScreen> {
   @override
   Widget build(BuildContext context) {
     final languages = ref.read(settingsProvider.notifier).getLanguages();
-    _selectedLanguage = ref.watch(settingsProvider)["learning_language"];
 
     return Scaffold(
       appBar: AppBar(title: const Text('Add new word')),
@@ -138,6 +142,23 @@ class _NewWordScreenState extends ConsumerState<NewWordScreen> {
                   _enteredTranslation = value!;
                 },
               ),
+              SizedBox(height: 10),
+              DropdownButtonFormField(
+                value: _selectedLevel,
+                items: WordLevel.values.map((WordLevel level) {
+                  return DropdownMenuItem<WordLevel>(
+                    value: level,
+                    child: Text(level.label),
+                  );
+                }).toList(),
+
+                onChanged: (value) {
+                  setState(() {
+                    _selectedLevel = value!;
+                  });
+                },
+              ),
+              SizedBox(height: 20),
               const Text("Examples (optional)"),
               ..._examples.asMap().entries.map(
                 (entry) => TextFormField(

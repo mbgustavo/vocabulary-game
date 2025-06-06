@@ -42,7 +42,12 @@ class VocabularyNotifier extends StateNotifier<Map<String, dynamic>> {
     }
   }
 
-  List<Word> getVocabulary() {
+  List<Word> getVocabulary({String? language}) {
+  if (language != null && language.isNotEmpty) {
+      return (state['vocabulary'] ?? [])
+          .where((word) => word.language == language)
+          .toList() as List<Word>;
+    }
     return (state['vocabulary'] ?? []) as List<Word>;
   }
 

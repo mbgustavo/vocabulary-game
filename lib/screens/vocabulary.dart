@@ -15,6 +15,8 @@ class VocabularyScreen extends ConsumerStatefulWidget {
 }
 
 class _VocabularyScreenState extends ConsumerState<VocabularyScreen> {
+  String _selectedLanguage = '';
+
   void showDeleteDialog(Word word) {
     showDialog(
       context: context,
@@ -62,7 +64,8 @@ class _VocabularyScreenState extends ConsumerState<VocabularyScreen> {
   @override
   Widget build(BuildContext context) {
     ref.watch(vocabularyProvider)["vocabulary"];
-    final vocabulary = ref.watch(vocabularyProvider.notifier).getVocabulary();
+    final vocabulary = ref.watch(vocabularyProvider.notifier).getVocabulary(language: _selectedLanguage);
+    final languages = ref.read(settingsProvider.notifier).getLanguages();
 
     return Scaffold(
       appBar: AppBar(
@@ -82,6 +85,34 @@ class _VocabularyScreenState extends ConsumerState<VocabularyScreen> {
         mainAxisSize: MainAxisSize.min,
         children: [
           NotificationBanners(),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: DropdownButtonFormField(
+              value: _selectedLanguage,
+              items: [
+                DropdownMenuItem(
+                  value: '',
+                  child: Text('All Languages'),
+                ),
+                for (final language in languages)
+                  DropdownMenuItem(
+                    value: language.value,
+                    child: Row(
+                      children: [
+                        Text(language.icon),
+                        const SizedBox(width: 6),
+                        Text(language.name),
+                      ],
+                    ),
+                  ),
+              ],
+              onChanged: (value) {
+                setState(() {
+                  _selectedLanguage = value!;
+                });
+              },
+            ),
+          ),
           Expanded(
             flex: 1,
             child: ListView.builder(
@@ -105,13 +136,16 @@ class _VocabularyScreenState extends ConsumerState<VocabularyScreen> {
                     children: [
                       IconButton(
                         onPressed: () {
-                          Navigator.of(
-                            context,
-                          ).push(MaterialPageRoute(builder: (ctx) => NewWordScreen(initialWord: vocabulary[index])));
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder:
+                                  (ctx) => NewWordScreen(
+                                    initialWord: vocabulary[index],
+                                  ),
+                            ),
+                          );
                         },
-                        icon: Icon(
-                          Icons.edit,
-                        ),
+                        icon: Icon(Icons.edit),
                       ),
                       IconButton(
                         onPressed: () => showDeleteDialog(vocabulary[index]),

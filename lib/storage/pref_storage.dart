@@ -118,13 +118,9 @@ class PrefStorage extends StorageInterface {
     }
 
     final vocabularyJson = _pref!.getString('vocabulary');
-    print(vocabularyJson);
     final vocabularyMap =
         ((vocabularyJson != null ? jsonDecode(vocabularyJson) : [])
             as List<dynamic>);
-    print(vocabularyMap);
-    print(vocabularyMap.map(_mapToWord).toList());
-    print("ok");
     return vocabularyMap.map(_mapToWord).toList();
   }
 

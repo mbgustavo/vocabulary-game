@@ -2,6 +2,19 @@ import 'package:uuid/uuid.dart';
 
 enum WordLevel { beginner, intermediate, advanced }
 
+extension WordLevelExtension on WordLevel {
+  String get label {
+    switch (this) {
+      case WordLevel.beginner:
+        return 'Beginner';
+      case WordLevel.intermediate:
+        return 'Intermediate';
+      case WordLevel.advanced:
+        return 'Advanced';
+    }
+  }
+}
+
 var uuid = Uuid();
 
 class Word {
