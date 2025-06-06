@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:vocabulary_game/providers/vocabulary_provider.dart';
 import 'package:vocabulary_game/storage/storage_interface.dart';
 import 'package:vocabulary_game/storage/pref_storage.dart';
 import 'package:vocabulary_game/models/language.dart';
@@ -19,12 +20,12 @@ class SettingsNotifier extends StateNotifier<Map<String, dynamic>> {
     try {
       final languages = await _storage.getLanguages();
       if (languages.isEmpty) {
+        await _storage.addLanguage(defaultLanguage);
         state = {
           ...state,
           'languages': [defaultLanguage],
           'learning_language': defaultLanguage.value,
         };
-        addLanguage(defaultLanguage);
         return;
       } else {
         final learningLanguage =
@@ -85,6 +86,7 @@ class SettingsNotifier extends StateNotifier<Map<String, dynamic>> {
   Future<String?> deleteLanguage(Language language) async {
     try {
       final remainingLanguages = await _storage.deleteLanguage(language);
+      ref.read(vocabularyProvider.notifier).deleteWordsByLanguage(language.value);
       state = {...state, 'languages': remainingLanguages};
       return null;
     } catch (e) {

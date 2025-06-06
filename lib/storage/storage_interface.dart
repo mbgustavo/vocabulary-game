@@ -25,4 +25,7 @@ abstract class StorageInterface {
 
   // Add or update word and return updated vocabulary
   Future<List<Word>> deleteWord(Word word);
+
+  // Delete all vocabulary words by language and return updated vocabulary
+  Future<List<Word>> deleteWordsByLanguage(String language);
 }

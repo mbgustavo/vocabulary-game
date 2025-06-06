@@ -70,6 +70,21 @@ class VocabularyNotifier extends StateNotifier<Map<String, dynamic>> {
       return e.toString();
     }
   }
+
+  Future<void> deleteWordsByLanguage(String language) async {
+    try {
+      final remainingVocabulary = await _storage.deleteWordsByLanguage(language);
+      state = {...state, 'vocabulary': remainingVocabulary};
+    } catch (e) {
+      ref.read(notificationsProvider.notifier).pushNotification(
+        CustomNotification(
+          'Failed to delete words for language $language: ${e.toString()}',
+          type: NotificationType.error,
+          isDismissable: false,
+        ),
+      );
+    }
+  }
 }
 
 final vocabularyProvider = StateNotifierProvider<VocabularyNotifier, Map>(

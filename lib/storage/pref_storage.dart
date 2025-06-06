@@ -164,4 +164,22 @@ class PrefStorage extends StorageInterface {
 
     return remainingVocabulary;
   }
+
+  @override
+  Future<List<Word>> deleteWordsByLanguage(String language) async {
+    if (_pref == null) {
+      await _initialize();
+    }
+
+    final currentVocabulary = await getVocabulary();
+    final remainingVocabulary =
+        currentVocabulary.where((w) => w.language != language).toList();
+
+    await _pref!.setString(
+      'vocabulary',
+      jsonEncode(remainingVocabulary.map(_wordToMap).toList()),
+    );
+
+    return remainingVocabulary;
+  }
 }
