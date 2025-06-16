@@ -76,6 +76,33 @@ class PrefStorage extends StorageInterface {
   }
 
   @override
+  Future<List<Language>> updateLanguage(
+    Language oldLanguage,
+    Language newLanguage,
+  ) async {
+    if (_pref == null) {
+      await _initialize();
+    }
+
+    final currentLanguages = await getLanguages();
+    final index = currentLanguages.indexWhere(
+      (l) => l.value == oldLanguage.value,
+    );
+
+    if (index == -1) {
+      throw Exception('Language not found: ${oldLanguage.value}');
+    }
+    currentLanguages[index] = newLanguage;
+
+    await _pref!.setString(
+      'languages',
+      jsonEncode(currentLanguages.map(_languageToMap).toList()),
+    );
+
+    return currentLanguages;
+  }
+
+  @override
   Future<List<Language>> deleteLanguage(Language language) async {
     if (_pref == null) {
       await _initialize();
@@ -145,6 +172,38 @@ class PrefStorage extends StorageInterface {
     );
 
     return vocabulary;
+  }
+
+  @override
+  Future<List<Word>> updateWordsLanguage(
+    String oldLanguage,
+    String newLanguage,
+  ) async {
+    if (_pref == null) {
+      await _initialize();
+    }
+
+    final currentVocabulary = await getVocabulary();
+    final updatedVocabulary =
+        currentVocabulary.map((word) {
+          if (word.language == oldLanguage) {
+            word = Word(
+              input: word.input,
+              translation: word.translation,
+              examples: word.examples,
+              level: word.level,
+              id: word.id,
+              language: newLanguage,
+            );
+          }
+          return word;
+        }).toList();
+
+    await _pref!.setString(
+      'vocabulary',
+      jsonEncode(updatedVocabulary.map(_wordToMap).toList()),
+    );
+    return updatedVocabulary;
   }
 
   @override

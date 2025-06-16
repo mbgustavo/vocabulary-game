@@ -6,7 +6,9 @@ import 'package:vocabulary_game/providers/settings_provider.dart';
 import 'package:vocabulary_game/widgets/flag_selector.dart';
 
 class NewLanguage extends ConsumerStatefulWidget {
-  const NewLanguage({super.key});
+  const NewLanguage({super.key, this.initialLanguage});
+
+  final Language? initialLanguage;
 
   @override
   ConsumerState<NewLanguage> createState() => _NewLanguageState();
@@ -20,6 +22,15 @@ class _NewLanguageState extends ConsumerState<NewLanguage> {
   bool _isSending = false;
   String? _error;
 
+  @override
+  void initState() {
+    super.initState();
+    if (widget.initialLanguage != null) {
+      _enteredName = widget.initialLanguage!.name;
+      _enteredEmoji = widget.initialLanguage!.icon;
+    }
+  }
+
   void _saveLanguage() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
@@ -27,9 +38,16 @@ class _NewLanguageState extends ConsumerState<NewLanguage> {
         _isSending = true;
       });
       final newLanguage = Language(_enteredName, _enteredEmoji);
-      final error = await ref
+      String? error;
+      if (widget.initialLanguage != null) {
+        error = await ref
+          .read(settingsProvider.notifier)
+          .updateLanguage(widget.initialLanguage!, newLanguage);
+      } else {
+        error = await ref
           .read(settingsProvider.notifier)
           .addLanguage(newLanguage);
+      }
 
       setState(() {
         _isSending = false;
@@ -83,8 +101,10 @@ class _NewLanguageState extends ConsumerState<NewLanguage> {
                     ),
                 Expanded(
                   child: TextFormField(
+                    textCapitalization: TextCapitalization.sentences,
                     maxLength: 30,
                     decoration: const InputDecoration(label: Text('Name')),
+                    initialValue: _enteredName,
                     validator: (value) {
                       if (value == null ||
                           value.isEmpty ||
@@ -130,7 +150,7 @@ class _NewLanguageState extends ConsumerState<NewLanguage> {
                             width: 16,
                             child: CircularProgressIndicator(),
                           )
-                          : const Text('Add language'),
+                          : const Text('Save language'),
                 ),
               ],
             ),

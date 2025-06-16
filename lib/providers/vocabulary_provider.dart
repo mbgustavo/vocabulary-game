@@ -61,6 +61,16 @@ class VocabularyNotifier extends StateNotifier<Map<String, dynamic>> {
     }
   }
 
+  Future<String?> updateWordsLanguage(String oldLanguage, String newLanguage) async {
+    try {
+      final updatedVocabulary = await _storage.updateWordsLanguage(oldLanguage, newLanguage);
+      state = {...state, 'vocabulary': updatedVocabulary};
+      return null;
+    } catch (e) {
+      return e.toString();
+    }
+  }
+
   Future<String?> deleteWord(Word word) async {
     try {
       final remainingVocabulary = await _storage.deleteWord(word);

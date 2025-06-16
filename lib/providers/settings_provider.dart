@@ -83,6 +83,33 @@ class SettingsNotifier extends StateNotifier<Map<String, dynamic>> {
     }
   }
 
+  Future<String?> updateLanguage(Language oldLanguage, Language newLanguage) async {
+    try {
+      if (newLanguage.name == "") {
+        throw 'Language name cannot be empty';
+      }
+
+      List<Language> currentLanguages = [...getLanguages()];
+      final conflictingLanguages = currentLanguages.where(
+        (language) => language.value == newLanguage.value && language.value != oldLanguage.value,
+      );
+      if (conflictingLanguages.isNotEmpty) {
+        throw 'Language already exists';
+      }
+
+      final updatedLanguages = await _storage.updateLanguage(oldLanguage, newLanguage);
+      ref.read(vocabularyProvider.notifier).updateWordsLanguage(oldLanguage.value, newLanguage.value);
+
+      state = {...state, 'languages': updatedLanguages};
+      if (state['learning_language'] == oldLanguage.value) {
+        await changeLearningLanguage(newLanguage.value);
+      }
+      return null;
+    } catch (e) {
+      return e.toString();
+    }
+  }
+
   Future<String?> deleteLanguage(Language language) async {
     try {
       final remainingLanguages = await _storage.deleteLanguage(language);

@@ -109,6 +109,7 @@ class _NewWordScreenState extends ConsumerState<NewWordScreen> {
               ),
               SizedBox(height: 20),
               TextFormField(
+                textCapitalization: TextCapitalization.sentences,
                 maxLength: 30,
                 decoration: const InputDecoration(label: Text('Input word')),
                 initialValue: _enteredInput,
@@ -126,6 +127,7 @@ class _NewWordScreenState extends ConsumerState<NewWordScreen> {
                 },
               ),
               TextFormField(
+                textCapitalization: TextCapitalization.sentences,
                 maxLength: 30,
                 decoration: const InputDecoration(label: Text('Translation')),
                 initialValue: _enteredTranslation,
@@ -145,12 +147,13 @@ class _NewWordScreenState extends ConsumerState<NewWordScreen> {
               SizedBox(height: 10),
               DropdownButtonFormField(
                 value: _selectedLevel,
-                items: WordLevel.values.map((WordLevel level) {
-                  return DropdownMenuItem<WordLevel>(
-                    value: level,
-                    child: Text(level.label),
-                  );
-                }).toList(),
+                items:
+                    WordLevel.values.map((WordLevel level) {
+                      return DropdownMenuItem<WordLevel>(
+                        value: level,
+                        child: Text(level.label),
+                      );
+                    }).toList(),
 
                 onChanged: (value) {
                   setState(() {
@@ -162,6 +165,7 @@ class _NewWordScreenState extends ConsumerState<NewWordScreen> {
               const Text("Examples (optional)"),
               ..._examples.asMap().entries.map(
                 (entry) => TextFormField(
+                  textCapitalization: TextCapitalization.sentences,
                   maxLength: 100,
                   initialValue: entry.value,
                   onSaved: (value) {

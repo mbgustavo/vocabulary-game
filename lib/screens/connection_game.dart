@@ -140,7 +140,7 @@ class _ConnectionGameScreenState extends ConsumerState<ConnectionGameScreen> {
                     getText(word),
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      fontSize: 20,
+                      fontSize: 14,
                       fontWeight: FontWeight.bold,
                       color: _getColorForStatus(word.status),
                     ),

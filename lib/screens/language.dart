@@ -110,7 +110,20 @@ class _LanguageScreenState extends ConsumerState<LanguageScreen> {
                       isSelected
                           ? Highlightedtext(languages[index].name)
                           : Text(languages[index].name),
-                  trailing:
+                  trailing:Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return Dialog(child: NewLanguage(initialLanguage: languages[index]));
+                            },
+                          );
+                        },
+                        icon: Icon(Icons.edit),
+                      ),
                       isSelected
                           ? Padding(
                             padding: EdgeInsets.symmetric(horizontal: 12),
@@ -126,6 +139,8 @@ class _LanguageScreenState extends ConsumerState<LanguageScreen> {
                               color: const Color.fromARGB(255, 219, 121, 121),
                             ),
                           ),
+                    ],
+                  ),
                 );
               },
             ),
