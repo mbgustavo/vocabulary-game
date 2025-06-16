@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabulary_game/models/language.dart';
 import 'package:vocabulary_game/providers/notifications_provider.dart';
 import 'package:vocabulary_game/providers/settings_provider.dart';
-import 'package:vocabulary_game/widgets/highlighted_text.dart';
+import 'package:vocabulary_game/widgets/language_list.dart';
 import 'package:vocabulary_game/widgets/new_language.dart';
 import 'package:vocabulary_game/widgets/notification_banners.dart';
 
@@ -15,48 +15,24 @@ class LanguageScreen extends ConsumerStatefulWidget {
 }
 
 class _LanguageScreenState extends ConsumerState<LanguageScreen> {
-  void showDeleteDialog(Language language) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Delete Language'),
-          content: Text(
-            "Are you sure you want to delete ${language.name} and its vocabulary? This action can't be undone.",
-          ),
-          actions: [
-            TextButton(
-              child: Text('Cancel'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
+  Future<void> onDelete(BuildContext context, Language language) async {
+    final error = await ref
+        .read(settingsProvider.notifier)
+        .deleteLanguage(language);
+    if (error != null) {
+      ref
+          .read(notificationsProvider.notifier)
+          .pushNotification(
+            CustomNotification(
+              'Failed to delete language: $error',
+              type: NotificationType.error,
+              isDismissable: false,
             ),
-            ElevatedButton(
-              child: Text('Delete'),
-              onPressed: () async {
-                final error = await ref
-                    .read(settingsProvider.notifier)
-                    .deleteLanguage(language);
-                if (error != null) {
-                  ref
-                      .read(notificationsProvider.notifier)
-                      .pushNotification(
-                        CustomNotification(
-                          'Failed to delete language: $error',
-                          type: NotificationType.error,
-                          isDismissable: false,
-                        ),
-                      );
-                }
-                if (context.mounted) {
-                  Navigator.of(context).pop();
-                }
-              },
-            ),
-          ],
-        );
-      },
-    );
+          );
+    }
+    if (context.mounted) {
+      Navigator.of(context).pop();
+    }
   }
 
   @override
@@ -90,59 +66,14 @@ class _LanguageScreenState extends ConsumerState<LanguageScreen> {
           NotificationBanners(),
           Expanded(
             flex: 1,
-            child: ListView.builder(
-              itemCount: languages.length,
-              itemBuilder: (ctx, index) {
-                final isSelected =
-                    languages[index].value == learningLanguage.value;
-
-                return ListTile(
-                  onTap:
-                      isSelected
-                          ? () => {}
-                          : () => ref
-                              .read(settingsProvider.notifier)
-                              .changeLearningLanguage(languages[index].value),
-                  leading: RichText(
-                    text: TextSpan(text: languages[index].icon),
-                  ),
-                  title:
-                      isSelected
-                          ? Highlightedtext(languages[index].name)
-                          : Text(languages[index].name),
-                  trailing:Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      IconButton(
-                        onPressed: () {
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return Dialog(child: NewLanguage(initialLanguage: languages[index]));
-                            },
-                          );
-                        },
-                        icon: Icon(Icons.edit),
-                      ),
-                      isSelected
-                          ? Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 12),
-                            child: Icon(
-                              Icons.check,
-                              color: Color.fromARGB(255, 45, 130, 48),
-                            ),
-                          )
-                          : IconButton(
-                            onPressed: () => showDeleteDialog(languages[index]),
-                            icon: Icon(
-                              Icons.delete,
-                              color: const Color.fromARGB(255, 219, 121, 121),
-                            ),
-                          ),
-                    ],
-                  ),
-                );
-              },
+            child: LanguageList(
+              languages: languages,
+              learningLanguage: learningLanguage.value,
+              onTap:
+                  (language) => ref
+                      .read(settingsProvider.notifier)
+                      .changeLearningLanguage(language.value),
+              onDelete: onDelete,
             ),
           ),
         ],
