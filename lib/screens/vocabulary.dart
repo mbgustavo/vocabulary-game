@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:vocabulary_game/models/word.dart';
-import 'package:vocabulary_game/providers/notifications_provider.dart';
 import 'package:vocabulary_game/providers/settings_provider.dart';
 import 'package:vocabulary_game/providers/vocabulary_provider.dart';
 import 'package:vocabulary_game/screens/new_word.dart';
@@ -18,24 +16,6 @@ class VocabularyScreen extends ConsumerStatefulWidget {
 
 class _VocabularyScreenState extends ConsumerState<VocabularyScreen> {
   String _selectedLanguage = '';
-
-  Future<void> _onDelete(BuildContext context, Word word) async {
-    final error = await ref.read(vocabularyProvider.notifier).deleteWord(word);
-    if (error != null) {
-      ref
-          .read(notificationsProvider.notifier)
-          .pushNotification(
-            CustomNotification(
-              'Failed to delete word: $error',
-              type: NotificationType.error,
-              isDismissable: false,
-            ),
-          );
-    }
-    if (context.mounted) {
-      Navigator.of(context).pop();
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,6 +48,7 @@ class _VocabularyScreenState extends ConsumerState<VocabularyScreen> {
             child: LanguageDropdown(
               selectedLanguage: _selectedLanguage,
               languages: languages,
+              showAllLanguages: true,
               onChanged: (value) {
                 setState(() {
                   _selectedLanguage = value!;
@@ -77,7 +58,7 @@ class _VocabularyScreenState extends ConsumerState<VocabularyScreen> {
           ),
           Expanded(
             flex: 1,
-            child: WordList(words: vocabulary, onDelete: _onDelete),
+            child: WordList(words: vocabulary),
           ),
         ],
       ),

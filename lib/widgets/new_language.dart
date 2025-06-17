@@ -6,9 +6,9 @@ import 'package:vocabulary_game/providers/settings_provider.dart';
 import 'package:vocabulary_game/widgets/flag_selector.dart';
 
 class NewLanguage extends ConsumerStatefulWidget {
-  const NewLanguage({super.key, this.initialLanguage});
-
   final Language? initialLanguage;
+
+  const NewLanguage({super.key, this.initialLanguage});
 
   @override
   ConsumerState<NewLanguage> createState() => _NewLanguageState();

@@ -4,11 +4,12 @@ import 'package:vocabulary_game/models/word.dart';
 import 'package:vocabulary_game/providers/notifications_provider.dart';
 import 'package:vocabulary_game/providers/settings_provider.dart';
 import 'package:vocabulary_game/providers/vocabulary_provider.dart';
+import 'package:vocabulary_game/widgets/language_dropdown.dart';
 
 class NewWordScreen extends ConsumerStatefulWidget {
-  const NewWordScreen({super.key, this.initialWord});
-
   final Word? initialWord;
+
+  const NewWordScreen({super.key, this.initialWord});
 
   @override
   ConsumerState<NewWordScreen> createState() => _NewWordScreenState();
@@ -86,21 +87,9 @@ class _NewWordScreenState extends ConsumerState<NewWordScreen> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              DropdownButtonFormField(
-                value: _selectedLanguage,
-                items: [
-                  for (final language in languages)
-                    DropdownMenuItem(
-                      value: language.value,
-                      child: Row(
-                        children: [
-                          Text(language.icon),
-                          const SizedBox(width: 6),
-                          Text(language.name),
-                        ],
-                      ),
-                    ),
-                ],
+              LanguageDropdown(
+                languages: languages,
+                selectedLanguage: _selectedLanguage,
                 onChanged: (value) {
                   setState(() {
                     _selectedLanguage = value!;

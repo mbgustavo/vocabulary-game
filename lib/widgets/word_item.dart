@@ -1,16 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabulary_game/models/word.dart';
+import 'package:vocabulary_game/providers/notifications_provider.dart';
 import 'package:vocabulary_game/providers/settings_provider.dart';
+import 'package:vocabulary_game/providers/vocabulary_provider.dart';
 import 'package:vocabulary_game/screens/new_word.dart';
 
 class WordItem extends ConsumerWidget {
-  const WordItem({super.key, required this.word, required this.onDelete});
-
   final Word word;
-  final Future<void> Function(BuildContext context, Word word) onDelete;
 
-  void _showDeleteDialog(BuildContext context, Word word) {
+  const WordItem({super.key, required this.word});
+
+  Future<void> _onDelete(BuildContext context, WidgetRef ref) async {
+    final error = await ref.read(vocabularyProvider.notifier).deleteWord(word);
+    if (error != null) {
+      ref
+          .read(notificationsProvider.notifier)
+          .pushNotification(
+            CustomNotification(
+              'Failed to delete word: $error',
+              type: NotificationType.error,
+              isDismissable: false,
+            ),
+          );
+    }
+    if (context.mounted) {
+      Navigator.of(context).pop();
+    }
+  }
+
+  void _showDeleteDialog(BuildContext context, WidgetRef ref) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -28,7 +47,7 @@ class WordItem extends ConsumerWidget {
             ),
             ElevatedButton(
               child: Text('Delete'),
-              onPressed: () => onDelete(context, word),
+              onPressed: () => _onDelete(context, ref),
             ),
           ],
         );
@@ -63,7 +82,7 @@ class WordItem extends ConsumerWidget {
             icon: Icon(Icons.edit),
           ),
           IconButton(
-            onPressed: () => _showDeleteDialog(context, word),
+            onPressed: () => _showDeleteDialog(context, ref),
             icon: Icon(
               Icons.delete,
               color: const Color.fromARGB(255, 219, 121, 121),
