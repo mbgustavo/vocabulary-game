@@ -5,7 +5,9 @@ import 'package:vocabulary_game/providers/notifications_provider.dart';
 import 'package:vocabulary_game/providers/settings_provider.dart';
 import 'package:vocabulary_game/providers/vocabulary_provider.dart';
 import 'package:vocabulary_game/screens/new_word.dart';
+import 'package:vocabulary_game/widgets/language_dropdown.dart';
 import 'package:vocabulary_game/widgets/notification_banners.dart';
+import 'package:vocabulary_game/widgets/word_list.dart';
 
 class VocabularyScreen extends ConsumerStatefulWidget {
   const VocabularyScreen({super.key});
@@ -17,54 +19,30 @@ class VocabularyScreen extends ConsumerStatefulWidget {
 class _VocabularyScreenState extends ConsumerState<VocabularyScreen> {
   String _selectedLanguage = '';
 
-  void showDeleteDialog(Word word) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Delete Word'),
-          content: Text(
-            "Are you sure you want to delete the word ${word.input}? This action can't be undone.",
-          ),
-          actions: [
-            TextButton(
-              child: Text('Cancel'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
+  Future<void> _onDelete(BuildContext context, Word word) async {
+    final error = await ref.read(vocabularyProvider.notifier).deleteWord(word);
+    if (error != null) {
+      ref
+          .read(notificationsProvider.notifier)
+          .pushNotification(
+            CustomNotification(
+              'Failed to delete word: $error',
+              type: NotificationType.error,
+              isDismissable: false,
             ),
-            ElevatedButton(
-              child: Text('Delete'),
-              onPressed: () async {
-                final error = await ref
-                    .read(vocabularyProvider.notifier)
-                    .deleteWord(word);
-                if (error != null) {
-                  ref
-                      .read(notificationsProvider.notifier)
-                      .pushNotification(
-                        CustomNotification(
-                          'Failed to delete word: $error',
-                          type: NotificationType.error,
-                          isDismissable: false,
-                        ),
-                      );
-                }
-                if (context.mounted) {
-                  Navigator.of(context).pop();
-                }
-              },
-            ),
-          ],
-        );
-      },
-    );
+          );
+    }
+    if (context.mounted) {
+      Navigator.of(context).pop();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     ref.watch(vocabularyProvider)["vocabulary"];
-    final vocabulary = ref.watch(vocabularyProvider.notifier).getVocabulary(language: _selectedLanguage);
+    final vocabulary = ref
+        .watch(vocabularyProvider.notifier)
+        .getVocabulary(language: _selectedLanguage);
     final languages = ref.read(settingsProvider.notifier).getLanguages();
 
     return Scaffold(
@@ -87,25 +65,9 @@ class _VocabularyScreenState extends ConsumerState<VocabularyScreen> {
           NotificationBanners(),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: DropdownButtonFormField(
-              value: _selectedLanguage,
-              items: [
-                DropdownMenuItem(
-                  value: '',
-                  child: Text('All Languages'),
-                ),
-                for (final language in languages)
-                  DropdownMenuItem(
-                    value: language.value,
-                    child: Row(
-                      children: [
-                        Text(language.icon),
-                        const SizedBox(width: 6),
-                        Text(language.name),
-                      ],
-                    ),
-                  ),
-              ],
+            child: LanguageDropdown(
+              selectedLanguage: _selectedLanguage,
+              languages: languages,
               onChanged: (value) {
                 setState(() {
                   _selectedLanguage = value!;
@@ -115,50 +77,7 @@ class _VocabularyScreenState extends ConsumerState<VocabularyScreen> {
           ),
           Expanded(
             flex: 1,
-            child: ListView.builder(
-              itemCount: vocabulary.length,
-              itemBuilder: (ctx, index) {
-                return ListTile(
-                  leading: RichText(
-                    text: TextSpan(
-                      text:
-                          ref
-                              .read(settingsProvider.notifier)
-                              .getLanguage(vocabulary[index].language)
-                              .icon,
-                    ),
-                  ),
-                  title: Text(
-                    '${vocabulary[index].input} (${vocabulary[index].translation})',
-                  ),
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      IconButton(
-                        onPressed: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder:
-                                  (ctx) => NewWordScreen(
-                                    initialWord: vocabulary[index],
-                                  ),
-                            ),
-                          );
-                        },
-                        icon: Icon(Icons.edit),
-                      ),
-                      IconButton(
-                        onPressed: () => showDeleteDialog(vocabulary[index]),
-                        icon: Icon(
-                          Icons.delete,
-                          color: const Color.fromARGB(255, 219, 121, 121),
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-              },
-            ),
+            child: WordList(words: vocabulary, onDelete: _onDelete),
           ),
         ],
       ),

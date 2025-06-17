@@ -1,0 +1,76 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:vocabulary_game/models/word.dart';
+import 'package:vocabulary_game/providers/settings_provider.dart';
+import 'package:vocabulary_game/screens/new_word.dart';
+
+class WordItem extends ConsumerWidget {
+  const WordItem({super.key, required this.word, required this.onDelete});
+
+  final Word word;
+  final Future<void> Function(BuildContext context, Word word) onDelete;
+
+  void _showDeleteDialog(BuildContext context, Word word) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Delete Word'),
+          content: Text(
+            "Are you sure you want to delete the word ${word.input}? This action can't be undone.",
+          ),
+          actions: [
+            TextButton(
+              child: Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            ElevatedButton(
+              child: Text('Delete'),
+              onPressed: () => onDelete(context, word),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return ListTile(
+      leading: RichText(
+        text: TextSpan(
+          text:
+              ref
+                  .read(settingsProvider.notifier)
+                  .getLanguage(word.language)
+                  .icon,
+        ),
+      ),
+      title: Text('${word.input} (${word.translation})'),
+      trailing: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          IconButton(
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (ctx) => NewWordScreen(initialWord: word),
+                ),
+              );
+            },
+            icon: Icon(Icons.edit),
+          ),
+          IconButton(
+            onPressed: () => _showDeleteDialog(context, word),
+            icon: Icon(
+              Icons.delete,
+              color: const Color.fromARGB(255, 219, 121, 121),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
