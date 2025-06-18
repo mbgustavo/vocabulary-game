@@ -1,37 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabulary_game/models/word.dart';
+import 'package:vocabulary_game/widgets/word_connection_card.dart';
 
-const wordsQtyForGame = 5;
+const defaultQty = 5;
 
-enum WordStatus { notSelected, selected, completed, error }
+class ConnectionGameScreen extends StatefulWidget {
+  final List<Word> vocabulary;
+  final int wordsQty;
 
-class WordInPlay extends Word {
-  WordInPlay({
-    required super.input,
-    required super.translation,
-    required super.level,
-    required super.language,
-    required super.examples,
-    required super.id,
+  const ConnectionGameScreen(
+    this.vocabulary, {
+    super.key,
+    this.wordsQty = defaultQty,
   });
 
-  WordStatus status = WordStatus.notSelected;
-}
-
-class ConnectionGameScreen extends ConsumerStatefulWidget {
-  const ConnectionGameScreen(this.vocabulary, {super.key});
-
-  final List<Word> vocabulary;
-
   @override
-  ConsumerState<ConnectionGameScreen> createState() =>
+  State<ConnectionGameScreen> createState() =>
       _ConnectionGameScreenState();
 }
 
-class _ConnectionGameScreenState extends ConsumerState<ConnectionGameScreen> {
-  late List<WordInPlay> _translations;
-  late List<WordInPlay> _wordsToPlay;
+class _ConnectionGameScreenState extends State<ConnectionGameScreen> {
+  late List<WordInConnectionGame> _translations;
+  late List<WordInConnectionGame> _wordsToPlay;
   List<String>? _examplesShown;
   bool _gameCompleted = false;
 
@@ -39,160 +29,104 @@ class _ConnectionGameScreenState extends ConsumerState<ConnectionGameScreen> {
   void initState() {
     super.initState();
     _resetGame();
-
   }
 
   void _resetGame() {
-    final wordsToPlay =
-        _getWordsForGame()
-            .map(
-              (word) => WordInPlay(
-                id: word.id,
-                input: word.input,
-                translation: word.translation,
-                level: word.level,
-                language: word.language,
-                examples: word.examples,
-              ),
-            )
-            .toList();
-    final answers =
-        wordsToPlay
-            .map(
-              (word) => WordInPlay(
-                id: word.id,
-                input: word.input,
-                translation: word.translation,
-                level: word.level,
-                language: word.language,
-                examples: word.examples,
-              ),
-            )
-            .toList();
-    answers.shuffle();
+    final wordsToPlay = _getWordsForGame().map(WordInConnectionGame.fromWord).toList();
+    final translations = wordsToPlay.map(WordInConnectionGame.fromWord).toList();
+    translations.shuffle();
 
     setState(() {
       _examplesShown = null;
       _gameCompleted = false;
       _wordsToPlay = wordsToPlay;
-      _translations = answers;
+      _translations = translations;
     });
   }
 
+  // Try to fill all words with beginner level words first,
+  // then intermediate, and finally advanced words if needed.
   List<Word> _getWordsForGame() {
     final playableWords =
         widget.vocabulary
             .where((word) => word.level == WordLevel.beginner)
             .toList();
 
-    if (playableWords.length < wordsQtyForGame) {
+    if (playableWords.length < widget.wordsQty) {
       playableWords.addAll(
         widget.vocabulary
             .where((word) => word.level == WordLevel.intermediate)
-            .take(wordsQtyForGame - playableWords.length),
+            .take(widget.wordsQty - playableWords.length),
       );
     }
 
-    if (playableWords.length < wordsQtyForGame) {
+    if (playableWords.length < widget.wordsQty) {
       playableWords.addAll(
         widget.vocabulary
             .where((word) => word.level == WordLevel.advanced)
-            .take(wordsQtyForGame - playableWords.length),
+            .take(widget.wordsQty - playableWords.length),
       );
     }
 
     playableWords.shuffle();
-    return playableWords.take(wordsQtyForGame).toList();
-  }
-
-  Color _getColorForStatus(WordStatus status) {
-    switch (status) {
-      case WordStatus.notSelected:
-        return Colors.black54;
-      case WordStatus.selected:
-        return Colors.blue;
-      case WordStatus.completed:
-        return Colors.green;
-      case WordStatus.error:
-        return Colors.red;
-    }
+    return playableWords.take(widget.wordsQty).toList();
   }
 
   List<Widget> _getCards(
-    List<WordInPlay> words,
-    String Function(WordInPlay) getText,
-    void Function(WordInPlay)? onTap,
+    List<WordInConnectionGame> words,
+    String Function(WordInConnectionGame) getText,
+    void Function(WordInConnectionGame)? onTap,
   ) {
     return words.map((word) {
       return Padding(
         padding: const EdgeInsets.symmetric(vertical: 8),
         child: Center(
-          child: Card(
-            child: InkWell(
-              onTap:
-                  word.status == WordStatus.completed || onTap == null
-                      ? null
-                      : () => onTap(word),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-                child: Center(
-                  child: Text(
-                    getText(word),
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                      color: _getColorForStatus(word.status),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
+          child: WordConnectionCard(word: word, getText: getText, onTap: onTap),
         ),
       );
     }).toList();
   }
 
-  void _selectWord(WordInPlay word, bool isTranslation) {
-    List<WordInPlay> inputWords = isTranslation ? _translations : _wordsToPlay;
-    List<WordInPlay> answerWords = isTranslation ? _wordsToPlay : _translations;
+  void _selectWord(WordInConnectionGame word, bool isTranslation) {
+    List<WordInConnectionGame> inputWords = isTranslation ? _translations : _wordsToPlay;
+    List<WordInConnectionGame> answerWords = isTranslation ? _wordsToPlay : _translations;
 
     setState(() {
       _examplesShown = null;
     });
 
     for (final otherWord in inputWords) {
-      if (otherWord.status == WordStatus.completed) {
+      if (otherWord.status == WordConnectionStatus.completed) {
         continue;
       }
 
-      if (otherWord.id == word.id) {
-        word.status =
-            word.status == WordStatus.selected
-                ? WordStatus.notSelected
-                : WordStatus.selected;
+      if (otherWord.id != word.id) {
+        otherWord.status = WordConnectionStatus.notSelected;
         continue;
       }
-      otherWord.status = WordStatus.notSelected;
+
+      word.status =
+          word.status == WordConnectionStatus.selected
+              ? WordConnectionStatus.notSelected
+              : WordConnectionStatus.selected;
     }
     setState(() {
       inputWords = inputWords;
     });
 
-    if (word.status == WordStatus.notSelected) {
+    if (word.status == WordConnectionStatus.notSelected) {
       return;
     }
 
-    WordInPlay? selectedAnswer;
+    WordInConnectionGame? selectedAnswer;
     for (final answer in answerWords) {
-      if (answer.status == WordStatus.selected) {
+      if (answer.status == WordConnectionStatus.selected) {
         selectedAnswer = answer;
         break;
       }
 
-      if (answer.status == WordStatus.error) {
-        answer.status = WordStatus.notSelected;
+      if (answer.status == WordConnectionStatus.error) {
+        answer.status = WordConnectionStatus.notSelected;
       }
     }
 
@@ -204,26 +138,29 @@ class _ConnectionGameScreenState extends ConsumerState<ConnectionGameScreen> {
       return;
     }
 
-    if (selectedAnswer.id == word.id) {
+    _verifyAnswer(word, selectedAnswer);
+  }
+
+  void _verifyAnswer(WordInConnectionGame input, WordInConnectionGame answer) {
+    if (input.id == answer.id) {
       setState(() {
-        word.status = WordStatus.completed;
-        selectedAnswer!.status = WordStatus.completed;
-        _examplesShown = word.examples.isNotEmpty ? word.examples : null;
+        input.status = WordConnectionStatus.completed;
+        answer.status = WordConnectionStatus.completed;
+        _examplesShown = input.examples.isNotEmpty ? input.examples : null;
+        _gameCompleted = _wordsToPlay.every(
+          (w) => w.status == WordConnectionStatus.completed,
+        );
       });
-      if (_wordsToPlay.every((w) => w.status == WordStatus.completed)) {
-        setState(() {
-          _gameCompleted = true;
-        });
-      }
-    } else {
-      setState(() {
-        word.status = WordStatus.error;
-        selectedAnswer!.status = WordStatus.error;
-      });
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text('Incorrect match! Try again.')));
+      return;
     }
+
+    setState(() {
+      input.status = WordConnectionStatus.error;
+      answer.status = WordConnectionStatus.error;
+    });
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text('Incorrect match! Try again.')));
   }
 
   @override
@@ -240,7 +177,7 @@ class _ConnectionGameScreenState extends ConsumerState<ConnectionGameScreen> {
                 height: 480,
                 child: GridView.count(
                   scrollDirection: Axis.horizontal,
-                  crossAxisCount: wordsQtyForGame,
+                  crossAxisCount: widget.wordsQty,
                   mainAxisSpacing: 16,
                   shrinkWrap: true,
                   childAspectRatio: 0.7,
@@ -276,7 +213,7 @@ class _ConnectionGameScreenState extends ConsumerState<ConnectionGameScreen> {
                     children: [
                       Text(
                         'Congratulations! You completed the game!',
-                        style: TextStyle(fontSize: 20, color: Colors.green),
+                        style: TextStyle(fontSize: 20, color: Colors.green[900]),
                         textAlign: TextAlign.center,
                       ),
                       const SizedBox(height: 16),
