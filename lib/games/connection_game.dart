@@ -4,22 +4,21 @@ import 'package:vocabulary_game/widgets/word_connection_card.dart';
 
 const defaultQty = 5;
 
-class ConnectionGameScreen extends StatefulWidget {
+class ConnectionGame extends StatefulWidget {
   final List<Word> vocabulary;
   final int wordsQty;
 
-  const ConnectionGameScreen(
+  const ConnectionGame(
     this.vocabulary, {
     super.key,
     this.wordsQty = defaultQty,
   });
 
   @override
-  State<ConnectionGameScreen> createState() =>
-      _ConnectionGameScreenState();
+  State<ConnectionGame> createState() => _ConnectionGameState();
 }
 
-class _ConnectionGameScreenState extends State<ConnectionGameScreen> {
+class _ConnectionGameState extends State<ConnectionGame> {
   late List<WordInConnectionGame> _translations;
   late List<WordInConnectionGame> _wordsToPlay;
   List<String>? _examplesShown;
@@ -32,8 +31,10 @@ class _ConnectionGameScreenState extends State<ConnectionGameScreen> {
   }
 
   void _resetGame() {
-    final wordsToPlay = _getWordsForGame().map(WordInConnectionGame.fromWord).toList();
-    final translations = wordsToPlay.map(WordInConnectionGame.fromWord).toList();
+    final wordsToPlay =
+        _getWordsForGame().map(WordInConnectionGame.fromWord).toList();
+    final translations =
+        wordsToPlay.map(WordInConnectionGame.fromWord).toList();
     translations.shuffle();
 
     setState(() {
@@ -88,8 +89,10 @@ class _ConnectionGameScreenState extends State<ConnectionGameScreen> {
   }
 
   void _selectWord(WordInConnectionGame word, bool isTranslation) {
-    List<WordInConnectionGame> inputWords = isTranslation ? _translations : _wordsToPlay;
-    List<WordInConnectionGame> answerWords = isTranslation ? _wordsToPlay : _translations;
+    List<WordInConnectionGame> inputWords =
+        isTranslation ? _translations : _wordsToPlay;
+    List<WordInConnectionGame> answerWords =
+        isTranslation ? _wordsToPlay : _translations;
 
     setState(() {
       _examplesShown = null;
@@ -165,84 +168,79 @@ class _ConnectionGameScreenState extends State<ConnectionGameScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Connection Game')),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SizedBox(
-                height: 480,
-                child: GridView.count(
-                  scrollDirection: Axis.horizontal,
-                  crossAxisCount: widget.wordsQty,
-                  mainAxisSpacing: 16,
-                  shrinkWrap: true,
-                  childAspectRatio: 0.7,
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SizedBox(
+              height: 480,
+              child: GridView.count(
+                scrollDirection: Axis.horizontal,
+                crossAxisCount: widget.wordsQty,
+                mainAxisSpacing: 16,
+                shrinkWrap: true,
+                childAspectRatio: 0.7,
+                children: [
+                  ..._getCards(
+                    _wordsToPlay,
+                    (word) => word.input,
+                    (word) => _selectWord(word, false),
+                  ),
+                  ..._getCards(
+                    _translations,
+                    (word) => word.translation,
+                    (word) => _selectWord(word, true),
+                  ),
+                ],
+              ),
+            ),
+            _examplesShown != null
+                ? Padding(
+                  padding: const EdgeInsets.only(top: 16),
+                  child: Text(
+                    _examplesShown!.join('\n'),
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(fontSize: 16),
+                  ),
+                )
+                : const SizedBox(height: 39),
+            if (_gameCompleted)
+              Padding(
+                padding: const EdgeInsets.all(24),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    ..._getCards(
-                      _wordsToPlay,
-                      (word) => word.input,
-                      (word) => _selectWord(word, false),
+                    Text(
+                      'Congratulations! You completed the game!',
+                      style: TextStyle(fontSize: 20, color: Colors.green[900]),
+                      textAlign: TextAlign.center,
                     ),
-                    ..._getCards(
-                      _translations,
-                      (word) => word.translation,
-                      (word) => _selectWord(word, true),
+                    const SizedBox(height: 16),
+                    ElevatedButton(
+                      onPressed: _resetGame,
+                      style: ButtonStyle(
+                        fixedSize: WidgetStateProperty.all(const Size(200, 50)),
+                      ),
+                      child: Center(
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(Icons.restart_alt, size: 32),
+                            const SizedBox(width: 4),
+                            const Text(
+                              'Play again',
+                              style: TextStyle(fontSize: 20),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                   ],
                 ),
               ),
-              _examplesShown != null
-                  ? Padding(
-                    padding: const EdgeInsets.only(top: 16),
-                    child: Text(
-                      _examplesShown!.join('\n'),
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(fontSize: 16),
-                    ),
-                  )
-                  : const SizedBox(height: 39),
-              if (_gameCompleted)
-                Padding(
-                  padding: const EdgeInsets.all(24),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        'Congratulations! You completed the game!',
-                        style: TextStyle(fontSize: 20, color: Colors.green[900]),
-                        textAlign: TextAlign.center,
-                      ),
-                      const SizedBox(height: 16),
-                      ElevatedButton(
-                        onPressed: _resetGame,
-                        style: ButtonStyle(
-                          fixedSize: WidgetStateProperty.all(
-                            const Size(200, 50),
-                          ),
-                        ),
-                        child: Center(
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Icon(Icons.restart_alt, size: 32),
-                              const SizedBox(width: 4),
-                              const Text(
-                                'Play again',
-                                style: TextStyle(fontSize: 20),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-            ],
-          ),
+          ],
         ),
       ),
     );

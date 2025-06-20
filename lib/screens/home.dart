@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabulary_game/providers/settings_provider.dart';
 import 'package:vocabulary_game/providers/vocabulary_provider.dart';
-import 'package:vocabulary_game/screens/connection_game.dart';
+import 'package:vocabulary_game/screens/game.dart';
 import 'package:vocabulary_game/screens/language.dart';
 import 'package:vocabulary_game/screens/vocabulary.dart';
 import 'package:vocabulary_game/widgets/notification_banners.dart';
@@ -36,7 +36,7 @@ class HomeScreen extends ConsumerWidget {
                   onPressed: vocabulary.length < 5 ? null : () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (ctx) => ConnectionGameScreen(vocabulary),
+                        builder: (ctx) => GameScreen(vocabulary),
                       ),
                     );
                   },
