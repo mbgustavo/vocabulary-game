@@ -105,7 +105,7 @@ class LanguageItem extends ConsumerWidget {
                 onPressed: () => _showDeleteDialog(context, ref),
                 icon: Icon(
                   Icons.delete,
-                  color: const Color.fromARGB(255, 219, 121, 121),
+                  color: Theme.of(context).colorScheme.error,
                 ),
               ),
         ],

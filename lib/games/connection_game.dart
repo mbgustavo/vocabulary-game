@@ -214,14 +214,16 @@ class _ConnectionGameState extends State<ConnectionGame> {
                   children: [
                     Text(
                       'Congratulations! You completed the game!',
-                      style: TextStyle(fontSize: 20, color: Colors.green[900]),
+                      style: TextStyle(fontSize: 20, color: const Color.fromARGB(255, 104, 235, 111)),
                       textAlign: TextAlign.center,
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 26),
                     ElevatedButton(
                       onPressed: _resetGame,
-                      style: ButtonStyle(
-                        fixedSize: WidgetStateProperty.all(const Size(200, 50)),
+                      style: ElevatedButton.styleFrom(
+                        fixedSize: Size(200, 50),
+                        backgroundColor: Theme.of(context).colorScheme.onPrimaryFixed,
+                        foregroundColor: Theme.of(context).colorScheme.primary,
                       ),
                       child: Center(
                         child: Row(

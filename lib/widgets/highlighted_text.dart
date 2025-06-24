@@ -17,11 +17,11 @@ class Highlightedtext extends StatelessWidget {
                 Paint()
                   ..style = PaintingStyle.stroke
                   ..strokeWidth = 2
-                  ..color = const Color.fromARGB(155, 45, 130, 48)
+                  ..color = const Color.fromARGB(222, 33, 99, 36)
                   ..maskFilter = MaskFilter.blur(BlurStyle.normal, 1),
           ),
         ),
-        Text(text, style: TextStyle(fontSize: 16, color: Colors.black)),
+        Text(text, style: TextStyle(fontSize: 16, color: Theme.of(context).colorScheme.onSurface)),
       ],
     );
   }

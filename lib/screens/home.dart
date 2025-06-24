@@ -33,6 +33,10 @@ class HomeScreen extends ConsumerWidget {
                 Text('You are learning ${learningLanguage.name}'),
                 SizedBox(height: 80),
                 ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Theme.of(context).colorScheme.onPrimaryFixed,
+                    foregroundColor: Theme.of(context).colorScheme.primary,
+                  ),
                   onPressed: vocabulary.length < 5 ? null : () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
@@ -47,12 +51,16 @@ class HomeScreen extends ConsumerWidget {
                     padding: const EdgeInsets.all(8),
                     child: Text(
                       'You need at least 5 words in your vocabulary to start the game.',
-                      style: TextStyle(color: Colors.red),
+                      style: TextStyle(color: Theme.of(context).colorScheme.error),
                       textAlign: TextAlign.center,
                     ),
                   ),
                 SizedBox(height: 40),
                 ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Theme.of(context).colorScheme.onPrimaryFixed,
+                    foregroundColor: Theme.of(context).colorScheme.primary,
+                  ),
                   onPressed: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
@@ -64,6 +72,10 @@ class HomeScreen extends ConsumerWidget {
                 ),
                 SizedBox(height: 40),
                 ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Theme.of(context).colorScheme.onPrimaryFixed,
+                    foregroundColor: Theme.of(context).colorScheme.primary,
+                  ),
                   onPressed: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(

@@ -13,16 +13,16 @@ class WordConnectionCard extends StatelessWidget {
     this.onTap,
   });
 
-  Color _getColorForStatus(WordConnectionStatus status) {
+  Color _getColorForStatus(WordConnectionStatus status, BuildContext context) {
     switch (status) {
       case WordConnectionStatus.notSelected:
-        return Colors.black54;
+        return Theme.of(context).colorScheme.onSurface;
       case WordConnectionStatus.selected:
-        return Colors.blue;
+        return Theme.of(context).colorScheme.primary;
       case WordConnectionStatus.completed:
-        return Colors.green;
+        return const Color.fromARGB(255, 104, 235, 111);
       case WordConnectionStatus.error:
-        return Colors.red;
+        return Theme.of(context).colorScheme.errorContainer;
     }
   }
 
@@ -30,7 +30,7 @@ class WordConnectionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       color:
-          word.status == WordConnectionStatus.completed ? Colors.white30 : Colors.white,
+          word.status == WordConnectionStatus.completed ? Theme.of(context).colorScheme.surfaceContainer : Theme.of(context).colorScheme.onPrimaryFixed,
       child: InkWell(
         onTap:
             word.status == WordConnectionStatus.completed || onTap == null
@@ -45,7 +45,7 @@ class WordConnectionCard extends StatelessWidget {
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.bold,
-                color: _getColorForStatus(word.status),
+                color: _getColorForStatus(word.status, context),
               ),
             ),
           ),

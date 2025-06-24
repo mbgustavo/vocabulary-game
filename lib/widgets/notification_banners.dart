@@ -16,11 +16,11 @@ class NotificationBanners extends ConsumerWidget {
     Color getBackgroundColor (NotificationType type) {
       switch (type) {
         case NotificationType.error:
-          return Colors.red;
+          return Theme.of(context).colorScheme.errorContainer;
         case NotificationType.success:
-          return Colors.green;
+          return Color.fromARGB(255, 33, 99, 36);
         default:
-          return Colors.blueGrey;
+          return Theme.of(context).colorScheme.primaryContainer;
       }
     }
 
