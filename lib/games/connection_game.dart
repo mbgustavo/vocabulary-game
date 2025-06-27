@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:vocabulary_game/models/word.dart';
-import 'package:vocabulary_game/widgets/word_connection_card.dart';
+import 'package:vocabulary_game/widgets/word_card.dart';
+import 'package:vocabulary_game/games/get_words_for_game.dart';
 
 const defaultQty = 5;
 
@@ -19,8 +20,8 @@ class ConnectionGame extends StatefulWidget {
 }
 
 class _ConnectionGameState extends State<ConnectionGame> {
-  late List<WordInConnectionGame> _translations;
-  late List<WordInConnectionGame> _wordsToPlay;
+  late List<WordInGame> _translations;
+  late List<WordInGame> _wordsToPlay;
   List<String>? _examplesShown;
   bool _gameCompleted = false;
 
@@ -32,9 +33,9 @@ class _ConnectionGameState extends State<ConnectionGame> {
 
   void _resetGame() {
     final wordsToPlay =
-        _getWordsForGame().map(WordInConnectionGame.fromWord).toList();
+        getWordsForGame(widget.vocabulary, widget.wordsQty).map(WordInGame.fromWord).toList();
     final translations =
-        wordsToPlay.map(WordInConnectionGame.fromWord).toList();
+        wordsToPlay.map(WordInGame.fromWord).toList();
     translations.shuffle();
 
     setState(() {
@@ -45,53 +46,25 @@ class _ConnectionGameState extends State<ConnectionGame> {
     });
   }
 
-  // Try to fill all words with beginner level words first,
-  // then intermediate, and finally advanced words if needed.
-  List<Word> _getWordsForGame() {
-    final playableWords =
-        widget.vocabulary
-            .where((word) => word.level == WordLevel.beginner)
-            .toList();
-
-    if (playableWords.length < widget.wordsQty) {
-      playableWords.addAll(
-        widget.vocabulary
-            .where((word) => word.level == WordLevel.intermediate)
-            .take(widget.wordsQty - playableWords.length),
-      );
-    }
-
-    if (playableWords.length < widget.wordsQty) {
-      playableWords.addAll(
-        widget.vocabulary
-            .where((word) => word.level == WordLevel.advanced)
-            .take(widget.wordsQty - playableWords.length),
-      );
-    }
-
-    playableWords.shuffle();
-    return playableWords.take(widget.wordsQty).toList();
-  }
-
   List<Widget> _getCards(
-    List<WordInConnectionGame> words,
-    String Function(WordInConnectionGame) getText,
-    void Function(WordInConnectionGame)? onTap,
+    List<WordInGame> words,
+    String Function(WordInGame) getText,
+    void Function(WordInGame)? onTap,
   ) {
     return words.map((word) {
       return Padding(
         padding: const EdgeInsets.symmetric(vertical: 8),
         child: Center(
-          child: WordConnectionCard(word: word, getText: getText, onTap: onTap),
+          child: WordCard(word: word, getText: getText, onTap: onTap),
         ),
       );
     }).toList();
   }
 
-  void _selectWord(WordInConnectionGame word, bool isTranslation) {
-    List<WordInConnectionGame> inputWords =
+  void _selectWord(WordInGame word, bool isTranslation) {
+    List<WordInGame> inputWords =
         isTranslation ? _translations : _wordsToPlay;
-    List<WordInConnectionGame> answerWords =
+    List<WordInGame> answerWords =
         isTranslation ? _wordsToPlay : _translations;
 
     setState(() {
@@ -99,37 +72,37 @@ class _ConnectionGameState extends State<ConnectionGame> {
     });
 
     for (final otherWord in inputWords) {
-      if (otherWord.status == WordConnectionStatus.completed) {
+      if (otherWord.status == WordStatus.completed) {
         continue;
       }
 
       if (otherWord.id != word.id) {
-        otherWord.status = WordConnectionStatus.notSelected;
+        otherWord.status = WordStatus.notSelected;
         continue;
       }
 
       word.status =
-          word.status == WordConnectionStatus.selected
-              ? WordConnectionStatus.notSelected
-              : WordConnectionStatus.selected;
+          word.status == WordStatus.selected
+              ? WordStatus.notSelected
+              : WordStatus.selected;
     }
     setState(() {
       inputWords = inputWords;
     });
 
-    if (word.status == WordConnectionStatus.notSelected) {
+    if (word.status == WordStatus.notSelected) {
       return;
     }
 
-    WordInConnectionGame? selectedAnswer;
+    WordInGame? selectedAnswer;
     for (final answer in answerWords) {
-      if (answer.status == WordConnectionStatus.selected) {
+      if (answer.status == WordStatus.selected) {
         selectedAnswer = answer;
         break;
       }
 
-      if (answer.status == WordConnectionStatus.error) {
-        answer.status = WordConnectionStatus.notSelected;
+      if (answer.status == WordStatus.error) {
+        answer.status = WordStatus.notSelected;
       }
     }
 
@@ -144,22 +117,22 @@ class _ConnectionGameState extends State<ConnectionGame> {
     _verifyAnswer(word, selectedAnswer);
   }
 
-  void _verifyAnswer(WordInConnectionGame input, WordInConnectionGame answer) {
+  void _verifyAnswer(WordInGame input, WordInGame answer) {
     if (input.id == answer.id) {
       setState(() {
-        input.status = WordConnectionStatus.completed;
-        answer.status = WordConnectionStatus.completed;
+        input.status = WordStatus.completed;
+        answer.status = WordStatus.completed;
         _examplesShown = input.examples.isNotEmpty ? input.examples : null;
         _gameCompleted = _wordsToPlay.every(
-          (w) => w.status == WordConnectionStatus.completed,
+          (w) => w.status == WordStatus.completed,
         );
       });
       return;
     }
 
     setState(() {
-      input.status = WordConnectionStatus.error;
-      answer.status = WordConnectionStatus.error;
+      input.status = WordStatus.error;
+      answer.status = WordStatus.error;
     });
     ScaffoldMessenger.of(
       context,

@@ -1,7 +1,7 @@
 import 'package:uuid/uuid.dart';
 
 enum WordLevel { beginner, intermediate, advanced }
-enum WordConnectionStatus { notSelected, selected, completed, error }
+enum WordStatus { notSelected, selected, completed, error, disabled }
 
 extension WordLevelExtension on WordLevel {
   String get label {
@@ -36,10 +36,10 @@ class Word {
   }) : id = id ?? uuid.v4();
 }
 
-class WordInConnectionGame extends Word {
-  WordConnectionStatus status = WordConnectionStatus.notSelected;
+class WordInGame extends Word {
+  WordStatus status = WordStatus.notSelected;
 
-  WordInConnectionGame({
+  WordInGame({
     required super.input,
     required super.translation,
     required super.level,
@@ -48,7 +48,7 @@ class WordInConnectionGame extends Word {
     required super.id,
   });
 
-  WordInConnectionGame.fromWord(Word word)
+  WordInGame.fromWord(Word word)
     : this(
         id: word.id,
         input: word.input,

@@ -1,27 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:vocabulary_game/models/word.dart';
 
-class WordConnectionCard extends StatelessWidget {
-  final WordInConnectionGame word;
-  final String Function(WordInConnectionGame) getText;
-  final void Function(WordInConnectionGame)? onTap;
+class WordCard extends StatelessWidget {
+  final WordInGame word;
+  final String Function(WordInGame) getText;
+  final void Function(WordInGame)? onTap;
 
-  const WordConnectionCard({
+  const WordCard({
     super.key,
     required this.word,
     required this.getText,
     this.onTap,
   });
 
-  Color _getColorForStatus(WordConnectionStatus status, BuildContext context) {
+  Color _getColorForStatus(WordStatus status, BuildContext context) {
     switch (status) {
-      case WordConnectionStatus.notSelected:
+      case WordStatus.disabled:
         return Theme.of(context).colorScheme.onSurface;
-      case WordConnectionStatus.selected:
+      case WordStatus.notSelected:
+        return Theme.of(context).colorScheme.onSurface;
+      case WordStatus.selected:
         return Theme.of(context).colorScheme.primary;
-      case WordConnectionStatus.completed:
+      case WordStatus.completed:
         return const Color.fromARGB(255, 104, 235, 111);
-      case WordConnectionStatus.error:
+      case WordStatus.error:
         return Theme.of(context).colorScheme.errorContainer;
     }
   }
@@ -30,10 +32,15 @@ class WordConnectionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       color:
-          word.status == WordConnectionStatus.completed ? Theme.of(context).colorScheme.surfaceContainer : Theme.of(context).colorScheme.onPrimaryFixed,
+          word.status == WordStatus.completed ||
+                  word.status == WordStatus.disabled
+              ? Theme.of(context).colorScheme.surfaceContainer
+              : Theme.of(context).colorScheme.onPrimaryFixed,
       child: InkWell(
         onTap:
-            word.status == WordConnectionStatus.completed || onTap == null
+            word.status == WordStatus.completed ||
+                    word.status == WordStatus.disabled ||
+                    onTap == null
                 ? null
                 : () => onTap!(word),
         child: Padding(
