@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vocabulary_game/models/word.dart';
+import 'package:vocabulary_game/widgets/game_completed.dart';
 import 'package:vocabulary_game/widgets/word_card.dart';
 import 'package:vocabulary_game/games/get_words_for_game.dart';
 
@@ -182,38 +183,7 @@ class _ConnectionGameState extends State<ConnectionGame> {
             if (_gameCompleted)
               Padding(
                 padding: const EdgeInsets.all(24),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      'Congratulations! You completed the game!',
-                      style: TextStyle(fontSize: 20, color: const Color.fromARGB(255, 104, 235, 111)),
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 26),
-                    ElevatedButton(
-                      onPressed: _resetGame,
-                      style: ElevatedButton.styleFrom(
-                        fixedSize: Size(200, 50),
-                        backgroundColor: Theme.of(context).colorScheme.onPrimaryFixed,
-                        foregroundColor: Theme.of(context).colorScheme.primary,
-                      ),
-                      child: Center(
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(Icons.restart_alt, size: 32),
-                            const SizedBox(width: 4),
-                            const Text(
-                              'Play again',
-                              style: TextStyle(fontSize: 20),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                child: GameCompleted(onReset: _resetGame),
               ),
           ],
         ),
