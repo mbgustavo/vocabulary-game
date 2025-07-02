@@ -73,6 +73,36 @@ class GameSelectScreen extends ConsumerWidget {
                 textAlign: TextAlign.center,
               ),
             ),
+            const SizedBox(height: 8),
+            Text("Hard", style: Theme.of(context).textTheme.labelSmall),
+            const SizedBox(height: 8),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Theme.of(context).colorScheme.onPrimaryFixed,
+                foregroundColor: Theme.of(context).colorScheme.primary,
+              ),
+              onPressed: () {
+                _navigateToGame(context, ref, Game.write);
+              },
+              child: const Text(
+                'Write Words',
+                textAlign: TextAlign.center,
+              ),
+            ),
+            const SizedBox(height: 8),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Theme.of(context).colorScheme.onPrimaryFixed,
+                foregroundColor: Theme.of(context).colorScheme.primary,
+              ),
+              onPressed: () {
+                _navigateToGame(context, ref, Game.writeReversed);
+              },
+              child: const Text(
+                'Write Words\n(from translations)',
+                textAlign: TextAlign.center,
+              ),
+            ),
           ],
         ),
       ),

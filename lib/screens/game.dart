@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:vocabulary_game/games/connection_game.dart';
 import 'package:vocabulary_game/games/multiple_choice_game.dart';
+import 'package:vocabulary_game/games/write_game.dart';
 import 'package:vocabulary_game/models/word.dart';
 
-enum Game {connection, multipleChoice, multipleChoiceReversed}
+enum Game {connection, multipleChoice, multipleChoiceReversed, write, writeReversed}
 
 class GameScreen extends StatelessWidget {
   final List<Word> vocabulary;
@@ -22,6 +23,9 @@ class GameScreen extends StatelessWidget {
       case Game.multipleChoice:
       case Game.multipleChoiceReversed:
         return 'Multiple Choice Game';
+      case Game.write:
+      case Game.writeReversed:
+        return 'Write Game';
     }
   }
 
@@ -33,6 +37,10 @@ class GameScreen extends StatelessWidget {
         return MultipleChoiceGame(vocabulary);
       case Game.multipleChoiceReversed:
         return MultipleChoiceGame(vocabulary, playWithTranslations: true);
+      case Game.write:
+        return WriteGame(vocabulary);
+      case Game.writeReversed:
+        return WriteGame(vocabulary, playWithTranslations: true);
     }
   }
 
