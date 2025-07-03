@@ -81,104 +81,111 @@ class _NewWordScreenState extends ConsumerState<NewWordScreen> {
       appBar: AppBar(title: const Text('Add new word')),
       body: Form(
         key: _formKey,
-        child: Padding(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              LanguageDropdown(
-                languages: languages,
-                selectedLanguage: _selectedLanguage,
-                onChanged: (value) {
-                  setState(() {
-                    _selectedLanguage = value!;
-                  });
-                },
-              ),
-              SizedBox(height: 20),
-              TextFormField(
-                textCapitalization: TextCapitalization.sentences,
-                maxLength: 30,
-                decoration: const InputDecoration(label: Text('Input word')),
-                initialValue: _enteredInput,
-                validator: (value) {
-                  if (value == null ||
-                      value.isEmpty ||
-                      value.trim().length <= 1 ||
-                      value.trim().length > 50) {
-                    return 'Must be between 1 and 50 characters.';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  _enteredInput = value!;
-                },
-              ),
-              TextFormField(
-                textCapitalization: TextCapitalization.sentences,
-                maxLength: 30,
-                decoration: const InputDecoration(label: Text('Translation')),
-                initialValue: _enteredTranslation,
-                validator: (value) {
-                  if (value == null ||
-                      value.isEmpty ||
-                      value.trim().length <= 1 ||
-                      value.trim().length > 50) {
-                    return 'Must be between 1 and 50 characters.';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  _enteredTranslation = value!;
-                },
-              ),
-              SizedBox(height: 10),
-              DropdownButtonFormField(
-                value: _selectedLevel,
-                items:
-                    WordLevel.values.map((WordLevel level) {
-                      return DropdownMenuItem<WordLevel>(
-                        value: level,
-                        child: Text(level.label),
-                      );
-                    }).toList(),
-
-                onChanged: (value) {
-                  setState(() {
-                    _selectedLevel = value!;
-                  });
-                },
-              ),
-              SizedBox(height: 20),
-              const Text("Examples (optional)"),
-              ..._examples.asMap().entries.map(
-                (entry) => TextFormField(
-                  textCapitalization: TextCapitalization.sentences,
-                  maxLength: 100,
-                  initialValue: entry.value,
-                  onSaved: (value) {
-                    _examples[entry.key] = value ?? '';
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.only(
+              left: 24,
+              right: 24,
+              bottom: MediaQuery.of(context).viewInsets.bottom + 24,
+              top: 24,
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                LanguageDropdown(
+                  languages: languages,
+                  selectedLanguage: _selectedLanguage,
+                  onChanged: (value) {
+                    setState(() {
+                      _selectedLanguage = value!;
+                    });
                   },
                 ),
-              ),
-              IconButton(
-                onPressed: () {
-                  setState(() {
-                    _examples.add('');
-                  });
-                },
-                icon: Icon(Icons.plus_one),
-              ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  minimumSize: const Size.fromHeight(50),
+                SizedBox(height: 20),
+                TextFormField(
+                  textCapitalization: TextCapitalization.sentences,
+                  maxLength: 30,
+                  decoration: const InputDecoration(label: Text('Input word')),
+                  initialValue: _enteredInput,
+                  validator: (value) {
+                    if (value == null ||
+                        value.isEmpty ||
+                        value.trim().length <= 1 ||
+                        value.trim().length > 50) {
+                      return 'Must be between 1 and 50 characters.';
+                    }
+                    return null;
+                  },
+                  onSaved: (value) {
+                    _enteredInput = value!;
+                  },
                 ),
-                onPressed: _addWord,
-                child: const Text('Save'),
-              ),
-            ],
+                TextFormField(
+                  textCapitalization: TextCapitalization.sentences,
+                  maxLength: 30,
+                  decoration: const InputDecoration(label: Text('Translation')),
+                  initialValue: _enteredTranslation,
+                  validator: (value) {
+                    if (value == null ||
+                        value.isEmpty ||
+                        value.trim().length <= 1 ||
+                        value.trim().length > 50) {
+                      return 'Must be between 1 and 50 characters.';
+                    }
+                    return null;
+                  },
+                  onSaved: (value) {
+                    _enteredTranslation = value!;
+                  },
+                ),
+                SizedBox(height: 10),
+                DropdownButtonFormField(
+                  value: _selectedLevel,
+                  items:
+                      WordLevel.values.map((WordLevel level) {
+                        return DropdownMenuItem<WordLevel>(
+                          value: level,
+                          child: Text(level.label),
+                        );
+                      }).toList(),
+
+                  onChanged: (value) {
+                    setState(() {
+                      _selectedLevel = value!;
+                    });
+                  },
+                ),
+                SizedBox(height: 20),
+                const Text("Examples (optional)"),
+                ..._examples.asMap().entries.map(
+                  (entry) => TextFormField(
+                    textCapitalization: TextCapitalization.sentences,
+                    maxLength: 100,
+                    initialValue: entry.value,
+                    onSaved: (value) {
+                      _examples[entry.key] = value ?? '';
+                    },
+                  ),
+                ),
+                IconButton(
+                  onPressed: () {
+                    setState(() {
+                      _examples.add('');
+                    });
+                  },
+                  icon: Icon(Icons.plus_one),
+                ),
+                const SizedBox(height: 20),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: const Size.fromHeight(50),
+                  ),
+                  onPressed: _addWord,
+                  child: const Text('Save'),
+                ),
+              ],
+            ),
           ),
         ),
       ),
