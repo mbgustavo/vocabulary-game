@@ -12,6 +12,12 @@ class WordList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (words.isEmpty) {
+      return const Center(
+        child: Text('No words in this vocabulary.'),
+      );
+    }
+
     return ListView.builder(
       itemCount: words.length,
       itemBuilder: (ctx, index) {
