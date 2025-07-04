@@ -41,12 +41,12 @@ class _NewLanguageState extends ConsumerState<NewLanguage> {
       String? error;
       if (widget.initialLanguage != null) {
         error = await ref
-          .read(settingsProvider.notifier)
-          .updateLanguage(widget.initialLanguage!, newLanguage);
+            .read(settingsProvider.notifier)
+            .updateLanguage(widget.initialLanguage!, newLanguage);
       } else {
         error = await ref
-          .read(settingsProvider.notifier)
-          .addLanguage(newLanguage);
+            .read(settingsProvider.notifier)
+            .addLanguage(newLanguage);
       }
 
       setState(() {
@@ -69,109 +69,120 @@ class _NewLanguageState extends ConsumerState<NewLanguage> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(20),
+      padding: EdgeInsets.all(20),
       child: Form(
         key: _formKey,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                _enteredEmoji != ""
-                    ? TextButton(
-                      onPressed: () {
-                        setState(() {
-                          _showEmojiPicker = !_showEmojiPicker;
-                        });
-                      },
-                      child: Text(
-                        _enteredEmoji,
-                        style: TextStyle(fontSize: 24),
-                      ),
-                    )
-                    : IconButton(
-                      icon: Icon(Icons.flag_circle),
-                      iconSize: 30,
-                      onPressed: () {
-                        setState(() {
-                          _showEmojiPicker = !_showEmojiPicker;
-                        });
-                      },
-                    ),
-                Expanded(
-                  child: TextFormField(
-                    textCapitalization: TextCapitalization.sentences,
-                    maxLength: 30,
-                    decoration: const InputDecoration(label: Text('Name')),
-                    initialValue: _enteredName,
-                    validator: (value) {
-                      if (value == null ||
-                          value.isEmpty ||
-                          value.trim().length <= 1 ||
-                          value.trim().length > 50) {
-                        return 'Must be between 1 and 50 characters.';
-                      }
-                      return null;
-                    },
-                    onSaved: (value) {
-                      _error = null;
-                      _enteredName = value!;
-                    },
-                  ),
-                ),
-              ],
-            ),
-            if (_error != null)
-              Padding(
-                padding: const EdgeInsets.only(top: 8),
-                child: Text(_error!, style: TextStyle(color: Theme.of(context).colorScheme.error)),
-              ),
-            const SizedBox(height: 12),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                TextButton(
-                  onPressed:
-                      _isSending
-                          ? null
-                          : () {
-                            _formKey.currentState!.reset();
-                            Navigator.of(context).pop();
-                          },
-                  child: const Text('Cancel'),
-                ),
-                ElevatedButton(
-                  onPressed: _isSending ? null : _saveLanguage,
-                  child:
-                      _isSending
-                          ? const SizedBox(
-                            height: 16,
-                            width: 16,
-                            child: CircularProgressIndicator(),
-                          )
-                          : const Text('Save language'),
-                ),
-              ],
-            ),
-            if (_showEmojiPicker)
-              Column(
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  SizedBox(height: 12),
-                  SizedBox(
-                    height: 250,
-                    child: FlagSelector(
-                      onEmojiSelected: (emoji) {
-                        setState(() {
-                          _showEmojiPicker = false;
-                        });
-                        _onEmojiSelected(emoji);
+                  _enteredEmoji != ""
+                      ? TextButton(
+                        onPressed: () {
+                          setState(() {
+                            _showEmojiPicker = !_showEmojiPicker;
+                          });
+                        },
+                        child: Text(
+                          _enteredEmoji,
+                          style: TextStyle(fontSize: 24),
+                        ),
+                      )
+                      : IconButton(
+                        icon: Icon(Icons.flag_circle),
+                        iconSize: 30,
+                        onPressed: () {
+                          setState(() {
+                            _showEmojiPicker = !_showEmojiPicker;
+                          });
+                        },
+                      ),
+                  Expanded(
+                    child: TextFormField(
+                      textCapitalization: TextCapitalization.sentences,
+                      maxLength: 30,
+                      decoration: const InputDecoration(label: Text('Name')),
+                      initialValue: _enteredName,
+                      validator: (value) {
+                        if (value == null ||
+                            value.isEmpty ||
+                            value.trim().length <= 1 ||
+                            value.trim().length > 50) {
+                          return 'Must be between 1 and 50 characters.';
+                        }
+                        return null;
+                      },
+                      onSaved: (value) {
+                        _error = null;
+                        _enteredName = value!;
                       },
                     ),
                   ),
                 ],
               ),
-          ],
+              if (_error != null)
+                Padding(
+                  padding: const EdgeInsets.only(top: 8),
+                  child: Text(
+                    _error!,
+                    style: TextStyle(color: Theme.of(context).colorScheme.error),
+                  ),
+                ),
+              const SizedBox(height: 12),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  TextButton(
+                    onPressed:
+                        _isSending
+                            ? null
+                            : () {
+                              _formKey.currentState!.reset();
+                              Navigator.of(context).pop();
+                            },
+                    child: const Text('Cancel'),
+                  ),
+                  ElevatedButton(
+                    onPressed: _isSending ? null : _saveLanguage,
+                    child:
+                        _isSending
+                            ? const SizedBox(
+                              height: 16,
+                              width: 16,
+                              child: CircularProgressIndicator(),
+                            )
+                            : const Text('Save language'),
+                  ),
+                ],
+              ),
+              if (_showEmojiPicker)
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SizedBox(height: 12),
+                    Flexible(
+                      child: ConstrainedBox(
+                        constraints: BoxConstraints(
+                          minHeight: 50,
+                          maxHeight: 250,
+                        ),
+                        child: FlagSelector(
+                          onEmojiSelected: (emoji) {
+                            setState(() {
+                              _showEmojiPicker = false;
+                            });
+                            _onEmojiSelected(emoji);
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+            ],
+          ),
         ),
       ),
     );
