@@ -72,6 +72,7 @@ class _MultipleChoiceGameState extends State<MultipleChoiceGame> {
         _questionCompleted = true;
         _gameCompleted = _currentQuestion >= _wordsToPlay.length - 1;
       });
+      ScaffoldMessenger.of(context).clearSnackBars();
       return;
     }
 

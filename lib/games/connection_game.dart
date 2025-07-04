@@ -34,9 +34,11 @@ class _ConnectionGameState extends State<ConnectionGame> {
 
   void _resetGame() {
     final wordsToPlay =
-        getWordsForGame(widget.vocabulary, widget.wordsQty).map(WordInGame.fromWord).toList();
-    final translations =
-        wordsToPlay.map(WordInGame.fromWord).toList();
+        getWordsForGame(
+          widget.vocabulary,
+          widget.wordsQty,
+        ).map(WordInGame.fromWord).toList();
+    final translations = wordsToPlay.map(WordInGame.fromWord).toList();
     translations.shuffle();
 
     setState(() {
@@ -63,10 +65,8 @@ class _ConnectionGameState extends State<ConnectionGame> {
   }
 
   void _selectWord(WordInGame word, bool isTranslation) {
-    List<WordInGame> inputWords =
-        isTranslation ? _translations : _wordsToPlay;
-    List<WordInGame> answerWords =
-        isTranslation ? _wordsToPlay : _translations;
+    List<WordInGame> inputWords = isTranslation ? _translations : _wordsToPlay;
+    List<WordInGame> answerWords = isTranslation ? _wordsToPlay : _translations;
 
     setState(() {
       _examplesShown = null;
@@ -128,6 +128,7 @@ class _ConnectionGameState extends State<ConnectionGame> {
           (w) => w.status == WordStatus.completed,
         );
       });
+      ScaffoldMessenger.of(context).clearSnackBars();
       return;
     }
 

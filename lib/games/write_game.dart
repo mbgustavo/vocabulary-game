@@ -63,6 +63,7 @@ class _WriteGameState extends State<WriteGame> {
         _questionCompleted = true;
         _gameCompleted = _currentQuestion >= _wordsToPlay.length - 1;
       });
+      ScaffoldMessenger.of(context).clearSnackBars();
       return;
     }
 
