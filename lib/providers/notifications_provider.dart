@@ -27,8 +27,9 @@ class NotificationsNotifier extends StateNotifier<List<CustomNotification>> {
   NotificationsNotifier() : super([]);
   int id = 0;
 
+  /// Adds a [CustomNotification] to the current state, assigns it a unique ID and returns the id.
   int pushNotification(CustomNotification notification) {
-    state = [...state, notification..setId(id++)];
+    state = [...state, notification.setId(id)];
 
     if (notification.timeout != null) {
       Timer(
@@ -36,7 +37,7 @@ class NotificationsNotifier extends StateNotifier<List<CustomNotification>> {
         () => dismissNotification(notification.id!),
       );
     }
-    return id;
+    return id++;
   }
 
   void dismissNotification(int id) {
