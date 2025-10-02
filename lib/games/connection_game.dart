@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vocabulary_game/models/word.dart';
+import 'package:vocabulary_game/screens/home.dart';
 import 'package:vocabulary_game/widgets/game_completed.dart';
 import 'package:vocabulary_game/widgets/word_card.dart';
 import 'package:vocabulary_game/games/get_words_for_game.dart';
@@ -33,11 +34,18 @@ class _ConnectionGameState extends State<ConnectionGame> {
   }
 
   void _resetGame() {
-    final wordsToPlay =
-        getWordsForGame(
-          widget.vocabulary,
-          widget.wordsQty,
-        ).map(WordInGame.fromWord).toList();
+    late List<WordInGame> wordsToPlay;
+    try {
+      wordsToPlay =
+          getWordsForGame(
+            widget.vocabulary,
+            widget.wordsQty,
+          ).map(WordInGame.fromWord).toList();
+    } catch (e) {
+      Navigator.of(
+        context,
+      ).push(MaterialPageRoute(builder: (ctx) => const HomeScreen()));
+    }
     final translations = wordsToPlay.map(WordInGame.fromWord).toList();
     translations.shuffle();
 

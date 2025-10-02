@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:vocabulary_game/models/word.dart';
 import 'package:vocabulary_game/games/get_words_for_game.dart';
+import 'package:vocabulary_game/screens/home.dart';
 import 'package:vocabulary_game/widgets/game_completed.dart';
 
 const defaultQty = 5;
@@ -37,7 +38,14 @@ class _WriteGameState extends State<WriteGame> {
   }
 
   void _resetGame() {
-    final wordsToPlay = getWordsForGame(widget.vocabulary, widget.wordsQty);
+    late List<Word> wordsToPlay;
+    try {
+      wordsToPlay = getWordsForGame(widget.vocabulary, widget.wordsQty);
+    } catch (e) {
+      Navigator.of(
+        context,
+      ).push(MaterialPageRoute(builder: (ctx) => const HomeScreen()));
+    }
     setState(() {
       _examplesShown = null;
       _questionCompleted = false;

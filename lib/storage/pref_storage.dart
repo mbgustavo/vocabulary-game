@@ -5,7 +5,7 @@ import 'package:vocabulary_game/models/word.dart';
 import 'package:vocabulary_game/storage/storage_interface.dart';
 import 'package:vocabulary_game/models/language.dart';
 
-class PrefStorage extends StorageInterface {
+class PrefStorage implements StorageInterface {
   SharedPreferences? _pref;
 
   Language _mapToLanguage(dynamic language) =>

@@ -22,6 +22,10 @@ List<Word> getWordsForGame(List<Word> vocabulary, int wordsQty) {
     );
   }
 
+  if (playableWords.length < wordsQty) {
+    throw 'Not enough words to play the game';
+  }
+
   playableWords.shuffle();
   return playableWords.take(wordsQty).toList();
 }
