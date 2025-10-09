@@ -5,11 +5,13 @@ import 'package:vocabulary_game/storage/pref_storage.dart';
 import 'package:vocabulary_game/models/language.dart';
 import 'package:vocabulary_game/providers/notifications_provider.dart';
 
+final settingsStorageProvider = Provider<StorageInterface>((ref) => PrefStorage());
+
 class SettingsNotifier extends StateNotifier<Map<String, dynamic>> {
   SettingsNotifier(this.ref) : super({}) {
-    _storage = PrefStorage();
+    _storage = ref.read(settingsStorageProvider);
     state = {'loading': true};
-    loadLanguages();
+    Future.microtask(() => loadLanguages());
   }
 
   final Ref ref;
@@ -58,7 +60,7 @@ class SettingsNotifier extends StateNotifier<Map<String, dynamic>> {
   }
 
   List<Language> getLanguages() {
-    return (state['languages'] ?? []) as List<Language>;
+    return (state['languages'] ?? []).cast<Language>();
   }
 
   Future<String?> addLanguage(Language newLanguage) async {
@@ -98,7 +100,7 @@ class SettingsNotifier extends StateNotifier<Map<String, dynamic>> {
       }
 
       final updatedLanguages = await _storage.updateLanguage(oldLanguage, newLanguage);
-      ref.read(vocabularyProvider.notifier).updateWordsLanguage(oldLanguage.value, newLanguage.value);
+      await ref.read(vocabularyProvider.notifier).updateWordsLanguage(oldLanguage.value, newLanguage.value);
 
       state = {...state, 'languages': updatedLanguages};
       if (state['learning_language'] == oldLanguage.value) {
