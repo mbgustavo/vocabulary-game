@@ -45,12 +45,14 @@ class VocabularyNotifier extends StateNotifier<Map<String, dynamic>> {
   }
 
   List<Word> getVocabulary({String? language}) {
-  if (language != null && language.isNotEmpty) {
-      return (state['vocabulary'] ?? [])
+    final vocabulary = state['vocabulary'] as List<Word>? ?? <Word>[];
+    
+    if (language != null && language.isNotEmpty) {
+      return vocabulary
           .where((word) => word.language == language)
-          .toList() as List<Word>;
+          .toList();
     }
-    return (state['vocabulary'] ?? []) as List<Word>;
+    return vocabulary;
   }
 
   Future<String?> saveWord(Word word) async {
