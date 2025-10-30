@@ -78,7 +78,7 @@ class LanguageItem extends ConsumerWidget {
                   .read(settingsProvider.notifier)
                   .changeLearningLanguage(language.value),
       leading: RichText(text: TextSpan(text: language.icon)),
-      title: isSelected ? Highlightedtext(language.name) : Text(language.name),
+      title: isSelected ? HighlightedText(language.name) : Text(language.name),
       trailing: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
