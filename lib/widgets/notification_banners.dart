@@ -39,7 +39,7 @@ class NotificationBanners extends ConsumerWidget {
                             onPressed:
                                 () => ref
                                     .read(notificationsProvider.notifier)
-                                    .dismissNotification(notification.id!),
+                                    .dismissNotification(notification.id),
                             icon: Icon(Icons.close),
                           ),
                         ]

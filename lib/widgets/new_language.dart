@@ -110,8 +110,8 @@ class _NewLanguageState extends ConsumerState<NewLanguage> {
                         if (value == null ||
                             value.isEmpty ||
                             value.trim().length <= 1 ||
-                            value.trim().length > 50) {
-                          return 'Must be between 1 and 50 characters.';
+                            value.trim().length > 30) {
+                          return 'Must be between 1 and 30 characters.';
                         }
                         return null;
                       },

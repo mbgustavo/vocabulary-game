@@ -40,7 +40,8 @@ class NotificationsNotifier extends StateNotifier<List<CustomNotification>> {
     return id++;
   }
 
-  void dismissNotification(int id) {
+  void dismissNotification(int? id) {
+    if (id == null) return;
     state = state.where((notification) => notification.id != id).toList();
   }
 
