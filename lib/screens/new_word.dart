@@ -106,7 +106,7 @@ class _NewWordScreenState extends ConsumerState<NewWordScreen> {
                 TextFormField(
                   textCapitalization: TextCapitalization.sentences,
                   maxLength: 30,
-                  decoration: const InputDecoration(label: Text('Input word')),
+                  decoration: const InputDecoration(label: Text('Word in learning language')),
                   initialValue: _enteredInput,
                   validator: (value) {
                     if (value == null ||
@@ -124,7 +124,7 @@ class _NewWordScreenState extends ConsumerState<NewWordScreen> {
                 TextFormField(
                   textCapitalization: TextCapitalization.sentences,
                   maxLength: 30,
-                  decoration: const InputDecoration(label: Text('Translation')),
+                  decoration: const InputDecoration(label: Text('Translation in your language')),
                   initialValue: _enteredTranslation,
                   validator: (value) {
                     if (value == null ||

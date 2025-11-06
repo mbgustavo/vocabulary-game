@@ -28,21 +28,21 @@ class WordCard extends StatelessWidget {
     }
   }
 
+  bool isCardDisabled(WordStatus status) {
+    return status == WordStatus.completed ||
+        status == WordStatus.disabled ||
+        onTap == null;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Card(
       color:
-          word.status == WordStatus.completed ||
-                  word.status == WordStatus.disabled
+          isCardDisabled(word.status)
               ? Theme.of(context).colorScheme.surfaceContainer
               : Theme.of(context).colorScheme.onPrimaryFixed,
       child: InkWell(
-        onTap:
-            word.status == WordStatus.completed ||
-                    word.status == WordStatus.disabled ||
-                    onTap == null
-                ? null
-                : () => onTap!(word),
+        onTap: isCardDisabled(word.status) ? null : () => onTap!(word),
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
           child: Center(
