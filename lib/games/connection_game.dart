@@ -154,47 +154,46 @@ class _ConnectionGameState extends State<ConnectionGame> {
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(24),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            SizedBox(
-              height: 480,
-              child: GridView.count(
-                scrollDirection: Axis.horizontal,
-                crossAxisCount: widget.wordsQty,
-                mainAxisSpacing: 16,
-                shrinkWrap: true,
-                childAspectRatio: 0.7,
-                children: [
-                  ..._getCards(
-                    _wordsToPlay,
-                    (word) => word.input,
-                    (word) => _selectWord(word, false),
-                  ),
-                  ..._getCards(
-                    _translations,
-                    (word) => word.translation,
-                    (word) => _selectWord(word, true),
-                  ),
-                ],
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(
+                height: 480,
+                child: GridView.count(
+                  scrollDirection: Axis.horizontal,
+                  crossAxisCount: widget.wordsQty,
+                  mainAxisSpacing: 16,
+                  shrinkWrap: true,
+                  childAspectRatio: 0.7,
+                  children: [
+                    ..._getCards(
+                      _wordsToPlay,
+                      (word) => word.input,
+                      (word) => _selectWord(word, false),
+                    ),
+                    ..._getCards(
+                      _translations,
+                      (word) => word.translation,
+                      (word) => _selectWord(word, true),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            _examplesShown != null
-                ? Padding(
-                  padding: const EdgeInsets.only(top: 16),
-                  child: Text(
-                    _examplesShown!.join('\n'),
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(fontSize: 16),
-                  ),
-                )
-                : const SizedBox(height: 39),
-            if (_gameCompleted)
-              Padding(
-                padding: const EdgeInsets.all(24),
-                child: GameCompleted(onReset: _resetGame),
-              ),
-          ],
+              _examplesShown != null
+                  ? Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    child: Text(
+                      _examplesShown!.join('\n'),
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(fontSize: 16),
+                    ),
+                  )
+                  : const SizedBox(height: 39),
+              if (_gameCompleted)
+                GameCompleted(onReset: _resetGame),
+            ],
+          ),
         ),
       ),
     );

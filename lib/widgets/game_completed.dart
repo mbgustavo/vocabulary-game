@@ -18,24 +18,16 @@ class GameCompleted extends StatelessWidget {
           ),
           textAlign: TextAlign.center,
         ),
-        const SizedBox(height: 26),
-        ElevatedButton(
+        const SizedBox(height: 20),
+        ElevatedButton.icon(
           onPressed: onReset,
           style: ElevatedButton.styleFrom(
-            fixedSize: Size(200, 50),
+            fixedSize: const Size(200, 48),
             backgroundColor: Theme.of(context).colorScheme.onPrimaryFixed,
             foregroundColor: Theme.of(context).colorScheme.primary,
           ),
-          child: const Center(
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(Icons.restart_alt, size: 32),
-                SizedBox(width: 4),
-                Text('Play again', style: TextStyle(fontSize: 20)),
-              ],
-            ),
-          ),
+          icon: const Icon(Icons.restart_alt, size: 28),
+          label: const Text('Play again', style: TextStyle(fontSize: 18)),
         ),
       ],
     );
