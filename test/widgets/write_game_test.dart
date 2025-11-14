@@ -204,6 +204,10 @@ void main() {
         await tester.enterText(textField, wrongQuestion.translation);
         await tester.tap(submitButton);
         await tester.pumpAndSettle();
+        await tester.enterText(textField, "any other thing to reset error color");
+        await tester.pumpAndSettle();
+        final textFieldWidget = tester.widget<TextField>(textField);
+        expect(textFieldWidget.style?.color, isNull);
         await tester.enterText(textField, rightQuestion.translation);
         await tester.tap(submitButton);
         await tester.pumpAndSettle();

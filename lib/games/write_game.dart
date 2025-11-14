@@ -108,6 +108,11 @@ class _WriteGameState extends State<WriteGame> {
               child: TextField(
                 controller: _answerController,
                 readOnly: _questionCompleted,
+                onChanged: (_) {
+                  if (_error) {
+                    setState(() => _error = false);
+                  }
+                },
                 style: TextStyle(
                   color:
                       _error
