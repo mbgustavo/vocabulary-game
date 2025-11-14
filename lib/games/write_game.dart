@@ -70,6 +70,7 @@ class _WriteGameState extends State<WriteGame> {
                 : null;
         _questionCompleted = true;
         _gameCompleted = _currentQuestion >= _wordsToPlay.length - 1;
+        _error = false;
       });
       ScaffoldMessenger.of(context).clearSnackBars();
       return;
@@ -102,18 +103,21 @@ class _WriteGameState extends State<WriteGame> {
               style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,
             ),
-            TextField(
-              controller: _answerController,
-              readOnly: _questionCompleted,
-              style: TextStyle(
-                color:
-                    _error
-                        ? Theme.of(context).colorScheme.error
-                        : _questionCompleted
-                        ? Color.fromARGB(255, 104, 235, 111)
-                        : null,
+            ConstrainedBox(
+              constraints: BoxConstraints(maxWidth: 400),
+              child: TextField(
+                controller: _answerController,
+                readOnly: _questionCompleted,
+                style: TextStyle(
+                  color:
+                      _error
+                          ? Theme.of(context).colorScheme.error
+                          : _questionCompleted
+                          ? Color.fromARGB(255, 104, 235, 111)
+                          : null,
+                ),
+                decoration: InputDecoration(labelText: 'Your answer'),
               ),
-              decoration: InputDecoration(labelText: 'Your answer'),
             ),
             const SizedBox(height: 36),
             _examplesShown != null
@@ -129,7 +133,7 @@ class _WriteGameState extends State<WriteGame> {
             !_gameCompleted
                 ? Padding(
                   padding: const EdgeInsets.all(20),
-                  child: ElevatedButton(
+                  child: ElevatedButton.icon(
                     onPressed:
                         _questionCompleted
                             ? () {
@@ -142,30 +146,18 @@ class _WriteGameState extends State<WriteGame> {
                             }
                             : _verifyAnswer,
                     style: ElevatedButton.styleFrom(
-                      fixedSize: Size(200, 50),
+                      fixedSize: Size(200, 48),
                       backgroundColor:
                           Theme.of(context).colorScheme.onPrimaryFixed,
                       foregroundColor: Theme.of(context).colorScheme.primary,
                     ),
-                    child: Center(
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children:
-                            _questionCompleted
-                                ? [
-                                  Text('Next', style: TextStyle(fontSize: 20)),
-                                  SizedBox(width: 4),
-                                  Icon(Icons.navigate_next, size: 32),
-                                ]
-                                : [
-                                  Text(
-                                    'Submit',
-                                    style: TextStyle(fontSize: 20),
-                                  ),
-                                  SizedBox(width: 4),
-                                  Icon(Icons.check, size: 32),
-                                ],
-                      ),
+                    icon: Icon(
+                      _questionCompleted ? Icons.navigate_next : Icons.check,
+                      size: 28,
+                    ),
+                    label: Text(
+                      _questionCompleted ? 'Next' : 'Submit',
+                      style: TextStyle(fontSize: 18),
                     ),
                   ),
                 )

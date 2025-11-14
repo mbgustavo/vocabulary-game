@@ -95,66 +95,60 @@ class _MultipleChoiceGameState extends State<MultipleChoiceGame> {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            MultipleChoiceQuestion(
-              question: _wordsToPlay[_currentQuestion],
-              answers: _answers,
-              onAnswerSelected: _questionCompleted ? null : _verifyAnswer,
-              playWithTranslations: widget.playWithTranslations,
-            ),
-            _examplesShown != null
-                ? Padding(
-                  padding: const EdgeInsets.only(top: 16),
-                  child: Text(
-                    _examplesShown!.join('\n'),
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(fontSize: 16),
-                  ),
-                )
-                : const SizedBox(height: 39),
-            !_gameCompleted
-                ? Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: ElevatedButton(
-                    onPressed:
-                        _questionCompleted
-                            ? () {
-                              setState(() {
-                                _currentQuestion++;
-                                _questionCompleted = false;
-                                _examplesShown = null;
-                              });
-                              _getAnswers();
-                            }
-                            : null,
-                    style: ElevatedButton.styleFrom(
-                      fixedSize: Size(200, 50),
-                      backgroundColor:
-                          Theme.of(context).colorScheme.onPrimaryFixed,
-                      foregroundColor: Theme.of(context).colorScheme.primary,
+    return SingleChildScrollView(
+      child: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              MultipleChoiceQuestion(
+                question: _wordsToPlay[_currentQuestion],
+                answers: _answers,
+                onAnswerSelected: _questionCompleted ? null : _verifyAnswer,
+                playWithTranslations: widget.playWithTranslations,
+              ),
+              _examplesShown != null
+                  ? Padding(
+                    padding: const EdgeInsets.only(top: 16),
+                    child: Text(
+                      _examplesShown!.join('\n'),
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(fontSize: 16),
                     ),
-                    child: const Center(
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text('Next', style: TextStyle(fontSize: 20)),
-                          SizedBox(width: 4),
-                          Icon(Icons.navigate_next, size: 32),
-                        ],
+                  )
+                  : const SizedBox(height: 39),
+              !_gameCompleted
+                  ? Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: ElevatedButton.icon(
+                      onPressed:
+                          _questionCompleted
+                              ? () {
+                                setState(() {
+                                  _currentQuestion++;
+                                  _questionCompleted = false;
+                                  _examplesShown = null;
+                                });
+                                _getAnswers();
+                              }
+                              : null,
+                      style: ElevatedButton.styleFrom(
+                        fixedSize: Size(200, 48),
+                        backgroundColor:
+                            Theme.of(context).colorScheme.onPrimaryFixed,
+                        foregroundColor: Theme.of(context).colorScheme.primary,
                       ),
+                      icon: const Icon(Icons.navigate_next, size: 32),
+                      label: const Text('Next', style: TextStyle(fontSize: 20)),
                     ),
+                  )
+                  : Padding(
+                    padding: const EdgeInsets.all(24),
+                    child: GameCompleted(onReset: _resetGame),
                   ),
-                )
-                : Padding(
-                  padding: const EdgeInsets.all(24),
-                  child: GameCompleted(onReset: _resetGame),
-                ),
-          ],
+            ],
+          ),
         ),
       ),
     );
