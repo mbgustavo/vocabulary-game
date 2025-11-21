@@ -58,12 +58,15 @@ class _MultipleChoiceGameState extends State<MultipleChoiceGame> {
   }
 
   void _getAnswers() {
+    final wrongAnswers =
+        widget.vocabulary
+            .where((word) => word.id != _wordsToPlay[_currentQuestion].id)
+            .toList();
+    wrongAnswers.shuffle();
+
     final answers = [
       WordInGame.fromWord(_wordsToPlay[_currentQuestion]),
-      ...widget.vocabulary
-          .where((word) => word.id != _wordsToPlay[_currentQuestion].id)
-          .take(widget.wordsQty - 1)
-          .map(WordInGame.fromWord),
+      ...wrongAnswers.take(widget.wordsQty - 1).map(WordInGame.fromWord),
     ];
     answers.shuffle();
 

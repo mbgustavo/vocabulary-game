@@ -7,19 +7,21 @@ List<Word> getWordsForGame(List<Word> vocabulary, int wordsQty) {
       vocabulary.where((word) => word.level == WordLevel.beginner).toList();
 
   if (playableWords.length < wordsQty) {
+    final intermediateWords =
+        vocabulary
+            .where((word) => word.level == WordLevel.intermediate)
+            .toList();
+    intermediateWords.shuffle();
     playableWords.addAll(
-      vocabulary
-          .where((word) => word.level == WordLevel.intermediate)
-          .take(wordsQty - playableWords.length),
+      intermediateWords.take(wordsQty - playableWords.length),
     );
   }
 
   if (playableWords.length < wordsQty) {
-    playableWords.addAll(
-      vocabulary
-          .where((word) => word.level == WordLevel.advanced)
-          .take(wordsQty - playableWords.length),
-    );
+    final advancedWords =
+        vocabulary.where((word) => word.level == WordLevel.advanced).toList();
+    advancedWords.shuffle();
+    playableWords.addAll(advancedWords.take(wordsQty - playableWords.length));
   }
 
   if (playableWords.length < wordsQty) {
