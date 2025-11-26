@@ -1,21 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:vocabulary_game/models/word.dart';
-import 'package:vocabulary_game/screens/home.dart';
 import 'package:vocabulary_game/widgets/game_completed.dart';
 import 'package:vocabulary_game/widgets/word_card.dart';
-import 'package:vocabulary_game/games/get_words_for_game.dart';
-
-const defaultQty = 5;
 
 class ConnectionGame extends StatefulWidget {
-  final List<Word> vocabulary;
-  final int wordsQty;
+  final List<Word> words;
+  final void Function()? onReset;
 
-  const ConnectionGame(
-    this.vocabulary, {
-    super.key,
-    this.wordsQty = defaultQty,
-  });
+  const ConnectionGame(this.words, {super.key, this.onReset});
 
   @override
   State<ConnectionGame> createState() => _ConnectionGameState();
@@ -30,22 +22,20 @@ class _ConnectionGameState extends State<ConnectionGame> {
   @override
   void initState() {
     super.initState();
-    _resetGame();
+    _initializeGame();
   }
 
-  void _resetGame() {
-    late List<WordInGame> wordsToPlay;
-    try {
-      wordsToPlay =
-          getWordsForGame(
-            widget.vocabulary,
-            widget.wordsQty,
-          ).map(WordInGame.fromWord).toList();
-    } catch (e) {
-      Navigator.of(
-        context,
-      ).push(MaterialPageRoute(builder: (ctx) => const HomeScreen()));
+  @override
+  void didUpdateWidget(ConnectionGame oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // Check if the words list has changed
+    if (oldWidget.words != widget.words) {
+      _initializeGame();
     }
+  }
+
+  void _initializeGame() {
+    final wordsToPlay = widget.words.map(WordInGame.fromWord).toList();
     final translations = wordsToPlay.map(WordInGame.fromWord).toList();
     translations.shuffle();
 
@@ -162,7 +152,7 @@ class _ConnectionGameState extends State<ConnectionGame> {
                 height: 480,
                 child: GridView.count(
                   scrollDirection: Axis.horizontal,
-                  crossAxisCount: widget.wordsQty,
+                  crossAxisCount: widget.words.length,
                   mainAxisSpacing: 16,
                   shrinkWrap: true,
                   childAspectRatio: 0.7,
@@ -190,8 +180,7 @@ class _ConnectionGameState extends State<ConnectionGame> {
                     ),
                   )
                   : const SizedBox(height: 39),
-              if (_gameCompleted)
-                GameCompleted(onReset: _resetGame),
+              if (_gameCompleted) GameCompleted(onReset: widget.onReset),
             ],
           ),
         ),

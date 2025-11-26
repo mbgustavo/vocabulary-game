@@ -1,21 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:vocabulary_game/models/word.dart';
-import 'package:vocabulary_game/games/get_words_for_game.dart';
-import 'package:vocabulary_game/screens/home.dart';
 import 'package:vocabulary_game/widgets/game_completed.dart';
 import 'package:vocabulary_game/widgets/multiple_choice_question.dart';
 
-const defaultQty = 5;
-
 class MultipleChoiceGame extends StatefulWidget {
-  final List<Word> vocabulary;
-  final int wordsQty;
+  final List<Word> words;
+  final List<Word>? vocabulary;
+  final void Function()? onReset;
   final bool playWithTranslations;
 
   const MultipleChoiceGame(
-    this.vocabulary, {
+    this.words, {
     super.key,
-    this.wordsQty = defaultQty,
+    this.vocabulary,
+    this.onReset,
     this.playWithTranslations = false,
   });
 
@@ -34,23 +32,24 @@ class _MultipleChoiceGameState extends State<MultipleChoiceGame> {
   @override
   void initState() {
     super.initState();
-    _resetGame();
+    _initializeGame();
   }
 
-  void _resetGame() {
-    late List<Word> wordsToPlay;
-    try {
-      wordsToPlay = getWordsForGame(widget.vocabulary, widget.wordsQty);
-    } catch (e) {
-      Navigator.of(
-        context,
-      ).push(MaterialPageRoute(builder: (ctx) => const HomeScreen()));
+  @override
+  void didUpdateWidget(MultipleChoiceGame oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // Check if the words list has changed
+    if (oldWidget.words != widget.words) {
+      _initializeGame();
     }
+  }
+
+  void _initializeGame() {
     setState(() {
       _examplesShown = null;
       _questionCompleted = false;
       _gameCompleted = false;
-      _wordsToPlay = wordsToPlay;
+      _wordsToPlay = widget.words;
       _currentQuestion = 0;
     });
 
@@ -59,14 +58,14 @@ class _MultipleChoiceGameState extends State<MultipleChoiceGame> {
 
   void _getAnswers() {
     final wrongAnswers =
-        widget.vocabulary
+        (widget.vocabulary ?? widget.words)
             .where((word) => word.id != _wordsToPlay[_currentQuestion].id)
             .toList();
     wrongAnswers.shuffle();
 
     final answers = [
       WordInGame.fromWord(_wordsToPlay[_currentQuestion]),
-      ...wrongAnswers.take(widget.wordsQty - 1).map(WordInGame.fromWord),
+      ...wrongAnswers.take(widget.words.length - 1).map(WordInGame.fromWord),
     ];
     answers.shuffle();
 
@@ -148,7 +147,7 @@ class _MultipleChoiceGameState extends State<MultipleChoiceGame> {
                   )
                   : Padding(
                     padding: const EdgeInsets.all(24),
-                    child: GameCompleted(onReset: _resetGame),
+                    child: GameCompleted(onReset: widget.onReset),
                   ),
             ],
           ),

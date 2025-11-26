@@ -7,7 +7,7 @@ import 'package:vocabulary_game/widgets/game_completed.dart';
 void main() {
   group('WriteGame Widget Tests', () {
     // Helper function to create test words
-    List<Word> createTestVocabulary({required int count}) {
+    List<Word> createTestWords(int count) {
       return List.generate(
         count,
         (index) => Word(
@@ -22,15 +22,13 @@ void main() {
 
     // Helper function to create test widget that avoids overflow issues
     Widget createTestWidget({
-      List<Word>? vocabulary,
-      int wordsQty = 5,
+      List<Word>? words,
       bool playWithTranslations = false,
     }) {
       return MaterialApp(
         home: Scaffold(
           body: WriteGame(
-            vocabulary ?? createTestVocabulary(count: 10),
-            wordsQty: wordsQty,
+            words ?? createTestWords(5),
             playWithTranslations: playWithTranslations,
           ),
         ),
@@ -59,18 +57,18 @@ void main() {
         expect(find.byType(GameCompleted), findsNothing);
       });
 
-      testWidgets('should show first vocabulary word', (
+      testWidgets('should show first word', (
         WidgetTester tester,
       ) async {
-        final vocabulary = [
+        final words = [
           Word(language: 'English', input: 'Hello', translation: 'Olá'),
         ];
 
         await tester.pumpWidget(
-          createTestWidget(vocabulary: vocabulary, wordsQty: 2),
+          createTestWidget(words: words),
         );
 
-        // Should show one of the vocabulary words (since getWordsForGame may shuffle)
+        // Should show one of the words (since getWordsForGame may shuffle)
         expect(
           find.text('Hello').evaluate().isNotEmpty ||
               find.text('World').evaluate().isNotEmpty,
@@ -79,21 +77,19 @@ void main() {
       });
 
       testWidgets(
-        'should show first vocabulary word when playing with translations',
+        'should show first word when playing with translations',
         (WidgetTester tester) async {
-          final vocabulary = [
+          final words = [
             Word(language: 'English', input: 'Hello', translation: 'Olá'),
           ];
 
           await tester.pumpWidget(
             createTestWidget(
-              vocabulary: vocabulary,
-              wordsQty: 1,
+              words: words,
               playWithTranslations: true,
             ),
           );
 
-          // Should show one of the vocabulary words (since getWordsForGame may shuffle)
           expect(
             find.text('Olá').evaluate().isNotEmpty,
             isTrue,
@@ -105,7 +101,7 @@ void main() {
         WidgetTester tester,
       ) async {
         // Arrange
-        final vocabulary = [
+        final words = [
           Word(
             language: 'English',
             input: 'Hello',
@@ -116,7 +112,7 @@ void main() {
 
         // Act
         await tester.pumpWidget(
-          createTestWidget(vocabulary: vocabulary, wordsQty: 1),
+          createTestWidget(words: words),
         );
 
         // Assert
@@ -129,13 +125,13 @@ void main() {
         WidgetTester tester,
       ) async {
         // Arrange
-        final vocabulary = createTestVocabulary(count: 5);
+        final words = createTestWords(5);
 
         // Act
-        await tester.pumpWidget(createTestWidget(vocabulary: vocabulary));
+        await tester.pumpWidget(createTestWidget(words: words));
         await tester.pumpAndSettle();
 
-        final question = vocabulary.firstWhere(
+        final question = words.firstWhere(
           (word) => find.text(word.input).evaluate().isNotEmpty,
         );
         final textField = find.byType(TextField);
@@ -151,7 +147,7 @@ void main() {
         );
         expect(textFieldWidget.readOnly, isTrue);
         expect(
-          find.text('Example sentence for word${vocabulary.indexOf(question)}'),
+          find.text('Example sentence for word${words.indexOf(question)}'),
           findsOneWidget,
         );
         expect(find.text('Next'), findsOneWidget);
@@ -161,10 +157,10 @@ void main() {
         WidgetTester tester,
       ) async {
         // Arrange
-        final vocabulary = createTestVocabulary(count: 5);
+        final words = createTestWords(5);
 
         // Act
-        await tester.pumpWidget(createTestWidget(vocabulary: vocabulary));
+        await tester.pumpWidget(createTestWidget(words: words));
         await tester.pumpAndSettle();
 
         final textField = find.byType(TextField);
@@ -187,16 +183,16 @@ void main() {
         WidgetTester tester,
       ) async {
         // Arrange
-        final vocabulary = createTestVocabulary(count: 5);
+        final words = createTestWords(5);
 
         // Act
-        await tester.pumpWidget(createTestWidget(vocabulary: vocabulary));
+        await tester.pumpWidget(createTestWidget(words: words));
         await tester.pumpAndSettle();
 
-        final rightQuestion = vocabulary.firstWhere(
+        final rightQuestion = words.firstWhere(
           (word) => find.text(word.input).evaluate().isNotEmpty,
         );
-        final wrongQuestion = vocabulary.firstWhere(
+        final wrongQuestion = words.firstWhere(
           (word) => find.text(word.input).evaluate().isEmpty,
         );
         final textField = find.byType(TextField);
@@ -218,12 +214,12 @@ void main() {
       });
 
       testWidgets('should be case insensitive', (WidgetTester tester) async {
-        final vocabulary = [
+        final words = [
           Word(language: 'English', input: 'Hello', translation: 'Olá'),
         ];
 
         await tester.pumpWidget(
-          createTestWidget(vocabulary: vocabulary, wordsQty: 1),
+          createTestWidget(words: words),
         );
         await tester.pumpAndSettle();
 
@@ -237,21 +233,21 @@ void main() {
 
       testWidgets('should complete the game', (WidgetTester tester) async {
         // Arrange
-        final vocabulary = createTestVocabulary(count: 5);
+        final words = createTestWords(5);
 
         // Act
-        await tester.pumpWidget(createTestWidget(vocabulary: vocabulary));
+        await tester.pumpWidget(createTestWidget(words: words));
         await tester.pumpAndSettle();
 
-        for (var i = 0; i < vocabulary.length; i++) {
-          final question = vocabulary.firstWhere(
+        for (var i = 0; i < words.length; i++) {
+          final question = words.firstWhere(
             (word) => find.text(word.input).evaluate().isNotEmpty,
           );
           final textField = find.byType(TextField);
           await tester.enterText(textField, question.translation);
           await tester.tap(find.text('Submit'));
           await tester.pumpAndSettle();
-          if (i < vocabulary.length - 1) {
+          if (i < words.length - 1) {
             await tester.tap(find.text('Next'));
             await tester.pumpAndSettle();
           }
@@ -259,31 +255,25 @@ void main() {
 
         // Assert
         expect(find.byType(GameCompleted), findsOneWidget);
-
-        await tester.tap(find.text('Play again'));
-        await tester.pumpAndSettle();
-
-        expect(find.byType(GameCompleted), findsNothing);
-        expect(find.byType(WriteGame), findsOneWidget);
       });
 
       testWidgets('should complete the game with translations', (WidgetTester tester) async {
         // Arrange
-        final vocabulary = createTestVocabulary(count: 5);
+        final words = createTestWords(5);
 
         // Act
-        await tester.pumpWidget(createTestWidget(vocabulary: vocabulary, playWithTranslations: true));
+        await tester.pumpWidget(createTestWidget(words: words, playWithTranslations: true));
         await tester.pumpAndSettle();
 
-        for (var i = 0; i < vocabulary.length; i++) {
-          final question = vocabulary.firstWhere(
+        for (var i = 0; i < words.length; i++) {
+          final question = words.firstWhere(
             (word) => find.text(word.translation).evaluate().isNotEmpty,
           );
           final textField = find.byType(TextField);
           await tester.enterText(textField, question.input);
           await tester.tap(find.text('Submit'));
           await tester.pumpAndSettle();
-          if (i < vocabulary.length - 1) {
+          if (i < words.length - 1) {
             await tester.tap(find.text('Next'));
             await tester.pumpAndSettle();
           }
@@ -291,12 +281,6 @@ void main() {
 
         // Assert
         expect(find.byType(GameCompleted), findsOneWidget);
-
-        await tester.tap(find.text('Play again'));
-        await tester.pumpAndSettle();
-
-        expect(find.byType(GameCompleted), findsNothing);
-        expect(find.byType(WriteGame), findsOneWidget);
       });
     });
 

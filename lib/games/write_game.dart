@@ -1,20 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:vocabulary_game/models/word.dart';
-import 'package:vocabulary_game/games/get_words_for_game.dart';
-import 'package:vocabulary_game/screens/home.dart';
 import 'package:vocabulary_game/widgets/game_completed.dart';
 
-const defaultQty = 5;
-
 class WriteGame extends StatefulWidget {
-  final List<Word> vocabulary;
-  final int wordsQty;
+  final List<Word> words;
+  final void Function()? onReset;
   final bool playWithTranslations;
 
   const WriteGame(
-    this.vocabulary, {
+    this.words, {
     super.key,
-    this.wordsQty = defaultQty,
+    this.onReset,
     this.playWithTranslations = false,
   });
 
@@ -34,23 +30,24 @@ class _WriteGameState extends State<WriteGame> {
   @override
   void initState() {
     super.initState();
-    _resetGame();
+    _initializeGame();
   }
 
-  void _resetGame() {
-    late List<Word> wordsToPlay;
-    try {
-      wordsToPlay = getWordsForGame(widget.vocabulary, widget.wordsQty);
-    } catch (e) {
-      Navigator.of(
-        context,
-      ).push(MaterialPageRoute(builder: (ctx) => const HomeScreen()));
+  @override
+  void didUpdateWidget(WriteGame oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // Check if the words list has changed
+    if (oldWidget.words != widget.words) {
+      _initializeGame();
     }
+  }
+
+  void _initializeGame() {
     setState(() {
       _examplesShown = null;
       _questionCompleted = false;
       _gameCompleted = false;
-      _wordsToPlay = wordsToPlay;
+      _wordsToPlay = widget.words;
       _currentQuestion = 0;
     });
     _answerController.clear();
@@ -168,7 +165,7 @@ class _WriteGameState extends State<WriteGame> {
                 )
                 : Padding(
                   padding: const EdgeInsets.all(24),
-                  child: GameCompleted(onReset: _resetGame),
+                  child: GameCompleted(onReset: widget.onReset),
                 ),
           ],
         ),

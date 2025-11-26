@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class GameCompleted extends StatelessWidget {
-  final void Function() onReset;
+  final void Function()? onReset;
 
-  const GameCompleted({super.key, required this.onReset});
+  const GameCompleted({super.key, this.onReset});
 
   @override
   Widget build(BuildContext context) {
@@ -19,16 +19,17 @@ class GameCompleted extends StatelessWidget {
           textAlign: TextAlign.center,
         ),
         const SizedBox(height: 20),
-        ElevatedButton.icon(
-          onPressed: onReset,
-          style: ElevatedButton.styleFrom(
-            fixedSize: const Size(200, 48),
-            backgroundColor: Theme.of(context).colorScheme.onPrimaryFixed,
-            foregroundColor: Theme.of(context).colorScheme.primary,
+        if (onReset != null)
+          ElevatedButton.icon(
+            onPressed: onReset,
+            style: ElevatedButton.styleFrom(
+              fixedSize: const Size(200, 48),
+              backgroundColor: Theme.of(context).colorScheme.onPrimaryFixed,
+              foregroundColor: Theme.of(context).colorScheme.primary,
+            ),
+            icon: const Icon(Icons.restart_alt, size: 28),
+            label: const Text('Play again', style: TextStyle(fontSize: 18)),
           ),
-          icon: const Icon(Icons.restart_alt, size: 28),
-          label: const Text('Play again', style: TextStyle(fontSize: 18)),
-        ),
       ],
     );
   }
