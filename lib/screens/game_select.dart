@@ -1,21 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:vocabulary_game/providers/settings_provider.dart';
-import 'package:vocabulary_game/providers/vocabulary_provider.dart';
 import 'package:vocabulary_game/screens/game.dart';
 
 class GameSelectScreen extends ConsumerWidget {
   const GameSelectScreen({super.key});
 
   void _navigateToGame(BuildContext context, WidgetRef ref, Game game) {
-    final learningLanguage =
-        ref.read(settingsProvider.notifier).getLearningLanguage();
-    final vocabulary =
-        ref.read(vocabularyProvider.notifier).getVocabulary(language: learningLanguage.value);
-
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (ctx) => GameScreen(vocabulary: vocabulary, game: game),
+        builder: (ctx) => GameScreen(game: game),
       ),
     );
   }
