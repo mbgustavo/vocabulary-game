@@ -24,29 +24,27 @@ class NotificationBanners extends ConsumerWidget {
       }
     }
 
-    return Expanded(
-      flex: 0,
-      child: Column(
-        children:
-            notifications.map((notification) {
-              return MaterialBanner(
-                content: Text(notification.message, style: TextStyle(color: Colors.white),),
-                backgroundColor: getBackgroundColor(notification.type),
-                actions:
-                    notification.isDismissable
-                        ? [
-                          IconButton(
-                            onPressed:
-                                () => ref
-                                    .read(notificationsProvider.notifier)
-                                    .dismissNotification(notification.id),
-                            icon: Icon(Icons.close),
-                          ),
-                        ]
-                        : [SizedBox.shrink()],
-              );
-            }).toList(),
-      ),
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children:
+          notifications.map((notification) {
+            return MaterialBanner(
+              content: Text(notification.message, style: TextStyle(color: Colors.white),),
+              backgroundColor: getBackgroundColor(notification.type),
+              actions:
+                  notification.isDismissable
+                      ? [
+                        IconButton(
+                          onPressed:
+                              () => ref
+                                  .read(notificationsProvider.notifier)
+                                  .dismissNotification(notification.id),
+                          icon: Icon(Icons.close),
+                        ),
+                      ]
+                      : [SizedBox.shrink()],
+            );
+          }).toList(),
     );
   }
 }
