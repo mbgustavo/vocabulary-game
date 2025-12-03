@@ -30,6 +30,7 @@ class GameCompleted extends StatelessWidget {
             icon: const Icon(Icons.restart_alt, size: 28),
             label: const Text('Play again', style: TextStyle(fontSize: 18)),
           ),
+        const SizedBox(height: 20),
       ],
     );
   }
