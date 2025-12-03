@@ -106,7 +106,9 @@ class _NewWordScreenState extends ConsumerState<NewWordScreen> {
                 TextFormField(
                   textCapitalization: TextCapitalization.sentences,
                   maxLength: 30,
-                  decoration: const InputDecoration(label: Text('Word in learning language')),
+                  decoration: const InputDecoration(
+                    label: Text('Word in learning language'),
+                  ),
                   initialValue: _enteredInput,
                   validator: (value) {
                     if (value == null ||
@@ -124,7 +126,9 @@ class _NewWordScreenState extends ConsumerState<NewWordScreen> {
                 TextFormField(
                   textCapitalization: TextCapitalization.sentences,
                   maxLength: 30,
-                  decoration: const InputDecoration(label: Text('Translation in your language')),
+                  decoration: const InputDecoration(
+                    label: Text('Translation in your language'),
+                  ),
                   initialValue: _enteredTranslation,
                   validator: (value) {
                     if (value == null ||
@@ -142,6 +146,18 @@ class _NewWordScreenState extends ConsumerState<NewWordScreen> {
                 SizedBox(height: 10),
                 DropdownButtonFormField(
                   value: _selectedLevel,
+                  decoration: InputDecoration(
+                    labelText: 'Fluency level',
+                    helper: Text(
+                      'Words with lower fluency levels will appear more often in games.',
+                      style: TextStyle(
+                        fontSize: 10,
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.secondary.withValues(alpha: 0.6),
+                      ),
+                    ),
+                  ),
                   items:
                       WordLevel.values.map((WordLevel level) {
                         return DropdownMenuItem<WordLevel>(

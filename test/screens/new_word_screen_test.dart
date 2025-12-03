@@ -104,6 +104,8 @@ void main() {
         expect(find.text(testLanguage.name), findsWidgets);
         expect(find.text('Word in learning language'), findsOneWidget);
         expect(find.text('Translation in your language'), findsOneWidget);
+        expect(find.text('Fluency level'), findsOneWidget);
+        expect(find.text('Words with lower fluency levels will appear more often in games.'), findsOneWidget);
         expect(find.text('Examples (optional)'), findsOneWidget);
         expect(find.text('Save'), findsOneWidget);
         expect(
