@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabulary_game/screens/game.dart';
@@ -11,6 +12,13 @@ class GameSelectScreen extends ConsumerWidget {
         builder: (ctx) => GameScreen(game: game),
       ),
     );
+  }
+
+  void _navigateToRandomGame(BuildContext context, WidgetRef ref) {
+    final random = Random();
+    final games = Game.values;
+    final randomGame = games[random.nextInt(games.length)];
+    _navigateToGame(context, ref, randomGame);
   }
 
   @override
@@ -93,6 +101,22 @@ class GameSelectScreen extends ConsumerWidget {
               },
               child: const Text(
                 'Write Words\n(from translations)',
+                textAlign: TextAlign.center,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text("Random", style: Theme.of(context).textTheme.labelSmall),
+            const SizedBox(height: 8),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Theme.of(context).colorScheme.onPrimaryFixed,
+                foregroundColor: Theme.of(context).colorScheme.primary,
+              ),
+              onPressed: () {
+                _navigateToRandomGame(context, ref);
+              },
+              child: const Text(
+                'Any Game Mode',
                 textAlign: TextAlign.center,
               ),
             ),
