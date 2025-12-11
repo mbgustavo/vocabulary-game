@@ -112,23 +112,23 @@ void main() {
           find.text('You are learning ${testLanguage.name}'),
           findsOneWidget,
         );
-        expect(find.text('Start Game'), findsOneWidget);
-        expect(find.text('Edit vocabulary'), findsOneWidget);
-        expect(find.text('Select learning language'), findsOneWidget);
+        expect(find.text('Start game'), findsOneWidget);
+        expect(find.text('Vocabulary'), findsOneWidget);
+        expect(find.text('Learning languages'), findsOneWidget);
         expect(find.byType(ElevatedButton), findsNWidgets(3));
       });
     });
 
     group('Buttons Tests', () {
       testWidgets(
-        'Start Game button is enabled when vocabulary has sufficient words',
+        'Start game button is enabled when vocabulary has sufficient words',
         (WidgetTester tester) async {
           await tester.pumpWidget(createTestWidget(mockWordsSufficient));
           await tester.pumpAndSettle();
 
           final startGameButton = find.widgetWithText(
             ElevatedButton,
-            'Start Game',
+            'Start game',
           );
           expect(startGameButton, findsOneWidget);
 
@@ -142,7 +142,7 @@ void main() {
             findsNothing,
           );
 
-          // Tap the Start Game button
+          // Tap the Start game button
           await tester.tap(startGameButton);
           await tester.pumpAndSettle();
 
@@ -152,14 +152,14 @@ void main() {
       );
 
       testWidgets(
-        'Start Game button is disabled when vocabulary has insufficient words',
+        'Start game button is disabled when vocabulary has insufficient words',
         (WidgetTester tester) async {
           await tester.pumpWidget(createTestWidget(mockWordsInsufficient));
           await tester.pumpAndSettle();
 
           final startGameButton = find.widgetWithText(
             ElevatedButton,
-            'Start Game',
+            'Start game',
           );
           expect(startGameButton, findsOneWidget);
 
@@ -181,14 +181,14 @@ void main() {
         },
       );
 
-      testWidgets('Edit vocabulary button navigates to VocabularyScreen', (
+      testWidgets('Vocabulary button navigates to VocabularyScreen', (
         WidgetTester tester,
       ) async {
         await tester.pumpWidget(createTestWidget(mockWordsSufficient));
         await tester.pumpAndSettle();
 
         await tester.tap(
-          find.widgetWithText(ElevatedButton, 'Edit vocabulary'),
+          find.widgetWithText(ElevatedButton, 'Vocabulary'),
         );
         await tester.pumpAndSettle();
 
@@ -196,13 +196,13 @@ void main() {
       });
 
       testWidgets(
-        'Select learning language button navigates to LanguageScreen',
+        'Learning languages button navigates to LanguageScreen',
         (WidgetTester tester) async {
           await tester.pumpWidget(createTestWidget(mockWordsSufficient));
           await tester.pumpAndSettle();
 
           await tester.tap(
-            find.widgetWithText(ElevatedButton, 'Select learning language'),
+            find.widgetWithText(ElevatedButton, 'Learning languages'),
           );
           await tester.pumpAndSettle();
 
@@ -219,10 +219,10 @@ void main() {
         await tester.pumpWidget(createTestWidget(exactlyFiveWords));
         await tester.pumpAndSettle();
 
-        // Start Game should be enabled with exactly 5 words
+        // Start game should be enabled with exactly 5 words
         final startGameButton = find.widgetWithText(
           ElevatedButton,
-          'Start Game',
+          'Start game',
         );
         final elevatedButton = tester.widget<ElevatedButton>(startGameButton);
         expect(elevatedButton.onPressed, isNotNull);
@@ -240,10 +240,10 @@ void main() {
         await tester.pumpWidget(createTestWidget([]));
         await tester.pumpAndSettle();
 
-        // Start Game should be disabled with no words
+        // Start game should be disabled with no words
         final startGameButton = find.widgetWithText(
           ElevatedButton,
-          'Start Game',
+          'Start game',
         );
         final elevatedButton = tester.widget<ElevatedButton>(startGameButton);
         expect(elevatedButton.onPressed, isNull);

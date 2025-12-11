@@ -44,7 +44,7 @@ class HomeScreen extends ConsumerWidget {
                       ),
                     );
                   },
-                  child: const Text('Start Game'),
+                  child: const Text('Start game'),
                 ),
                 if (vocabulary.length < 5)
                   Padding(
@@ -68,7 +68,7 @@ class HomeScreen extends ConsumerWidget {
                       ),
                     );
                   },
-                  child: const Text('Edit vocabulary'),
+                  child: const Text('Vocabulary'),
                 ),
                 SizedBox(height: 40),
                 ElevatedButton(
@@ -83,7 +83,7 @@ class HomeScreen extends ConsumerWidget {
                       ),
                     );
                   },
-                  child: const Text('Select learning language'),
+                  child: const Text('Learning languages'),
                 ),
               ],
             ),
