@@ -24,7 +24,7 @@ class GameSelectScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Select Game')),
+      appBar: AppBar(title: const Text('Select game')),
       body: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,

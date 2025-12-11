@@ -27,7 +27,7 @@ class _VocabularyScreenState extends ConsumerState<VocabularyScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Vocabulary List'),
+        title: const Text('Vocabulary'),
         actions: [
           IconButton(
             icon: const Icon(Icons.add),

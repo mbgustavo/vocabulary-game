@@ -23,7 +23,7 @@ class _LanguageScreenState extends ConsumerState<LanguageScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Select Learning Language'),
+        title: const Text('Learning languages'),
         actions: [
           IconButton(
             icon: const Icon(Icons.add),
