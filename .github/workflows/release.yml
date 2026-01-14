@@ -4,10 +4,54 @@ on:
   workflow_dispatch:
 
 jobs:
+  build:
+    environment: release
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set Up Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: oracle
+          java-version: '25'
+
+      - name: Set Up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.29.3'
+          channel: stable
+
+      - name: Install Dependencies
+        run: flutter pub get
+
+      - name: Build APK
+        run: flutter build apk --release
+
+      - name: Build App Bundle
+        run: flutter build appbundle
+
+      - name: Build IPA
+        run: flutter build ipa --no-codesign
+
+      - name: Compress iOS Build
+        run: tar -czf build/ios_build.tar.gz -C build ios
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: flutter-builds
+          path: |
+            build/app/outputs/flutter-apk/app-release.apk
+            build/app/outputs/bundle/release/app-release.aab
+            build/ios_build.tar.gz
+
   release:
     environment: release
     if: github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
 
     steps:
       - name: Checkout Repository
