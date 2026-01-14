@@ -1,0 +1,35 @@
+name: CI - Analyze & Test
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  ci:
+    name: Analyze & Test
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set Up Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: oracle
+          java-version: '25'
+
+      - name: Set Up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.29.3'
+          channel: stable
+
+      - name: Install Dependencies
+        run: flutter pub get
+
+      - name: Analyze Code
+        run: flutter analyze
+
+      - name: Run Tests
+        run: flutter test

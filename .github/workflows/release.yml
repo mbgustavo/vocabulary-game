@@ -1,0 +1,40 @@
+name: Release
+
+on:
+  workflow_dispatch:
+
+jobs:
+  release:
+    environment: release
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Download Build Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: flutter-builds
+
+      - name: Extract version from pubspec.yaml
+        run: |
+          version=$(grep '^version:' pubspec.yaml | awk '{print $2}')
+          echo "VERSION=$version" >> $GITHUB_ENV
+
+      - name: Create Tag
+        run: |
+          git tag v$VERSION
+          git push origin v$VERSION
+
+      - name: Create GitHub Release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: v${{ env.VERSION }}
+          name: v${{ env.VERSION }}
+          artifacts: |
+            app-release.apk
+            app-release.aab
+            ios_build.tar.gz
+          token: ${{ secrets.TOKEN }}
