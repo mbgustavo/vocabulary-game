@@ -320,8 +320,8 @@ void main() {
         WidgetTester tester,
       ) async {
         final longMessage =
-            'This is a very long notification message that should ' +
-            'still be displayed properly even though it contains a lot of text and ' +
+            'This is a very long notification message that should '
+            'still be displayed properly even though it contains a lot of text and '
             'might need to wrap or scroll in the UI depending on the layout constraints.';
 
         final notification = CustomNotification(longMessage)..setId(1);
