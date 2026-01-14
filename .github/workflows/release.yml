@@ -37,4 +37,4 @@ jobs:
             app-release.apk
             app-release.aab
             ios_build.tar.gz
-          token: ${{ secrets.TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}

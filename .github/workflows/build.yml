@@ -5,6 +5,10 @@ on:
     workflows: ["CI - Analyze & Test"]
     types:
       - completed
+  pull_request:
+  push:
+    branches:
+      - main
 
 jobs:
   build:
@@ -40,9 +44,7 @@ jobs:
         run: flutter build ipa --no-codesign
 
       - name: Compress iOS Build
-        run: |
-          cd build
-          tar -czf ios_build.tar.gz ios
+        run: tar -czf build/ios_build.tar.gz -C build ios
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4

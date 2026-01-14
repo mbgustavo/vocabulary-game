@@ -2,6 +2,8 @@ name: CI - Analyze & Test
 
 on:
   push:
+    branches:
+      - main
   pull_request:
 
 jobs:
