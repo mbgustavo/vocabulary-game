@@ -9,7 +9,7 @@ on:
 jobs:
   test:
     name: Analyze & Test
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Repository
@@ -39,7 +39,7 @@ jobs:
   build:
     name: Debug Build
     needs: test
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Repository
@@ -66,13 +66,6 @@ jobs:
       - name: Build App Bundle
         run: flutter build appbundle --debug
 
-      # NOTE: This is not a debug build, no iPhones are being used in the development
-      - name: Build IPA
-        run: flutter build ipa --no-codesign
-
-      - name: Compress iOS Build
-        run: tar -czf build/ios_build.tar.gz -C build ios
-
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -80,4 +73,3 @@ jobs:
           path: |
             build/app/outputs/flutter-apk/app-debug.apk
             build/app/outputs/bundle/debug/app-debug.aab
-            build/ios_build.tar.gz
