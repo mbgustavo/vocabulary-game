@@ -82,7 +82,7 @@ jobs:
           tag: v${{ env.VERSION }}
           name: v${{ env.VERSION }}
           artifacts: |
-            app-release.apk
-            app-release.aab
+            build/app/outputs/flutter-apk/app-release.apk
+            build/app/outputs/bundle/release/app-release.aab
             ios_build.tar.gz
           token: ${{ secrets.GITHUB_TOKEN }}
