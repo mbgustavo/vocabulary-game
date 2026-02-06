@@ -23,6 +23,7 @@ class SettingsNotifier extends StateNotifier<Map<String, dynamic>> {
       final languages = await _storage.getLanguages();
       if (languages.isEmpty) {
         await _storage.addLanguage(defaultLanguage);
+        await _storage.setLearningLanguage(defaultLanguage.value);
         state = {
           ...state,
           'languages': [defaultLanguage],
