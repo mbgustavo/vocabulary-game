@@ -1,5 +1,7 @@
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vocabulary_game/models/word.dart';
 import 'package:vocabulary_game/storage/storage_interface.dart';
@@ -240,5 +242,112 @@ class PrefStorage implements StorageInterface {
     );
 
     return remainingVocabulary;
+  }
+
+  /// Creates a backup of all shared preferences data to the specified file path
+  @override
+  Future<void> restoreDefaults() async {
+    if (_pref == null) {
+      await _initialize();
+    }
+
+    await _pref!.clear();
+
+    addLanguage(defaultLanguage);
+    setLearningLanguage(defaultLanguage.value);
+  }
+
+  /// Creates a backup of all shared preferences data to the specified file path
+  @override
+  Future<void> createBackup(String filePath) async {
+    if (_pref == null) {
+      await _initialize();
+    }
+
+    // Get all keys from shared preferences
+    final allKeys = _pref!.getKeys();
+    final backupData = <String, dynamic>{};
+
+    // Extract all data from shared preferences
+    for (final key in allKeys) {
+      final value = _pref!.get(key);
+      backupData[key] = value;
+    }
+
+    // Get app version dynamically
+    final packageInfo = await PackageInfo.fromPlatform();
+    
+    // Add metadata to the backup
+    final backupWithMetadata = {
+      'backup_timestamp': DateTime.now().toIso8601String(),
+      'backup_version': '1.0',
+      'app_version': packageInfo.version,
+      'data': backupData,
+    };
+
+    // Convert to JSON
+    final jsonString = jsonEncode(backupWithMetadata);
+
+    // Create the backup file at the specified path
+    final backupFile = File(filePath);
+    
+    // Create directory if it doesn't exist
+    final directory = backupFile.parent;
+    if (!await directory.exists()) {
+      await directory.create(recursive: true);
+    }
+
+    // Write the backup file
+    await backupFile.writeAsString(jsonString);
+  }
+
+  /// Restores data from a backup file
+  @override
+  Future<void> restoreFromBackup(String filePath) async {
+    try {
+      if (_pref == null) {
+        await _initialize();
+      }
+
+      // Read the backup file
+      final backupFile = File(filePath);
+      if (!await backupFile.exists()) {
+        throw Exception('Backup file does not exist: $filePath');
+      }
+
+      final jsonString = await backupFile.readAsString();
+      final backupData = jsonDecode(jsonString) as Map<String, dynamic>;
+
+      // Validate backup structure
+      if (!backupData.containsKey('data')) {
+        throw Exception('Invalid backup file format');
+      }
+
+      final data = backupData['data'] as Map<String, dynamic>;
+
+      // Clear existing preferences (optional - you might want to prompt user)
+      await _pref!.clear();
+
+      // Restore all data
+      for (final entry in data.entries) {
+        final key = entry.key;
+        final value = entry.value;
+
+        // Handle different data types
+        if (value is String) {
+          await _pref!.setString(key, value);
+        } else if (value is int) {
+          await _pref!.setInt(key, value);
+        } else if (value is double) {
+          await _pref!.setDouble(key, value);
+        } else if (value is bool) {
+          await _pref!.setBool(key, value);
+        } else if (value is List<String>) {
+          await _pref!.setStringList(key, value);
+        }
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
   }
 }
