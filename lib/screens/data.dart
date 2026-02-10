@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabulary_game/storage/pref_storage.dart';
@@ -98,21 +99,26 @@ class DataScreen extends ConsumerWidget {
       final timestamp = DateTime.now().toIso8601String().replaceAll(':', '-');
       final defaultFileName = 'my_vocabulary_backup_$timestamp.json';
       
-      // Let user select where to save the backup
+      // Get backup data from storage
+      final storage = ref.read(storageProvider);
+      final backupData = await storage.getBackupData();
+      
+      // Convert string to bytes for mobile platforms
+      final bytes = utf8.encode(backupData);
+      
+      // Let user select where to save the backup with bytes
       String? selectedPath = await FilePicker.platform.saveFile(
         dialogTitle: 'Save vocabulary backup',
         fileName: defaultFileName,
         type: FileType.custom,
         allowedExtensions: ['json'],
+        bytes: bytes,
       );
       
       if (selectedPath == null) {
         // User cancelled the dialog
         return;
       }
-      
-      final storage = ref.read(storageProvider);
-      await storage.createBackup(selectedPath);
       
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
