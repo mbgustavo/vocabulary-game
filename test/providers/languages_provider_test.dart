@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:vocabulary_game/providers/settings_provider.dart';
+import 'package:vocabulary_game/providers/languages_provider.dart';
 import 'package:vocabulary_game/providers/notifications_provider.dart';
 import 'package:vocabulary_game/providers/vocabulary_provider.dart';
 import 'package:vocabulary_game/models/language.dart';
@@ -15,7 +15,7 @@ void main() {
     registerFallbackValue(Language('Test', '🏳️'));
   });
 
-  group('SettingsNotifier', () {
+  group('LanguagesNotifier', () {
     late ProviderContainer container;
     late MockStorage mockStorage;
 
@@ -37,7 +37,7 @@ void main() {
 
       container = ProviderContainer(
         overrides: [
-          settingsStorageProvider.overrideWithValue(mockStorage),
+          languagesStorageProvider.overrideWithValue(mockStorage),
           vocabularyStorageProvider.overrideWithValue(mockStorage),
         ],
       );
@@ -48,18 +48,18 @@ void main() {
       bool isLoading = true;
 
       while (isLoading) {
-        final settingsState = container.read(settingsProvider.notifier).state;
+        final languagesState = container.read(languagesProvider.notifier).state;
         final vocabularyState =
             container.read(vocabularyProvider.notifier).state;
 
-        final settingsLoading =
-            settingsState.containsKey('loading') &&
-            settingsState['loading'] == true;
+        final languagesLoading =
+            languagesState.containsKey('loading') &&
+            languagesState['loading'] == true;
         final vocabularyLoading =
             vocabularyState.containsKey('loading') &&
             vocabularyState['loading'] == true;
 
-        isLoading = settingsLoading || vocabularyLoading;
+        isLoading = languagesLoading || vocabularyLoading;
 
         if (isLoading) {
           await Future.delayed(Duration(milliseconds: 100));
@@ -74,14 +74,14 @@ void main() {
         'should load languages and set default language when storage is empty',
         () async {
           // The actual implementation loads from storage, so we test the behavior
-          var state = container.read(settingsProvider);
+          var state = container.read(languagesProvider);
 
           expect(state['loading'], true);
 
           // Wait for initial loading to complete
           await Future.delayed(Duration(milliseconds: 100));
 
-          state = container.read(settingsProvider);
+          state = container.read(languagesProvider);
 
           expect(state['loading'], false);
           expect(state['languages'], isA<List<Language>>());
@@ -107,15 +107,15 @@ void main() {
 
         // Create new container with updated mock
         final testContainer = ProviderContainer(
-          overrides: [settingsStorageProvider.overrideWithValue(mockStorage)],
+          overrides: [languagesStorageProvider.overrideWithValue(mockStorage)],
         );
 
-        testContainer.read(settingsProvider.notifier);
+        testContainer.read(languagesProvider.notifier);
 
         // Wait for initial loading to complete
         await Future.delayed(Duration(milliseconds: 100));
 
-        final state = testContainer.read(settingsProvider);
+        final state = testContainer.read(languagesProvider);
 
         expect(state['loading'], false);
         expect(state['languages'], isA<List<Language>>());
@@ -133,7 +133,7 @@ void main() {
 
     group('getLanguages', () {
       test('should return languages from state', () async {
-        final notifier = container.read(settingsProvider.notifier);
+        final notifier = container.read(languagesProvider.notifier);
 
         // Wait for initial loading
         await Future.delayed(Duration(milliseconds: 100));
@@ -143,7 +143,7 @@ void main() {
       });
 
       test('should return empty list when no languages in state', () {
-        final notifier = container.read(settingsProvider.notifier);
+        final notifier = container.read(languagesProvider.notifier);
         // Force state without languages
         notifier.state = {'loading': false};
 
@@ -154,7 +154,7 @@ void main() {
 
     group('addLanguage', () {
       test('should return error for empty language name', () async {
-        final notifier = container.read(settingsProvider.notifier);
+        final notifier = container.read(languagesProvider.notifier);
 
         final emptyLanguage = Language('', '🏳️');
         final error = await notifier.addLanguage(emptyLanguage);
@@ -164,7 +164,7 @@ void main() {
       });
 
       test('should return error for duplicate language', () async {
-        final notifier = container.read(settingsProvider.notifier);
+        final notifier = container.read(languagesProvider.notifier);
 
         // Wait for initial loading to complete and set up state
         await Future.delayed(Duration(milliseconds: 100));
@@ -190,7 +190,7 @@ void main() {
           return [defaultLanguage, newLanguage];
         });
 
-        final notifier = container.read(settingsProvider.notifier);
+        final notifier = container.read(languagesProvider.notifier);
 
         // Wait for initial loading
         await Future.delayed(Duration(milliseconds: 100));
@@ -209,7 +209,7 @@ void main() {
 
     group('updateLanguage', () {
       test('should return error for empty language name', () async {
-        final notifier = container.read(settingsProvider.notifier);
+        final notifier = container.read(languagesProvider.notifier);
 
         final oldLanguage = Language('Spanish', '🇪🇸');
         final emptyLanguage = Language('', '🏳️');
@@ -220,7 +220,7 @@ void main() {
       });
 
       test('should return error for duplicate language value', () async {
-        final notifier = container.read(settingsProvider.notifier);
+        final notifier = container.read(languagesProvider.notifier);
 
         // Set up state with existing languages
         final spanish = Language('Spanish', '🇪🇸');
@@ -239,7 +239,10 @@ void main() {
       });
 
       test('should update language successfully when valid', () async {
-        final notifier = container.read(settingsProvider.notifier);
+        final notifier = container.read(languagesProvider.notifier);
+
+        // Wait for initial loading to complete
+        await Future.delayed(Duration(milliseconds: 100));
 
         final spanish = Language('Spanish', '🇪🇸');
         final updatedSpanish = Language('Español', '🇪🇸');
@@ -248,7 +251,7 @@ void main() {
           () => mockStorage.updateLanguage(spanish, updatedSpanish),
         ).thenAnswer((_) async => [defaultLanguage, updatedSpanish]);
 
-        // Set up initial state
+        // Set up initial state after initial loading is complete
         notifier.state = {
           'loading': false,
           'languages': [defaultLanguage, spanish],
@@ -268,7 +271,7 @@ void main() {
       test(
         'should return default language when learning language not found',
         () {
-          final notifier = container.read(settingsProvider.notifier);
+          final notifier = container.read(languagesProvider.notifier);
 
           // Set up state with languages but no learning language
           notifier.state = {
@@ -282,7 +285,7 @@ void main() {
       );
 
       test('should return correct learning language when it exists', () {
-        final notifier = container.read(settingsProvider.notifier);
+        final notifier = container.read(languagesProvider.notifier);
 
         final spanish = Language('Spanish', '🇪🇸');
         notifier.state = {
@@ -298,7 +301,7 @@ void main() {
 
     group('getLanguage', () {
       test('should return default language when language not found', () {
-        final notifier = container.read(settingsProvider.notifier);
+        final notifier = container.read(languagesProvider.notifier);
 
         notifier.state = {
           'languages': [defaultLanguage],
@@ -309,7 +312,7 @@ void main() {
       });
 
       test('should return correct language when it exists', () {
-        final notifier = container.read(settingsProvider.notifier);
+        final notifier = container.read(languagesProvider.notifier);
 
         final spanish = Language('Spanish', '🇪🇸');
         notifier.state = {
@@ -324,7 +327,7 @@ void main() {
 
     group('changeLearningLanguage', () {
       test('should update learning language in state', () async {
-        final notifier = container.read(settingsProvider.notifier);
+        final notifier = container.read(languagesProvider.notifier);
 
         final spanish = Language('Spanish', '🇪🇸');
         notifier.state = {
@@ -345,7 +348,7 @@ void main() {
             () => mockStorage.setLearningLanguage(any()),
           ).thenThrow(Exception('Storage error'));
 
-          final notifier = container.read(settingsProvider.notifier);
+          final notifier = container.read(languagesProvider.notifier);
 
           final spanish = Language('Spanish', '🇪🇸');
           notifier.state = {
@@ -376,14 +379,14 @@ void main() {
 
         // Create new container with failing mock
         final testContainer = ProviderContainer(
-          overrides: [settingsStorageProvider.overrideWithValue(mockStorage)],
+          overrides: [languagesStorageProvider.overrideWithValue(mockStorage)],
         );
-        testContainer.read(settingsProvider.notifier);
+        testContainer.read(languagesProvider.notifier);
 
         // Wait for loading to complete
         await Future.delayed(Duration(milliseconds: 100));
 
-        final state = testContainer.read(settingsProvider);
+        final state = testContainer.read(languagesProvider);
         expect(state['loading'], false);
 
         final notificationsState = testContainer.read(notificationsProvider);
@@ -401,7 +404,7 @@ void main() {
           () => mockStorage.addLanguage(any()),
         ).thenThrow(Exception('Storage error'));
 
-        final notifier = container.read(settingsProvider.notifier);
+        final notifier = container.read(languagesProvider.notifier);
 
         // Wait for initial loading
         await Future.delayed(Duration(milliseconds: 100));
@@ -416,13 +419,13 @@ void main() {
 
     group('state management', () {
       test('should maintain state structure', () {
-        final state = container.read(settingsProvider);
+        final state = container.read(languagesProvider);
         expect(state, isA<Map<String, dynamic>>());
         expect(state.containsKey('loading'), true);
       });
 
       test('should handle state updates correctly', () async {
-        final notifier = container.read(settingsProvider.notifier);
+        final notifier = container.read(languagesProvider.notifier);
 
         // Wait for initial state
         await Future.delayed(Duration(milliseconds: 100));
@@ -458,8 +461,8 @@ void main() {
 
     group('integration with other providers', () {
       test('should interact with vocabulary provider when updating language', () {
-        // This test verifies that the settings provider references vocabulary provider
-        final notifier = container.read(settingsProvider.notifier);
+        // This test verifies that the languages provider references vocabulary provider
+        final notifier = container.read(languagesProvider.notifier);
         final vocabularyNotifier = container.read(vocabularyProvider.notifier);
 
         expect(notifier, isNotNull);
@@ -467,8 +470,8 @@ void main() {
       });
 
       test('should interact with notifications provider', () {
-        // This test verifies that the settings provider references notifications provider
-        final notifier = container.read(settingsProvider.notifier);
+        // This test verifies that the languages provider references notifications provider
+        final notifier = container.read(languagesProvider.notifier);
         final notificationsNotifier = container.read(
           notificationsProvider.notifier,
         );

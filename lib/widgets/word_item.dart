@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabulary_game/models/word.dart';
 import 'package:vocabulary_game/providers/notifications_provider.dart';
-import 'package:vocabulary_game/providers/settings_provider.dart';
+import 'package:vocabulary_game/providers/languages_provider.dart';
 import 'package:vocabulary_game/providers/vocabulary_provider.dart';
 import 'package:vocabulary_game/screens/new_word.dart';
 
@@ -62,7 +62,7 @@ class WordItem extends ConsumerWidget {
         text: TextSpan(
           text:
               ref
-                  .read(settingsProvider.notifier)
+                  .read(languagesProvider.notifier)
                   .getLanguage(word.language)
                   .icon,
         ),

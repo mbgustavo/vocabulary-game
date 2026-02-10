@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:vocabulary_game/providers/settings_provider.dart';
+import 'package:vocabulary_game/providers/languages_provider.dart';
 import 'package:vocabulary_game/providers/vocabulary_provider.dart';
 import 'package:vocabulary_game/screens/home.dart';
 
@@ -14,7 +14,7 @@ class App extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ref) {
     final loading =
-        ref.watch(settingsProvider)['loading'] ||
+        ref.watch(languagesProvider)['loading'] ||
         ref.watch(vocabularyProvider)['loading'];
 
     return MaterialApp(

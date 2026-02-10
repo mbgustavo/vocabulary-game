@@ -6,13 +6,13 @@ import 'package:vocabulary_game/widgets/language_item.dart';
 import 'package:vocabulary_game/widgets/highlighted_text.dart';
 import 'package:vocabulary_game/widgets/new_language.dart';
 import 'package:vocabulary_game/models/language.dart';
-import 'package:vocabulary_game/providers/settings_provider.dart';
+import 'package:vocabulary_game/providers/languages_provider.dart';
 import 'package:vocabulary_game/providers/notifications_provider.dart';
 import 'package:vocabulary_game/storage/storage_interface.dart';
 
 class MockStorage extends Mock implements StorageInterface {}
 
-class MockSettingsNotifier extends Mock implements SettingsNotifier {}
+class MockLanguagesNotifier extends Mock implements LanguagesNotifier {}
 
 class MockNotificationsNotifier extends Mock implements NotificationsNotifier {}
 
@@ -25,13 +25,13 @@ void main() {
 
   group('LanguageItem Widget Tests', () {
     late MockStorage mockStorage;
-    late MockSettingsNotifier mockSettingsNotifier;
+    late MockLanguagesNotifier mockLanguagesNotifier;
     late MockNotificationsNotifier mockNotificationsNotifier;
     late Language testLanguage;
 
     setUp(() {
       mockStorage = MockStorage();
-      mockSettingsNotifier = MockSettingsNotifier();
+      mockLanguagesNotifier = MockLanguagesNotifier();
       mockNotificationsNotifier = MockNotificationsNotifier();
       testLanguage = Language('Spanish', '🇪🇸');
 
@@ -47,10 +47,10 @@ void main() {
       when(() => mockStorage.deleteLanguage(any())).thenAnswer((_) async => []);
 
       when(
-        () => mockSettingsNotifier.changeLearningLanguage(any()),
+        () => mockLanguagesNotifier.changeLearningLanguage(any()),
       ).thenAnswer((_) async => {});
       when(
-        () => mockSettingsNotifier.deleteLanguage(any()),
+        () => mockLanguagesNotifier.deleteLanguage(any()),
       ).thenAnswer((_) async => null);
 
       when(
@@ -66,7 +66,7 @@ void main() {
       return ProviderScope(
         overrides:
             overrides ??
-            [settingsStorageProvider.overrideWithValue(mockStorage)],
+            [languagesStorageProvider.overrideWithValue(mockStorage)],
         child: MaterialApp(
           home: Scaffold(
             body: LanguageItem(language: language, isSelected: isSelected),
@@ -169,8 +169,8 @@ void main() {
               language: testLanguage,
               isSelected: false,
               overrides: [
-                settingsProvider.overrideWith((ref) => mockSettingsNotifier),
-                settingsStorageProvider.overrideWithValue(mockStorage),
+                languagesProvider.overrideWith((ref) => mockLanguagesNotifier),
+                languagesStorageProvider.overrideWithValue(mockStorage),
               ],
             ),
           );
@@ -180,7 +180,7 @@ void main() {
 
           verify(
             () =>
-                mockSettingsNotifier.changeLearningLanguage(testLanguage.value),
+                mockLanguagesNotifier.changeLearningLanguage(testLanguage.value),
           ).called(1);
         },
       );
@@ -193,8 +193,8 @@ void main() {
               language: testLanguage,
               isSelected: true,
               overrides: [
-                settingsProvider.overrideWith((ref) => mockSettingsNotifier),
-                settingsStorageProvider.overrideWithValue(mockStorage),
+                languagesProvider.overrideWith((ref) => mockLanguagesNotifier),
+                languagesStorageProvider.overrideWithValue(mockStorage),
               ],
             ),
           );
@@ -205,7 +205,7 @@ void main() {
 
           await tester.tap(find.byType(ListTile));
 
-          verifyNever(() => mockSettingsNotifier.changeLearningLanguage(any()));
+          verifyNever(() => mockLanguagesNotifier.changeLearningLanguage(any()));
         },
       );
 
@@ -272,11 +272,11 @@ void main() {
             language: testLanguage,
             isSelected: false,
             overrides: [
-              settingsProvider.overrideWith((ref) => mockSettingsNotifier),
+              languagesProvider.overrideWith((ref) => mockLanguagesNotifier),
               notificationsProvider.overrideWith(
                 (ref) => mockNotificationsNotifier,
               ),
-              settingsStorageProvider.overrideWithValue(mockStorage),
+              languagesStorageProvider.overrideWithValue(mockStorage),
             ],
           ),
         );
@@ -288,7 +288,7 @@ void main() {
         await tester.pumpAndSettle();
 
         verify(
-          () => mockSettingsNotifier.deleteLanguage(testLanguage),
+          () => mockLanguagesNotifier.deleteLanguage(testLanguage),
         ).called(1);
       });
     });
@@ -298,7 +298,7 @@ void main() {
         WidgetTester tester,
       ) async {
         when(
-          () => mockSettingsNotifier.deleteLanguage(any()),
+          () => mockLanguagesNotifier.deleteLanguage(any()),
         ).thenAnswer((_) async => 'Delete failed');
 
         await tester.pumpWidget(
@@ -306,11 +306,11 @@ void main() {
             language: testLanguage,
             isSelected: false,
             overrides: [
-              settingsProvider.overrideWith((ref) => mockSettingsNotifier),
+              languagesProvider.overrideWith((ref) => mockLanguagesNotifier),
               notificationsProvider.overrideWith(
                 (ref) => mockNotificationsNotifier,
               ),
-              settingsStorageProvider.overrideWithValue(mockStorage),
+              languagesStorageProvider.overrideWithValue(mockStorage),
             ],
           ),
         );
@@ -330,7 +330,7 @@ void main() {
         WidgetTester tester,
       ) async {
         when(
-          () => mockSettingsNotifier.deleteLanguage(any()),
+          () => mockLanguagesNotifier.deleteLanguage(any()),
         ).thenAnswer((_) async => null);
 
         await tester.pumpWidget(
@@ -338,11 +338,11 @@ void main() {
             language: testLanguage,
             isSelected: false,
             overrides: [
-              settingsProvider.overrideWith((ref) => mockSettingsNotifier),
+              languagesProvider.overrideWith((ref) => mockLanguagesNotifier),
               notificationsProvider.overrideWith(
                 (ref) => mockNotificationsNotifier,
               ),
-              settingsStorageProvider.overrideWithValue(mockStorage),
+              languagesStorageProvider.overrideWithValue(mockStorage),
             ],
           ),
         );

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:vocabulary_game/providers/settings_provider.dart';
+import 'package:vocabulary_game/providers/languages_provider.dart';
 import 'package:vocabulary_game/providers/vocabulary_provider.dart';
 import 'package:vocabulary_game/screens/game_select.dart';
 import 'package:vocabulary_game/screens/language.dart';
@@ -12,10 +12,10 @@ class HomeScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-    ref.watch(settingsProvider)["learning_language"];
+    ref.watch(languagesProvider)["learning_language"];
     ref.watch(vocabularyProvider)["vocabulary"];
     final learningLanguage =
-        ref.read(settingsProvider.notifier).getLearningLanguage();
+        ref.read(languagesProvider.notifier).getLearningLanguage();
     final vocabulary =
         ref.read(vocabularyProvider.notifier).getVocabulary(language: learningLanguage.value);
 

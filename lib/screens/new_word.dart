@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabulary_game/models/word.dart';
 import 'package:vocabulary_game/providers/notifications_provider.dart';
-import 'package:vocabulary_game/providers/settings_provider.dart';
+import 'package:vocabulary_game/providers/languages_provider.dart';
 import 'package:vocabulary_game/providers/vocabulary_provider.dart';
 import 'package:vocabulary_game/widgets/language_dropdown.dart';
 
@@ -33,7 +33,7 @@ class _NewWordScreenState extends ConsumerState<NewWordScreen> {
       _selectedLevel = widget.initialWord!.level;
       _examples.addAll(widget.initialWord!.examples);
     } else {
-      _selectedLanguage = ref.read(settingsProvider)["learning_language"];
+      _selectedLanguage = ref.read(languagesProvider)["learning_language"];
     }
   }
 
@@ -75,7 +75,7 @@ class _NewWordScreenState extends ConsumerState<NewWordScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final languages = ref.read(settingsProvider.notifier).getLanguages();
+    final languages = ref.read(languagesProvider.notifier).getLanguages();
 
     return Scaffold(
       appBar: AppBar(title: const Text('Add new word')),

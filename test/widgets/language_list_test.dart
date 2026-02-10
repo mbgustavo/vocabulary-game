@@ -5,7 +5,7 @@ import 'package:mocktail/mocktail.dart';
 import 'package:vocabulary_game/widgets/language_list.dart';
 import 'package:vocabulary_game/widgets/language_item.dart';
 import 'package:vocabulary_game/models/language.dart';
-import 'package:vocabulary_game/providers/settings_provider.dart';
+import 'package:vocabulary_game/providers/languages_provider.dart';
 import 'package:vocabulary_game/providers/notifications_provider.dart';
 import 'package:vocabulary_game/storage/storage_interface.dart';
 
@@ -46,7 +46,7 @@ void main() {
     }) {
       return ProviderScope(
         overrides: [
-          settingsStorageProvider.overrideWithValue(mockStorage),
+          languagesStorageProvider.overrideWithValue(mockStorage),
         ],
         child: MaterialApp(
           home: Scaffold(

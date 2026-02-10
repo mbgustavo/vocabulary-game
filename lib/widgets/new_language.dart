@@ -2,7 +2,7 @@ import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabulary_game/models/language.dart';
-import 'package:vocabulary_game/providers/settings_provider.dart';
+import 'package:vocabulary_game/providers/languages_provider.dart';
 import 'package:vocabulary_game/widgets/flag_selector.dart';
 
 class NewLanguage extends ConsumerStatefulWidget {
@@ -41,11 +41,11 @@ class _NewLanguageState extends ConsumerState<NewLanguage> {
       String? error;
       if (widget.initialLanguage != null) {
         error = await ref
-            .read(settingsProvider.notifier)
+            .read(languagesProvider.notifier)
             .updateLanguage(widget.initialLanguage!, newLanguage);
       } else {
         error = await ref
-            .read(settingsProvider.notifier)
+            .read(languagesProvider.notifier)
             .addLanguage(newLanguage);
       }
 

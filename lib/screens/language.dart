@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:vocabulary_game/providers/settings_provider.dart';
+import 'package:vocabulary_game/providers/languages_provider.dart';
 import 'package:vocabulary_game/widgets/language_list.dart';
 import 'package:vocabulary_game/widgets/new_language.dart';
 import 'package:vocabulary_game/widgets/notification_banners.dart';
@@ -15,11 +15,11 @@ class LanguageScreen extends ConsumerStatefulWidget {
 class _LanguageScreenState extends ConsumerState<LanguageScreen> {
   @override
   Widget build(BuildContext context) {
-    ref.watch(settingsProvider)["languages"];
-    ref.watch(settingsProvider)["learning_language"];
-    final languages = ref.watch(settingsProvider.notifier).getLanguages();
+    ref.watch(languagesProvider)["languages"];
+    ref.watch(languagesProvider)["learning_language"];
+    final languages = ref.watch(languagesProvider.notifier).getLanguages();
     final learningLanguage =
-        ref.read(settingsProvider.notifier).getLearningLanguage();
+        ref.read(languagesProvider.notifier).getLearningLanguage();
 
     return Scaffold(
       appBar: AppBar(

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:vocabulary_game/providers/settings_provider.dart';
+import 'package:vocabulary_game/providers/languages_provider.dart';
 import 'package:vocabulary_game/providers/vocabulary_provider.dart';
 import 'package:vocabulary_game/screens/new_word.dart';
 import 'package:vocabulary_game/widgets/language_dropdown.dart';
@@ -23,7 +23,7 @@ class _VocabularyScreenState extends ConsumerState<VocabularyScreen> {
     final vocabulary = ref
         .watch(vocabularyProvider.notifier)
         .getVocabulary(language: _selectedLanguage);
-    final languages = ref.read(settingsProvider.notifier).getLanguages();
+    final languages = ref.read(languagesProvider.notifier).getLanguages();
 
     return Scaffold(
       appBar: AppBar(
