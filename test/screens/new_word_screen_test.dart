@@ -3,14 +3,14 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabulary_game/models/word.dart';
 import 'package:vocabulary_game/models/language.dart';
-import 'package:vocabulary_game/providers/settings_provider.dart';
+import 'package:vocabulary_game/providers/languages_provider.dart';
 import 'package:vocabulary_game/providers/vocabulary_provider.dart';
 import 'package:vocabulary_game/screens/new_word.dart';
 
-class MockSettingsNotifier extends SettingsNotifier {
+class MockLanguagesNotifier extends LanguagesNotifier {
   final Language _testLanguage;
 
-  MockSettingsNotifier(super.ref, this._testLanguage) {
+  MockLanguagesNotifier(super.ref, this._testLanguage) {
     state = {
       'loading': false,
       'languages': [_testLanguage],
@@ -79,8 +79,8 @@ void main() {
     Widget createTestWidget({Word? initialWord, String? saveError}) {
       return ProviderScope(
         overrides: [
-          settingsProvider.overrideWith(
-            (ref) => MockSettingsNotifier(ref, testLanguage),
+          languagesProvider.overrideWith(
+            (ref) => MockLanguagesNotifier(ref, testLanguage),
           ),
           vocabularyProvider.overrideWith(
             (ref) =>

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:vocabulary_game/providers/settings_provider.dart';
+import 'package:vocabulary_game/providers/languages_provider.dart';
 import 'package:vocabulary_game/providers/vocabulary_provider.dart';
+import 'package:vocabulary_game/screens/data.dart';
 import 'package:vocabulary_game/screens/game_select.dart';
 import 'package:vocabulary_game/screens/language.dart';
 import 'package:vocabulary_game/screens/vocabulary.dart';
@@ -12,10 +13,10 @@ class HomeScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-    ref.watch(settingsProvider)["learning_language"];
+    ref.watch(languagesProvider)["learning_language"];
     ref.watch(vocabularyProvider)["vocabulary"];
     final learningLanguage =
-        ref.read(settingsProvider.notifier).getLearningLanguage();
+        ref.read(languagesProvider.notifier).getLearningLanguage();
     final vocabulary =
         ref.read(vocabularyProvider.notifier).getVocabulary(language: learningLanguage.value);
 
@@ -90,6 +91,16 @@ class HomeScreen extends ConsumerWidget {
           ),
         ],
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.of(
+            context,
+          ).push(MaterialPageRoute(builder: (ctx) => DataScreen()));
+        },
+        tooltip: 'Data Menu',
+        child: const Icon(Icons.storage),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 }

@@ -3,15 +3,16 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
+import 'package:vocabulary_game/storage/pref_storage.dart';
 import 'package:vocabulary_game/widgets/new_language.dart';
 import 'package:vocabulary_game/widgets/flag_selector.dart';
 import 'package:vocabulary_game/models/language.dart';
-import 'package:vocabulary_game/providers/settings_provider.dart';
+import 'package:vocabulary_game/providers/languages_provider.dart';
 import 'package:vocabulary_game/storage/storage_interface.dart';
 
 class MockStorage extends Mock implements StorageInterface {}
 
-class MockSettingsNotifier extends Mock implements SettingsNotifier {}
+class MockLanguagesNotifier extends Mock implements LanguagesNotifier {}
 
 void main() {
   setUpAll(() {
@@ -21,11 +22,11 @@ void main() {
 
   group('NewLanguage Widget Tests', () {
     late MockStorage mockStorage;
-    late MockSettingsNotifier mockSettingsNotifier;
+    late MockLanguagesNotifier mockLanguagesNotifier;
 
     setUp(() {
       mockStorage = MockStorage();
-      mockSettingsNotifier = MockSettingsNotifier();
+      mockLanguagesNotifier = MockLanguagesNotifier();
 
       // Set up default mock responses
       when(() => mockStorage.getVocabulary()).thenAnswer((_) async => []);
@@ -39,10 +40,10 @@ void main() {
       ).thenAnswer((_) async => []);
 
       when(
-        () => mockSettingsNotifier.addLanguage(any()),
+        () => mockLanguagesNotifier.addLanguage(any()),
       ).thenAnswer((_) async => null);
       when(
-        () => mockSettingsNotifier.updateLanguage(any(), any()),
+        () => mockLanguagesNotifier.updateLanguage(any(), any()),
       ).thenAnswer((_) async => null);
     });
 
@@ -53,7 +54,7 @@ void main() {
       return ProviderScope(
         overrides:
             overrides ??
-            [settingsStorageProvider.overrideWithValue(mockStorage)],
+            [storageProvider.overrideWithValue(mockStorage)],
         child: MaterialApp(
           home: Scaffold(body: NewLanguage(initialLanguage: initialLanguage)),
         ),
@@ -171,8 +172,8 @@ void main() {
           await tester.pumpWidget(
             createTestWidget(
               overrides: [
-                settingsProvider.overrideWith((ref) => mockSettingsNotifier),
-                settingsStorageProvider.overrideWithValue(mockStorage),
+                languagesProvider.overrideWith((ref) => mockLanguagesNotifier),
+                storageProvider.overrideWithValue(mockStorage),
               ],
             ),
           );
@@ -193,7 +194,7 @@ void main() {
           // Capture and verify the arguments
           final captured =
               verify(
-                () => mockSettingsNotifier.addLanguage(captureAny()),
+                () => mockLanguagesNotifier.addLanguage(captureAny()),
               ).captured;
           expect(captured.length, equals(1));
           final capturedLanguage = captured.first as Language;
@@ -207,8 +208,8 @@ void main() {
           await tester.pumpWidget(
             createTestWidget(
               overrides: [
-                settingsProvider.overrideWith((ref) => mockSettingsNotifier),
-                settingsStorageProvider.overrideWithValue(mockStorage),
+                languagesProvider.overrideWith((ref) => mockLanguagesNotifier),
+                storageProvider.overrideWithValue(mockStorage),
               ],
             ),
           );
@@ -226,7 +227,7 @@ void main() {
           // Capture and verify the arguments
           final captured =
               verify(
-                () => mockSettingsNotifier.addLanguage(captureAny()),
+                () => mockLanguagesNotifier.addLanguage(captureAny()),
               ).captured;
           expect(captured.length, equals(1));
           final capturedLanguage = captured.first as Language;
@@ -314,8 +315,8 @@ void main() {
           await tester.pumpWidget(
             createTestWidget(
               overrides: [
-                settingsProvider.overrideWith((ref) => mockSettingsNotifier),
-                settingsStorageProvider.overrideWithValue(mockStorage),
+                languagesProvider.overrideWith((ref) => mockLanguagesNotifier),
+                storageProvider.overrideWithValue(mockStorage),
               ],
             ),
           );
@@ -339,7 +340,7 @@ void main() {
           // Capture and verify the arguments
           final captured =
               verify(
-                () => mockSettingsNotifier.addLanguage(captureAny()),
+                () => mockLanguagesNotifier.addLanguage(captureAny()),
               ).captured;
           expect(captured.length, equals(1));
           final capturedLanguage = captured.first as Language;
@@ -356,8 +357,8 @@ void main() {
               createTestWidget(
                 initialLanguage: initialLanguage,
                 overrides: [
-                  settingsProvider.overrideWith((ref) => mockSettingsNotifier),
-                  settingsStorageProvider.overrideWithValue(mockStorage),
+                  languagesProvider.overrideWith((ref) => mockLanguagesNotifier),
+                  storageProvider.overrideWithValue(mockStorage),
                 ],
               ),
             );
@@ -381,7 +382,7 @@ void main() {
             // Capture and verify the arguments
             final captured =
                 verify(
-                  () => mockSettingsNotifier.updateLanguage(
+                  () => mockLanguagesNotifier.updateLanguage(
                     captureAny(),
                     captureAny(),
                   ),
@@ -406,8 +407,8 @@ void main() {
           await tester.pumpWidget(
             ProviderScope(
               overrides: [
-                settingsProvider.overrideWith((ref) => mockSettingsNotifier),
-                settingsStorageProvider.overrideWithValue(mockStorage),
+                languagesProvider.overrideWith((ref) => mockLanguagesNotifier),
+                storageProvider.overrideWithValue(mockStorage),
               ],
               child: MaterialApp(
                 home: Scaffold(
@@ -446,14 +447,14 @@ void main() {
           (WidgetTester tester) async {
             // First call returns error, second call succeeds
             when(
-              () => mockSettingsNotifier.addLanguage(any()),
+              () => mockLanguagesNotifier.addLanguage(any()),
             ).thenAnswer((_) async => 'Language already exists');
 
             await tester.pumpWidget(
               createTestWidget(
                 overrides: [
-                  settingsProvider.overrideWith((ref) => mockSettingsNotifier),
-                  settingsStorageProvider.overrideWithValue(mockStorage),
+                  languagesProvider.overrideWith((ref) => mockLanguagesNotifier),
+                  storageProvider.overrideWithValue(mockStorage),
                 ],
               ),
             );
@@ -467,7 +468,7 @@ void main() {
 
             // Mock successful save for next attempt
             when(
-              () => mockSettingsNotifier.addLanguage(any()),
+              () => mockLanguagesNotifier.addLanguage(any()),
             ).thenAnswer((_) async => null);
 
             // Try to save again with different name
@@ -523,15 +524,15 @@ void main() {
         WidgetTester tester,
       ) async {
         // Set up a delayed response to simulate loading
-        when(() => mockSettingsNotifier.addLanguage(any())).thenAnswer(
+        when(() => mockLanguagesNotifier.addLanguage(any())).thenAnswer(
           (_) => Future.delayed(Duration(milliseconds: 50), () => null),
         );
 
         await tester.pumpWidget(
           createTestWidget(
             overrides: [
-              settingsProvider.overrideWith((ref) => mockSettingsNotifier),
-              settingsStorageProvider.overrideWithValue(mockStorage),
+              languagesProvider.overrideWith((ref) => mockLanguagesNotifier),
+              storageProvider.overrideWithValue(mockStorage),
             ],
           ),
         );

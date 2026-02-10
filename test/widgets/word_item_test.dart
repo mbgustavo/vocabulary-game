@@ -2,15 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:vocabulary_game/storage/pref_storage.dart';
 import 'package:vocabulary_game/widgets/word_item.dart';
 import 'package:vocabulary_game/models/word.dart';
 import 'package:vocabulary_game/models/language.dart';
-import 'package:vocabulary_game/providers/settings_provider.dart';
+import 'package:vocabulary_game/providers/languages_provider.dart';
 import 'package:vocabulary_game/providers/vocabulary_provider.dart';
 import 'package:vocabulary_game/providers/notifications_provider.dart';
 import 'package:vocabulary_game/storage/storage_interface.dart';
 
-class MockSettingsNotifier extends Mock implements SettingsNotifier {
+class MockLanguagesNotifier extends Mock implements LanguagesNotifier {
   final Language mockLanguage = Language('English', '🇬🇧');
   
   final List<Language> mockLanguages = [
@@ -33,7 +34,7 @@ class MockNotificationsNotifier extends Mock implements NotificationsNotifier {}
 class MockStorage extends Mock implements StorageInterface {}
 
 void main() {
-  late MockSettingsNotifier mockSettingsNotifier;
+  late MockLanguagesNotifier mockLanguagesNotifier;
   late MockVocabularyNotifier mockVocabularyNotifier;
   late MockNotificationsNotifier mockNotificationsNotifier;
   late MockStorage mockStorage;
@@ -44,7 +45,7 @@ void main() {
   });
 
   setUp(() {
-    mockSettingsNotifier = MockSettingsNotifier();
+    mockLanguagesNotifier = MockLanguagesNotifier();
     mockVocabularyNotifier = MockVocabularyNotifier();
     mockNotificationsNotifier = MockNotificationsNotifier();
     mockStorage = MockStorage();
@@ -70,10 +71,10 @@ void main() {
     
     return ProviderScope(
       overrides: overrides ?? [
-        settingsProvider.overrideWith((ref) => mockSettingsNotifier),
+        languagesProvider.overrideWith((ref) => mockLanguagesNotifier),
         vocabularyProvider.overrideWith((ref) => mockVocabularyNotifier),
         notificationsProvider.overrideWith((ref) => mockNotificationsNotifier),
-        settingsStorageProvider.overrideWithValue(mockStorage),
+        storageProvider.overrideWithValue(mockStorage),
       ],
       child: MaterialApp(
         home: Scaffold(

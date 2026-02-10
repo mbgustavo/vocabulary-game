@@ -5,7 +5,7 @@ import 'package:vocabulary_game/games/get_words_for_game.dart';
 import 'package:vocabulary_game/games/multiple_choice_game.dart';
 import 'package:vocabulary_game/games/write_game.dart';
 import 'package:vocabulary_game/models/word.dart';
-import 'package:vocabulary_game/providers/settings_provider.dart';
+import 'package:vocabulary_game/providers/languages_provider.dart';
 import 'package:vocabulary_game/providers/vocabulary_provider.dart';
 import 'package:vocabulary_game/screens/home.dart';
 
@@ -55,7 +55,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
   void _resetGame() {
     try {
       final learningLanguage =
-          ref.read(settingsProvider.notifier).getLearningLanguage();
+          ref.read(languagesProvider.notifier).getLearningLanguage();
       final vocabulary = ref
           .read(vocabularyProvider.notifier)
           .getVocabulary(language: learningLanguage.value);

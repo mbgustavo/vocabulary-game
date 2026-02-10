@@ -4,18 +4,19 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:vocabulary_game/models/word.dart';
 import 'package:vocabulary_game/models/language.dart';
-import 'package:vocabulary_game/providers/settings_provider.dart';
+import 'package:vocabulary_game/providers/languages_provider.dart';
 import 'package:vocabulary_game/providers/vocabulary_provider.dart';
 import 'package:vocabulary_game/screens/home.dart';
 import 'package:vocabulary_game/screens/game_select.dart';
 import 'package:vocabulary_game/screens/vocabulary.dart';
 import 'package:vocabulary_game/screens/language.dart';
+import 'package:vocabulary_game/storage/pref_storage.dart';
 import 'package:vocabulary_game/storage/storage_interface.dart';
 
-class MockSettingsNotifier extends SettingsNotifier {
+class MockLanguagesNotifier extends LanguagesNotifier {
   final Language _testLanguage;
 
-  MockSettingsNotifier(super.ref, this._testLanguage) {
+  MockLanguagesNotifier(super.ref, this._testLanguage) {
     // Initialize the state properly
     state = {
       'loading': false,
@@ -88,8 +89,8 @@ void main() {
     Widget createTestWidget(List<Word> mockWords) {
       return ProviderScope(
         overrides: [
-          settingsProvider.overrideWith(
-            (ref) => MockSettingsNotifier(ref, testLanguage),
+          languagesProvider.overrideWith(
+            (ref) => MockLanguagesNotifier(ref, testLanguage),
           ),
           vocabularyProvider.overrideWith(
             (ref) => MockVocabularyNotifier(ref, mockWords),
@@ -272,10 +273,9 @@ void main() {
         ).thenAnswer((_) async => {});
         final providerScope = ProviderScope(
           overrides: [
-            settingsStorageProvider.overrideWithValue(mockStorage),
-            vocabularyStorageProvider.overrideWithValue(mockStorage),
-            settingsProvider.overrideWith(
-              (ref) => MockSettingsNotifier(ref, testLanguage),
+            storageProvider.overrideWithValue(mockStorage),
+            languagesProvider.overrideWith(
+              (ref) => MockLanguagesNotifier(ref, testLanguage),
             ),
             vocabularyProvider.overrideWith(
               (ref) => MockVocabularyNotifier(ref, mockWordsSufficient),

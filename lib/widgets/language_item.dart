@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabulary_game/models/language.dart';
 import 'package:vocabulary_game/providers/notifications_provider.dart';
-import 'package:vocabulary_game/providers/settings_provider.dart';
+import 'package:vocabulary_game/providers/languages_provider.dart';
 import 'package:vocabulary_game/widgets/highlighted_text.dart';
 import 'package:vocabulary_game/widgets/new_language.dart';
 
@@ -21,7 +21,7 @@ class LanguageItem extends ConsumerWidget {
     WidgetRef ref,
   ) async {
     final error = await ref
-        .read(settingsProvider.notifier)
+        .read(languagesProvider.notifier)
         .deleteLanguage(language);
     if (error != null) {
       ref
@@ -75,7 +75,7 @@ class LanguageItem extends ConsumerWidget {
           isSelected
               ? null
               : () => ref
-                  .read(settingsProvider.notifier)
+                  .read(languagesProvider.notifier)
                   .changeLearningLanguage(language.value),
       leading: RichText(text: TextSpan(text: language.icon)),
       title: isSelected ? HighlightedText(language.name) : Text(language.name),

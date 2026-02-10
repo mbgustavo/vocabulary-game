@@ -34,4 +34,13 @@ abstract class StorageInterface {
 
   // Delete all vocabulary words by language and return updated vocabulary
   Future<List<Word>> deleteWordsByLanguage(String language);
+
+  // Restore all data to default values
+  Future<void> restoreDefaults();
+
+  // Create a backup of all stored data to the specified file path
+  Future<void> createBackup(String filePath);
+
+  // Restore data from a backup file
+  Future<void> restoreFromBackup(String filePath);
 }

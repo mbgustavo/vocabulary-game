@@ -4,6 +4,7 @@ import 'package:mocktail/mocktail.dart';
 import 'package:vocabulary_game/providers/vocabulary_provider.dart';
 import 'package:vocabulary_game/providers/notifications_provider.dart';
 import 'package:vocabulary_game/models/word.dart';
+import 'package:vocabulary_game/storage/pref_storage.dart';
 import 'package:vocabulary_game/storage/storage_interface.dart';
 
 class MockStorage extends Mock implements StorageInterface {}
@@ -38,7 +39,7 @@ void main() {
       ).thenAnswer((_) async => []);
 
       container = ProviderContainer(
-        overrides: [vocabularyStorageProvider.overrideWithValue(mockStorage)],
+        overrides: [storageProvider.overrideWithValue(mockStorage)],
       );
     });
 
@@ -103,7 +104,7 @@ void main() {
 
         // Create new container with updated mock
         final testContainer = ProviderContainer(
-          overrides: [vocabularyStorageProvider.overrideWithValue(mockStorage)],
+          overrides: [storageProvider.overrideWithValue(mockStorage)],
         );
 
         testContainer.read(vocabularyProvider.notifier);
@@ -432,7 +433,7 @@ void main() {
 
         // Create new container with failing mock
         final testContainer = ProviderContainer(
-          overrides: [vocabularyStorageProvider.overrideWithValue(mockStorage)],
+          overrides: [storageProvider.overrideWithValue(mockStorage)],
         );
         testContainer.read(vocabularyProvider.notifier);
 
