@@ -258,9 +258,9 @@ class PrefStorage implements StorageInterface {
     setLearningLanguage(defaultLanguage.value);
   }
 
-  /// Creates a backup of all shared preferences data to the specified file path
+  /// Gets backup data as JSON string
   @override
-  Future<void> createBackup(String filePath) async {
+  Future<String> getBackupData() async {
     if (_pref == null) {
       await _initialize();
     }
@@ -286,8 +286,14 @@ class PrefStorage implements StorageInterface {
       'data': backupData,
     };
 
-    // Convert to JSON
-    final jsonString = jsonEncode(backupWithMetadata);
+    // Convert to JSON and return
+    return jsonEncode(backupWithMetadata);
+  }
+
+  /// Creates a backup of all shared preferences data to the specified file path
+  @override
+  Future<void> createBackup(String filePath) async {
+    final jsonString = await getBackupData();
 
     // Create the backup file at the specified path
     final backupFile = File(filePath);

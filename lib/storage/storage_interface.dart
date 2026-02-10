@@ -38,6 +38,9 @@ abstract class StorageInterface {
   // Restore all data to default values
   Future<void> restoreDefaults();
 
+  // Get backup data as JSON string
+  Future<String> getBackupData();
+
   // Create a backup of all stored data to the specified file path
   Future<void> createBackup(String filePath);
 
