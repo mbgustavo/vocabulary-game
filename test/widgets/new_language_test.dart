@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
+import 'package:vocabulary_game/storage/pref_storage.dart';
 import 'package:vocabulary_game/widgets/new_language.dart';
 import 'package:vocabulary_game/widgets/flag_selector.dart';
 import 'package:vocabulary_game/models/language.dart';
@@ -53,7 +54,7 @@ void main() {
       return ProviderScope(
         overrides:
             overrides ??
-            [languagesStorageProvider.overrideWithValue(mockStorage)],
+            [storageProvider.overrideWithValue(mockStorage)],
         child: MaterialApp(
           home: Scaffold(body: NewLanguage(initialLanguage: initialLanguage)),
         ),
@@ -172,7 +173,7 @@ void main() {
             createTestWidget(
               overrides: [
                 languagesProvider.overrideWith((ref) => mockLanguagesNotifier),
-                languagesStorageProvider.overrideWithValue(mockStorage),
+                storageProvider.overrideWithValue(mockStorage),
               ],
             ),
           );
@@ -208,7 +209,7 @@ void main() {
             createTestWidget(
               overrides: [
                 languagesProvider.overrideWith((ref) => mockLanguagesNotifier),
-                languagesStorageProvider.overrideWithValue(mockStorage),
+                storageProvider.overrideWithValue(mockStorage),
               ],
             ),
           );
@@ -315,7 +316,7 @@ void main() {
             createTestWidget(
               overrides: [
                 languagesProvider.overrideWith((ref) => mockLanguagesNotifier),
-                languagesStorageProvider.overrideWithValue(mockStorage),
+                storageProvider.overrideWithValue(mockStorage),
               ],
             ),
           );
@@ -357,7 +358,7 @@ void main() {
                 initialLanguage: initialLanguage,
                 overrides: [
                   languagesProvider.overrideWith((ref) => mockLanguagesNotifier),
-                  languagesStorageProvider.overrideWithValue(mockStorage),
+                  storageProvider.overrideWithValue(mockStorage),
                 ],
               ),
             );
@@ -407,7 +408,7 @@ void main() {
             ProviderScope(
               overrides: [
                 languagesProvider.overrideWith((ref) => mockLanguagesNotifier),
-                languagesStorageProvider.overrideWithValue(mockStorage),
+                storageProvider.overrideWithValue(mockStorage),
               ],
               child: MaterialApp(
                 home: Scaffold(
@@ -453,7 +454,7 @@ void main() {
               createTestWidget(
                 overrides: [
                   languagesProvider.overrideWith((ref) => mockLanguagesNotifier),
-                  languagesStorageProvider.overrideWithValue(mockStorage),
+                  storageProvider.overrideWithValue(mockStorage),
                 ],
               ),
             );
@@ -531,7 +532,7 @@ void main() {
           createTestWidget(
             overrides: [
               languagesProvider.overrideWith((ref) => mockLanguagesNotifier),
-              languagesStorageProvider.overrideWithValue(mockStorage),
+              storageProvider.overrideWithValue(mockStorage),
             ],
           ),
         );

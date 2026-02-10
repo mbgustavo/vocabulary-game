@@ -5,11 +5,9 @@ import 'package:vocabulary_game/storage/pref_storage.dart';
 import 'package:vocabulary_game/models/language.dart';
 import 'package:vocabulary_game/providers/notifications_provider.dart';
 
-final languagesStorageProvider = Provider<StorageInterface>((ref) => PrefStorage());
-
 class LanguagesNotifier extends StateNotifier<Map<String, dynamic>> {
   LanguagesNotifier(this.ref) : super({}) {
-    _storage = ref.read(languagesStorageProvider);
+    _storage = ref.read(storageProvider);
     state = {'loading': true};
     Future.microtask(() => loadLanguages());
   }

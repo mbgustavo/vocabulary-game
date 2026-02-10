@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vocabulary_game/models/word.dart';
@@ -351,3 +352,5 @@ class PrefStorage implements StorageInterface {
     }
   }
 }
+
+final storageProvider = Provider<StorageInterface>((ref) => PrefStorage());

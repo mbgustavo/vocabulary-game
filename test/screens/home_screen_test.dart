@@ -10,6 +10,7 @@ import 'package:vocabulary_game/screens/home.dart';
 import 'package:vocabulary_game/screens/game_select.dart';
 import 'package:vocabulary_game/screens/vocabulary.dart';
 import 'package:vocabulary_game/screens/language.dart';
+import 'package:vocabulary_game/storage/pref_storage.dart';
 import 'package:vocabulary_game/storage/storage_interface.dart';
 
 class MockLanguagesNotifier extends LanguagesNotifier {
@@ -272,8 +273,7 @@ void main() {
         ).thenAnswer((_) async => {});
         final providerScope = ProviderScope(
           overrides: [
-            languagesStorageProvider.overrideWithValue(mockStorage),
-            vocabularyStorageProvider.overrideWithValue(mockStorage),
+            storageProvider.overrideWithValue(mockStorage),
             languagesProvider.overrideWith(
               (ref) => MockLanguagesNotifier(ref, testLanguage),
             ),

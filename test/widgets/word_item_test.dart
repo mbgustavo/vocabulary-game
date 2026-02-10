@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:vocabulary_game/storage/pref_storage.dart';
 import 'package:vocabulary_game/widgets/word_item.dart';
 import 'package:vocabulary_game/models/word.dart';
 import 'package:vocabulary_game/models/language.dart';
@@ -73,7 +74,7 @@ void main() {
         languagesProvider.overrideWith((ref) => mockLanguagesNotifier),
         vocabularyProvider.overrideWith((ref) => mockVocabularyNotifier),
         notificationsProvider.overrideWith((ref) => mockNotificationsNotifier),
-        languagesStorageProvider.overrideWithValue(mockStorage),
+        storageProvider.overrideWithValue(mockStorage),
       ],
       child: MaterialApp(
         home: Scaffold(

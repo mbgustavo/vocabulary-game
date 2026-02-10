@@ -4,11 +4,9 @@ import 'package:vocabulary_game/storage/storage_interface.dart';
 import 'package:vocabulary_game/storage/pref_storage.dart';
 import 'package:vocabulary_game/providers/notifications_provider.dart';
 
-final vocabularyStorageProvider = Provider<StorageInterface>((ref) => PrefStorage());
-
 class VocabularyNotifier extends StateNotifier<Map<String, dynamic>> {
   VocabularyNotifier(this.ref) : super({}) {
-    _storage = ref.read(vocabularyStorageProvider);
+    _storage = ref.read(storageProvider);
     state = {'loading': true};
     Future.microtask(() => loadVocabulary());
   }

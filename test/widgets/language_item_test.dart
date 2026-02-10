@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:vocabulary_game/storage/pref_storage.dart';
 import 'package:vocabulary_game/widgets/language_item.dart';
 import 'package:vocabulary_game/widgets/highlighted_text.dart';
 import 'package:vocabulary_game/widgets/new_language.dart';
@@ -66,7 +67,7 @@ void main() {
       return ProviderScope(
         overrides:
             overrides ??
-            [languagesStorageProvider.overrideWithValue(mockStorage)],
+            [storageProvider.overrideWithValue(mockStorage)],
         child: MaterialApp(
           home: Scaffold(
             body: LanguageItem(language: language, isSelected: isSelected),
@@ -170,7 +171,7 @@ void main() {
               isSelected: false,
               overrides: [
                 languagesProvider.overrideWith((ref) => mockLanguagesNotifier),
-                languagesStorageProvider.overrideWithValue(mockStorage),
+                storageProvider.overrideWithValue(mockStorage),
               ],
             ),
           );
@@ -194,7 +195,7 @@ void main() {
               isSelected: true,
               overrides: [
                 languagesProvider.overrideWith((ref) => mockLanguagesNotifier),
-                languagesStorageProvider.overrideWithValue(mockStorage),
+                storageProvider.overrideWithValue(mockStorage),
               ],
             ),
           );
@@ -276,7 +277,7 @@ void main() {
               notificationsProvider.overrideWith(
                 (ref) => mockNotificationsNotifier,
               ),
-              languagesStorageProvider.overrideWithValue(mockStorage),
+              storageProvider.overrideWithValue(mockStorage),
             ],
           ),
         );
@@ -310,7 +311,7 @@ void main() {
               notificationsProvider.overrideWith(
                 (ref) => mockNotificationsNotifier,
               ),
-              languagesStorageProvider.overrideWithValue(mockStorage),
+              storageProvider.overrideWithValue(mockStorage),
             ],
           ),
         );
@@ -342,7 +343,7 @@ void main() {
               notificationsProvider.overrideWith(
                 (ref) => mockNotificationsNotifier,
               ),
-              languagesStorageProvider.overrideWithValue(mockStorage),
+              storageProvider.overrideWithValue(mockStorage),
             ],
           ),
         );
