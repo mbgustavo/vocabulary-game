@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabulary_game/providers/languages_provider.dart';
 import 'package:vocabulary_game/providers/vocabulary_provider.dart';
+import 'package:vocabulary_game/screens/data.dart';
 import 'package:vocabulary_game/screens/game_select.dart';
 import 'package:vocabulary_game/screens/language.dart';
 import 'package:vocabulary_game/screens/vocabulary.dart';
@@ -90,6 +91,16 @@ class HomeScreen extends ConsumerWidget {
           ),
         ],
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.of(
+            context,
+          ).push(MaterialPageRoute(builder: (ctx) => DataScreen()));
+        },
+        tooltip: 'Data Menu',
+        child: const Icon(Icons.storage),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 }
