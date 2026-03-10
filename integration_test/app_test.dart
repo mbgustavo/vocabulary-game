@@ -56,7 +56,7 @@ void main() {
       expect(find.byType(HomeScreen), findsOneWidget);
 
       // Navigate to Languages section
-      await tester.tap(find.text('Learning languages'));
+      await tester.tap(find.text('Learning Languages'));
       await tester.pumpAndSettle();
 
       // Verify we're in the languages screen

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:vocabulary_game/models/word.dart';
 import 'package:vocabulary_game/widgets/game_completed.dart';
 import 'package:vocabulary_game/widgets/word_card.dart';
@@ -134,9 +135,10 @@ class _ConnectionGameState extends State<ConnectionGame> {
       input.status = WordStatus.error;
       answer.status = WordStatus.error;
     });
+    final l10n = AppLocalizations.of(context)!;
     ScaffoldMessenger.of(
       context,
-    ).showSnackBar(SnackBar(content: Text('Incorrect match! Try again.')));
+    ).showSnackBar(SnackBar(content: Text(l10n.incorrectMatch)));
   }
 
   @override

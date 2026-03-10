@@ -1,0 +1,143 @@
+{
+  "@@locale": "pt",
+  "appTitle": "Jogo de Vocabulário",
+  "appLoading": "Carregando...",
+  "homeWelcome": "Bem-vindo ao Jogo de Vocabulário!",
+  "homeYouAreLearning": "Você está aprendendo {language}",
+  "homeStartGame": "Iniciar jogo",
+  "homeVocabularyTooSmall": "Você precisa de pelo menos 5 palavras para começar um jogo",
+  "homeLanguages": "Idiomas de aprendizagem",
+  "homeVocabulary": "Vocabulário",
+  "languagesTitle": "Idiomas de aprendizagem",
+  "languagesAdd": "Adicionar idioma",
+  "languagesSelect": "Selecionar idioma de aprendizagem",
+  "languagesCurrent": "Atual: {language}",
+  "vocabularyTitle": "Vocabulário",
+  "vocabularyAddWord": "Adicionar palavra",
+  "vocabularyNoWords": "Nenhuma palavra ainda. Adicione algumas para começar!",
+  "vocabularyDeleteConfirm": "Tem certeza que deseja excluir esta palavra?",
+  "vocabularyDelete": "Excluir",
+  "vocabularyCancel": "Cancelar",
+  "gameSelectTitle": "Selecione o jogo",
+  "gameSelectGameMode": "Selecione um modo de jogo:",
+  "gameDifficultyEasy": "Fácil",
+  "gameDifficultyMedium": "Médio",
+  "gameDifficultyHard": "Difícil",
+  "gameDifficultyRandom": "Aleatório",
+  "gameConnectWords": "Conectar palavras",
+  "gameMultipleChoice": "Múltipla escolha",
+  "gameWriteWords": "Escrever palavras",
+  "connectionGameTitle": "Jogo de Conexão",
+  "multipleChoiceGameTitle": "Jogo de Múltipla Escolha",
+  "writeGameTitle": "Jogo de Escrita",
+  "gameFromTranslations": "de traduções",
+  "gameAnyGameMode": "Qualquer modo de jogo",
+  "gameFlashcards": "Cartões de memória",
+  "gameTyping": "Digitação",
+  "gamePlayButton": "Jogar",
+  "gameBack": "Voltar",
+  "gameScore": "Pontuação: {score}",
+  "gameCompleted": "Jogo completo!",
+  "gameFinalScore": "Pontuação final: {score}",
+  "dataTitle": "Gerenciar dados",
+  "dataTooltip": "Menu de dados",
+  "dataExport": "Exportar vocabulário",
+  "dataImport": "Importar vocabulário",
+  "dataClear": "Limpar todos os dados",
+  "dataClearConfirm": "Isso excluirá todos os seus dados. Esta ação não pode ser desfeita.",
+  "newWordTitle": "Adicionar nova palavra",
+  "newWordInputLabel": "Palavra em idioma de aprendizagem",
+  "newWordTranslationLabel": "Tradução em seu idioma",
+  "newWordExamplesLabel": "Exemplos (opcional)",
+  "newWordWord": "Palavra",
+  "newWordTranslation": "Tradução",
+  "newWordExample": "Exemplo (opcional)",
+  "newWordSave": "Salvar",
+  "fluencyLevel": "Nível de fluência",
+  "fluencyLevelHelper": "Palavras com níveis de fluência mais baixos aparecerão com mais frequência nos jogos.",
+  "validationCharacterRange": "Deve ter entre {minLength} e {maxLength} caracteres.",
+  "errorTitle": "Erro",
+  "errorLoadingData": "Erro ao carregar dados",
+  "errorSavingData": "Erro ao guardar dados",
+  "successTitle": "Sucesso",
+  "successWordAdded": "Palavra adicionada com sucesso",
+  "commonCancel": "Cancelar",
+  "commonDelete": "Excluir",
+  "commonSave": "Salvar",
+  "commonNext": "Próximo",
+  "commonPlayAgain": "Jogar novamente",
+  "commonRestore": "Restaurar",
+  "allLanguages": "Todos os idiomas",
+  "nameLabel": "Nome",
+  "deleteLanguageTitle": "Excluir idioma",
+  "deleteWordTitle": "Excluir palavra",
+  "incorrectMatch": "Correspondência incorreta! Tente novamente.",
+  "vocabularyEmptyMessage": "Nenhuma palavra neste vocabulário.",
+  "saveLanguage": "Salvar idioma",
+  "restoreDefaults": "Restaurar padrões",
+  "confirmRestore": "Confirmar restauração",
+  "gameWriteInstruction": "Escreva a tradução da palavra:",
+  "gameAnswerLabel": "Sua resposta",
+  "gameSubmit": "Enviar",
+  "gameCompleteMessage": "Parabéns! Você completou o jogo!",
+  "deleteLanguageConfirm": "Tem certeza que deseja excluir {language} e seu vocabulário? Esta ação não pode ser desfeita.",
+  "deleteWordTitle": "Excluir palavra",
+  "deleteWordConfirm": "Tem certeza que deseja excluir a palavra {word}? Esta ação não pode ser desfeita.",
+  "noWordsInVocabulary": "Nenhuma palavra neste vocabulário.",
+  "dataManageTitle": "Gerencie seus dados de vocabulário",
+  "dataSaveBackupTitle": "Salvar backup",
+  "dataSaveBackupSubtitle": "Salve seu vocabulário e idiomas atuais",
+  "dataRestoreBackupTitle": "Restaurar backup",
+  "dataRestoreBackupSubtitle": "Restaurar a partir de um backup salvo anteriormente",
+  "dataRestoreDefaultsTitle": "Restaurar padrões",
+  "dataRestoreDefaultsSubtitle": "Redefina para os padrões e limpe todos os dados",
+  "dataSaveFileDialogTitle": "Salvar backup de vocabulário",
+  "dataSaveSuccessMessage": "Backup salvo com sucesso em: {filename}",
+  "@dataSaveSuccessMessage": {
+    "description": "Success message when backup is saved",
+    "placeholders": {
+      "filename": {
+        "type": "String",
+        "example": "my_vocabulary_backup_2024-01-01.json"
+      }
+    }
+  },
+  "dataSaveErrorMessage": "Falha ao salvar o backup: {error}",
+  "@dataSaveErrorMessage": {
+    "description": "Error message when backup fails to save",
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Permission denied"
+      }
+    }
+  },
+  "dataRestoreFileDialogTitle": "Selecione o arquivo de backup para restaurar",
+  "dataRestoreErrorMessage": "Falha ao restaurar o backup: {error}",
+  "@dataRestoreErrorMessage": {
+    "description": "Error message when backup fails to restore",
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Invalid file format"
+      }
+    }
+  },
+  "dataRestoreDefaultsConfirmMessage": "Isso excluirá todos os seus dados de vocabulário e idiomas, retornando o aplicativo ao seu estado inicial. Você pode criar um backup primeiro se desejar salvar seus dados atuais. Esta ação não pode ser desfeita.\n\nTem certeza de que deseja continuar?",
+  "dataRestoreDefaultsSuccessMessage": "Padrões restaurados com sucesso",
+  "dataRestoreDefaultsErrorMessage": "Falha ao restaurar os padrões: {error}",
+  "@dataRestoreDefaultsErrorMessage": {
+    "description": "Error message when restore to defaults fails",
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Storage error"
+      }
+    }
+  },
+  "dataConfirmRestoreTitle": "Confirmar restauração",
+  "dataConfirmRestoreMessage": "Isso substituirá todos os seus dados atuais pelos dados do backup. Esta ação não pode ser desfeita.\n\nTem certeza de que deseja continuar?",
+  "dataRestoreSuccessMessage": "Backup restaurado com sucesso",
+  "dataRestoreDefaultsButton": "Restaurar padrões",
+  "dataRestoreButton": "Restaurar"
+}

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:vocabulary_game/models/language.dart';
 import 'package:vocabulary_game/providers/notifications_provider.dart';
 import 'package:vocabulary_game/providers/languages_provider.dart';
@@ -43,23 +44,24 @@ class LanguageItem extends ConsumerWidget {
     BuildContext context,
     WidgetRef ref,
   ) {
+    final l10n = AppLocalizations.of(context)!;
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Delete Language'),
+          title: Text(l10n.deleteLanguageTitle),
           content: Text(
-            "Are you sure you want to delete ${language.name} and its vocabulary? This action can't be undone.",
+            l10n.deleteLanguageConfirm(language.name),
           ),
           actions: [
             TextButton(
-              child: Text('Cancel'),
+              child: Text(l10n.commonCancel),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             ElevatedButton(
-              child: Text('Delete'),
+              child: Text(l10n.commonDelete),
               onPressed: () => _onDelete(context, ref),
             ),
           ],

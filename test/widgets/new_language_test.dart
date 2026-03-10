@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:vocabulary_game/storage/pref_storage.dart';
 import 'package:vocabulary_game/widgets/new_language.dart';
@@ -9,6 +11,8 @@ import 'package:vocabulary_game/widgets/flag_selector.dart';
 import 'package:vocabulary_game/models/language.dart';
 import 'package:vocabulary_game/providers/languages_provider.dart';
 import 'package:vocabulary_game/storage/storage_interface.dart';
+
+import '../helpers/test_app_wrapper.dart';
 
 class MockStorage extends Mock implements StorageInterface {}
 
@@ -53,10 +57,9 @@ void main() {
     }) {
       return ProviderScope(
         overrides:
-            overrides ??
-            [storageProvider.overrideWithValue(mockStorage)],
-        child: MaterialApp(
-          home: Scaffold(body: NewLanguage(initialLanguage: initialLanguage)),
+            overrides ?? [storageProvider.overrideWithValue(mockStorage)],
+        child: createTestAppWrapper(
+          child: Scaffold(body: NewLanguage(initialLanguage: initialLanguage)),
         ),
       );
     }
@@ -357,7 +360,9 @@ void main() {
               createTestWidget(
                 initialLanguage: initialLanguage,
                 overrides: [
-                  languagesProvider.overrideWith((ref) => mockLanguagesNotifier),
+                  languagesProvider.overrideWith(
+                    (ref) => mockLanguagesNotifier,
+                  ),
                   storageProvider.overrideWithValue(mockStorage),
                 ],
               ),
@@ -411,6 +416,21 @@ void main() {
                 storageProvider.overrideWithValue(mockStorage),
               ],
               child: MaterialApp(
+                locale: const Locale('en'),
+                localizationsDelegates: const [
+                  AppLocalizations.delegate,
+                  GlobalMaterialLocalizations.delegate,
+                  GlobalWidgetsLocalizations.delegate,
+                  GlobalCupertinoLocalizations.delegate,
+                ],
+                supportedLocales: const [
+                  Locale('en'),
+                  Locale('es'),
+                  Locale('fr'),
+                  Locale('de'),
+                  Locale('it'),
+                  Locale('pt'),
+                ],
                 home: Scaffold(
                   body: Builder(
                     builder:
@@ -453,7 +473,9 @@ void main() {
             await tester.pumpWidget(
               createTestWidget(
                 overrides: [
-                  languagesProvider.overrideWith((ref) => mockLanguagesNotifier),
+                  languagesProvider.overrideWith(
+                    (ref) => mockLanguagesNotifier,
+                  ),
                   storageProvider.overrideWithValue(mockStorage),
                 ],
               ),
@@ -489,6 +511,21 @@ void main() {
           await tester.pumpWidget(
             ProviderScope(
               child: MaterialApp(
+                locale: const Locale('en'),
+                localizationsDelegates: const [
+                  AppLocalizations.delegate,
+                  GlobalMaterialLocalizations.delegate,
+                  GlobalWidgetsLocalizations.delegate,
+                  GlobalCupertinoLocalizations.delegate,
+                ],
+                supportedLocales: const [
+                  Locale('en'),
+                  Locale('es'),
+                  Locale('fr'),
+                  Locale('de'),
+                  Locale('it'),
+                  Locale('pt'),
+                ],
                 home: Scaffold(
                   body: Builder(
                     builder:

@@ -3,6 +3,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:vocabulary_game/widgets/word_card.dart';
 import 'package:vocabulary_game/models/word.dart';
 
+import '../helpers/test_app_wrapper.dart';
+
 void main() {
   group('WordCard Widget Tests', () {
     // Helper function to create test words
@@ -30,8 +32,8 @@ void main() {
       String Function(WordInGame)? getText,
       void Function(WordInGame)? onTap,
     }) {
-      return MaterialApp(
-        home: Scaffold(
+      return createTestAppWrapper(
+        child: Scaffold(
           body: WordCard(
             word: word,
             getText: getText ?? (w) => w.input,

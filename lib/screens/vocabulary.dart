@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:vocabulary_game/providers/languages_provider.dart';
 import 'package:vocabulary_game/providers/vocabulary_provider.dart';
 import 'package:vocabulary_game/screens/new_word.dart';
@@ -27,7 +28,7 @@ class _VocabularyScreenState extends ConsumerState<VocabularyScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Vocabulary'),
+        title: Text(AppLocalizations.of(context)!.vocabularyTitle),
         actions: [
           IconButton(
             icon: const Icon(Icons.add),

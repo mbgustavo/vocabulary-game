@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:vocabulary_game/providers/languages_provider.dart';
 import 'package:vocabulary_game/providers/vocabulary_provider.dart';
 import 'package:vocabulary_game/screens/data.dart';
@@ -21,7 +22,7 @@ class HomeScreen extends ConsumerWidget {
         ref.read(vocabularyProvider.notifier).getVocabulary(language: learningLanguage.value);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Vocabulary Game')),
+      appBar: AppBar(title: Text(AppLocalizations.of(context)!.appTitle)),
       body: Stack(
         children: [
           NotificationBanners(),
@@ -29,9 +30,9 @@ class HomeScreen extends ConsumerWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text('Welcome to Vocabulary Game!'),
+                Text(AppLocalizations.of(context)!.homeWelcome),
                 SizedBox(height: 20),
-                Text('You are learning ${learningLanguage.name}'),
+                Text(AppLocalizations.of(context)!.homeYouAreLearning(learningLanguage.name)),
                 SizedBox(height: 80),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
@@ -45,13 +46,13 @@ class HomeScreen extends ConsumerWidget {
                       ),
                     );
                   },
-                  child: const Text('Start game'),
+                  child: Text(AppLocalizations.of(context)!.homeStartGame),
                 ),
                 if (vocabulary.length < 5)
                   Padding(
                     padding: const EdgeInsets.all(8),
                     child: Text(
-                      'You need at least 5 words in your vocabulary to start the game.',
+                      AppLocalizations.of(context)!.homeVocabularyTooSmall,
                       style: TextStyle(color: Theme.of(context).colorScheme.error),
                       textAlign: TextAlign.center,
                     ),
@@ -69,7 +70,7 @@ class HomeScreen extends ConsumerWidget {
                       ),
                     );
                   },
-                  child: const Text('Vocabulary'),
+                  child: Text(AppLocalizations.of(context)!.homeVocabulary),
                 ),
                 SizedBox(height: 40),
                 ElevatedButton(
@@ -84,7 +85,7 @@ class HomeScreen extends ConsumerWidget {
                       ),
                     );
                   },
-                  child: const Text('Learning languages'),
+                  child: Text(AppLocalizations.of(context)!.homeLanguages),
                 ),
               ],
             ),
@@ -97,7 +98,7 @@ class HomeScreen extends ConsumerWidget {
             context,
           ).push(MaterialPageRoute(builder: (ctx) => DataScreen()));
         },
-        tooltip: 'Data Menu',
+        tooltip: AppLocalizations.of(context)!.dataTooltip,
         child: const Icon(Icons.storage),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,

@@ -10,6 +10,8 @@ import 'package:vocabulary_game/providers/vocabulary_provider.dart';
 import 'package:vocabulary_game/models/language.dart';
 import 'package:vocabulary_game/models/word.dart';
 
+import '../helpers/test_app_wrapper.dart';
+
 // Mock classes
 class MockStorage extends Mock implements StorageInterface {}
 
@@ -47,7 +49,9 @@ void main() {
   setUpAll(() {
     // Register fallback values for mocktail
     registerFallbackValue(Language('Test', '🔤'));
-    registerFallbackValue(Word(language: 'test', input: 'test', translation: 'test'));
+    registerFallbackValue(
+      Word(language: 'test', input: 'test', translation: 'test'),
+    );
   });
 
   setUp(() {
@@ -61,13 +65,15 @@ void main() {
         languagesProvider.overrideWith((ref) => MockLanguagesNotifier(ref)),
         vocabularyProvider.overrideWith((ref) => MockVocabularyNotifier(ref)),
       ],
-      child: const MaterialApp(home: DataScreen()),
+      child: createTestAppWrapper(child: const DataScreen()),
     );
   }
 
   group('DataScreen Widget Tests', () {
     group('Widget Display Tests', () {
-      testWidgets('renders correctly with all UI elements', (WidgetTester tester) async {
+      testWidgets('renders correctly with all UI elements', (
+        WidgetTester tester,
+      ) async {
         await tester.pumpWidget(createTestWidget());
         await tester.pumpAndSettle();
 
@@ -75,16 +81,25 @@ void main() {
         expect(find.byType(DataScreen), findsOneWidget);
         expect(find.text('Data Management'), findsOneWidget);
         expect(find.text('Manage your vocabulary data'), findsOneWidget);
-        
+
         // Verify all three main options are present
         expect(find.text('Save Backup'), findsOneWidget);
         expect(find.text('Restore Backup'), findsOneWidget);
         expect(find.text('Restore Defaults'), findsOneWidget);
-        
+
         // Verify subtitles
-        expect(find.text('Save your current vocabulary and languages'), findsOneWidget);
-        expect(find.text('Restore from a previously saved backup'), findsOneWidget);
-        expect(find.text('Reset to default settings and clear all data'), findsOneWidget);
+        expect(
+          find.text('Save your current vocabulary and languages'),
+          findsOneWidget,
+        );
+        expect(
+          find.text('Restore from a previously saved backup'),
+          findsOneWidget,
+        );
+        expect(
+          find.text('Reset to default settings and clear all data'),
+          findsOneWidget,
+        );
 
         // Verify icons
         expect(find.byIcon(Icons.save), findsOneWidget);
@@ -98,7 +113,9 @@ void main() {
     });
 
     group('Restore Defaults Functionality', () {
-      testWidgets('restore defaults shows confirmation dialog', (WidgetTester tester) async {
+      testWidgets('restore defaults shows confirmation dialog', (
+        WidgetTester tester,
+      ) async {
         await tester.pumpWidget(createTestWidget());
         await tester.pumpAndSettle();
 
@@ -107,19 +124,30 @@ void main() {
 
         // Verify confirmation dialog appears
         expect(find.byType(AlertDialog), findsOneWidget);
-        expect(find.textContaining('This will delete all your vocabulary data'), findsOneWidget);
-        expect(find.textContaining('This action cannot be undone'), findsOneWidget);
+        expect(
+          find.textContaining('This will delete all your vocabulary data'),
+          findsOneWidget,
+        );
+        expect(
+          find.textContaining('This action cannot be undone'),
+          findsOneWidget,
+        );
         expect(find.text('Cancel'), findsOneWidget);
-        
+
         // Find the restore defaults button in the dialog (not in the list)
         final dialogButtons = find.descendant(
           of: find.byType(AlertDialog),
           matching: find.byType(TextButton),
         );
-        expect(dialogButtons, findsNWidgets(2)); // Cancel and Restore Defaults buttons
+        expect(
+          dialogButtons,
+          findsNWidgets(2),
+        ); // Cancel and Restore Defaults buttons
       });
 
-      testWidgets('restore defaults performs action when confirmed', (WidgetTester tester) async {
+      testWidgets('restore defaults performs action when confirmed', (
+        WidgetTester tester,
+      ) async {
         when(() => mockStorage.restoreDefaults()).thenAnswer((_) async {});
 
         await tester.pumpWidget(createTestWidget());
@@ -132,11 +160,14 @@ void main() {
         final dialogRestoreButton = find.descendant(
           of: find.byType(AlertDialog),
           matching: find.byWidgetPredicate(
-            (widget) => widget is TextButton && widget.child is Text && (widget.child as Text).data == 'Restore Defaults',
+            (widget) =>
+                widget is TextButton &&
+                widget.child is Text &&
+                (widget.child as Text).data == 'Restore Defaults',
           ),
         );
         expect(dialogRestoreButton, findsOneWidget);
-        
+
         await tester.tap(dialogRestoreButton);
         await tester.pumpAndSettle();
 
@@ -144,10 +175,15 @@ void main() {
         verify(() => mockStorage.restoreDefaults()).called(1);
 
         // Verify success message
-        expect(find.textContaining('Successfully restored to defaults'), findsOneWidget);
+        expect(
+          find.textContaining('Successfully restored to defaults'),
+          findsOneWidget,
+        );
       });
 
-      testWidgets('restore defaults handles cancellation', (WidgetTester tester) async {
+      testWidgets('restore defaults handles cancellation', (
+        WidgetTester tester,
+      ) async {
         await tester.pumpWidget(createTestWidget());
         await tester.pumpAndSettle();
 
@@ -161,8 +197,12 @@ void main() {
         verifyNever(() => mockStorage.restoreDefaults());
       });
 
-      testWidgets('restore defaults handles errors gracefully', (WidgetTester tester) async {
-        when(() => mockStorage.restoreDefaults()).thenThrow(Exception('Storage error'));
+      testWidgets('restore defaults handles errors gracefully', (
+        WidgetTester tester,
+      ) async {
+        when(
+          () => mockStorage.restoreDefaults(),
+        ).thenThrow(Exception('Storage error'));
 
         await tester.pumpWidget(createTestWidget());
         await tester.pumpAndSettle();
@@ -174,14 +214,20 @@ void main() {
         final dialogRestoreButton = find.descendant(
           of: find.byType(AlertDialog),
           matching: find.byWidgetPredicate(
-            (widget) => widget is TextButton && widget.child is Text && (widget.child as Text).data == 'Restore Defaults',
+            (widget) =>
+                widget is TextButton &&
+                widget.child is Text &&
+                (widget.child as Text).data == 'Restore Defaults',
           ),
         );
         await tester.tap(dialogRestoreButton);
         await tester.pumpAndSettle();
 
         // Verify error message
-        expect(find.textContaining('Failed to restore defaults'), findsOneWidget);
+        expect(
+          find.textContaining('Failed to restore defaults'),
+          findsOneWidget,
+        );
       });
     });
   });

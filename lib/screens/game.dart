@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabulary_game/games/connection_game.dart';
 import 'package:vocabulary_game/games/get_words_for_game.dart';
@@ -39,16 +40,17 @@ class _GameScreenState extends ConsumerState<GameScreen> {
     _resetGame();
   }
 
-  String get gameTitle {
+  String getGameTitle(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     switch (widget.game) {
       case Game.connection:
-        return 'Connection Game';
+        return l10n.connectionGameTitle;
       case Game.multipleChoice:
       case Game.multipleChoiceReversed:
-        return 'Multiple Choice Game';
+        return l10n.multipleChoiceGameTitle;
       case Game.write:
       case Game.writeReversed:
-        return 'Write Game';
+        return l10n.writeGameTitle;
     }
   }
 
@@ -100,6 +102,6 @@ class _GameScreenState extends ConsumerState<GameScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(appBar: AppBar(title: Text(gameTitle)), body: gameWidget);
+    return Scaffold(appBar: AppBar(title: Text(getGameTitle(context))), body: gameWidget);
   }
 }

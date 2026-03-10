@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:vocabulary_game/models/word.dart';
 import 'package:vocabulary_game/models/language.dart';
 import 'package:vocabulary_game/providers/languages_provider.dart';
@@ -12,6 +14,8 @@ import 'package:vocabulary_game/screens/vocabulary.dart';
 import 'package:vocabulary_game/screens/language.dart';
 import 'package:vocabulary_game/storage/pref_storage.dart';
 import 'package:vocabulary_game/storage/storage_interface.dart';
+
+import '../helpers/test_app_wrapper.dart';
 
 class MockLanguagesNotifier extends LanguagesNotifier {
   final Language _testLanguage;
@@ -96,7 +100,7 @@ void main() {
             (ref) => MockVocabularyNotifier(ref, mockWords),
           ),
         ],
-        child: const MaterialApp(home: HomeScreen()),
+        child: createTestAppWrapper(child: const HomeScreen()),
       );
     }
 
@@ -115,7 +119,7 @@ void main() {
         );
         expect(find.text('Start game'), findsOneWidget);
         expect(find.text('Vocabulary'), findsOneWidget);
-        expect(find.text('Learning languages'), findsOneWidget);
+        expect(find.text('Learning Languages'), findsOneWidget);
         expect(find.byType(ElevatedButton), findsNWidgets(3));
       });
     });
@@ -137,9 +141,7 @@ void main() {
           expect(elevatedButton.onPressed, isNotNull);
 
           expect(
-            find.text(
-              'You need at least 5 words in your vocabulary to start the game.',
-            ),
+            find.text('You need at least 5 words to start a game'),
             findsNothing,
           );
 
@@ -167,9 +169,7 @@ void main() {
           final elevatedButton = tester.widget<ElevatedButton>(startGameButton);
           expect(elevatedButton.onPressed, isNull);
           expect(
-            find.text(
-              'You need at least 5 words in your vocabulary to start the game.',
-            ),
+            find.text('You need at least 5 words to start a game'),
             findsOneWidget,
           );
 
@@ -196,20 +196,19 @@ void main() {
         expect(find.byType(VocabularyScreen), findsOneWidget);
       });
 
-      testWidgets(
-        'Learning languages button navigates to LanguageScreen',
-        (WidgetTester tester) async {
-          await tester.pumpWidget(createTestWidget(mockWordsSufficient));
-          await tester.pumpAndSettle();
+      testWidgets('Learning languages button navigates to LanguageScreen', (
+        WidgetTester tester,
+      ) async {
+        await tester.pumpWidget(createTestWidget(mockWordsSufficient));
+        await tester.pumpAndSettle();
 
-          await tester.tap(
-            find.widgetWithText(ElevatedButton, 'Learning languages'),
-          );
-          await tester.pumpAndSettle();
+        await tester.tap(
+          find.widgetWithText(ElevatedButton, 'Learning Languages'),
+        );
+        await tester.pumpAndSettle();
 
-          expect(find.byType(LanguageScreen), findsOneWidget);
-        },
-      );
+        expect(find.byType(LanguageScreen), findsOneWidget);
+      });
     });
 
     group('Edge Case Tests', () {
@@ -228,9 +227,7 @@ void main() {
         final elevatedButton = tester.widget<ElevatedButton>(startGameButton);
         expect(elevatedButton.onPressed, isNotNull);
         expect(
-          find.text(
-            'You need at least 5 words in your vocabulary to start the game.',
-          ),
+          find.text('You need at least 5 words to start a game'),
           findsNothing,
         );
       });
@@ -249,9 +246,7 @@ void main() {
         final elevatedButton = tester.widget<ElevatedButton>(startGameButton);
         expect(elevatedButton.onPressed, isNull);
         expect(
-          find.text(
-            'You need at least 5 words in your vocabulary to start the game.',
-          ),
+          find.text('You need at least 5 words to start a game'),
           findsOneWidget,
         );
       });
@@ -281,7 +276,24 @@ void main() {
               (ref) => MockVocabularyNotifier(ref, mockWordsSufficient),
             ),
           ],
-          child: const MaterialApp(home: HomeScreen()),
+          child: MaterialApp(
+            locale: const Locale('en'),
+            localizationsDelegates: const [
+              AppLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: const [
+              Locale('en'),
+              Locale('es'),
+              Locale('fr'),
+              Locale('de'),
+              Locale('it'),
+              Locale('pt'),
+            ],
+            home: HomeScreen(),
+          ),
         );
         await tester.pumpWidget(providerScope);
         await tester.pumpAndSettle();

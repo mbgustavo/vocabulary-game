@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:vocabulary_game/models/language.dart';
 
 class LanguageDropdown extends StatelessWidget {
@@ -17,11 +18,12 @@ class LanguageDropdown extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return DropdownButtonFormField(
       value: selectedLanguage,
       items: [
         if (showAllLanguages)
-          DropdownMenuItem(value: '', child: Text('All Languages')),
+          DropdownMenuItem(value: '', child: Text(l10n.allLanguages)),
         for (final language in languages)
           DropdownMenuItem(
             value: language.value,

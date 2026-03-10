@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:vocabulary_game/screens/game.dart';
 
 class GameSelectScreen extends ConsumerWidget {
@@ -23,19 +24,20 @@ class GameSelectScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
-      appBar: AppBar(title: const Text('Select game')),
+      appBar: AppBar(title: Text(l10n.gameSelectTitle)),
       body: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              'Select a game mode:',
+              l10n.gameSelectGameMode,
               style: Theme.of(context).textTheme.headlineSmall,
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 40),
-            Text("Easy", style: Theme.of(context).textTheme.labelSmall),
+            Text(l10n.gameDifficultyEasy, style: Theme.of(context).textTheme.labelSmall),
             const SizedBox(height: 8),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
@@ -45,10 +47,10 @@ class GameSelectScreen extends ConsumerWidget {
               onPressed: () {
                 _navigateToGame(context, ref, Game.connection);
               },
-              child: const Text('Connect Words', textAlign: TextAlign.center),
+              child: Text(l10n.gameConnectWords, textAlign: TextAlign.center),
             ),
             const SizedBox(height: 8),
-            Text("Medium", style: Theme.of(context).textTheme.labelSmall),
+            Text(l10n.gameDifficultyMedium, style: Theme.of(context).textTheme.labelSmall),
             const SizedBox(height: 8),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
@@ -58,7 +60,7 @@ class GameSelectScreen extends ConsumerWidget {
               onPressed: () {
                 _navigateToGame(context, ref, Game.multipleChoice);
               },
-              child: const Text('Multiple Choice', textAlign: TextAlign.center),
+              child: Text(l10n.gameMultipleChoice, textAlign: TextAlign.center),
             ),
             const SizedBox(height: 8),
             ElevatedButton(
@@ -69,13 +71,13 @@ class GameSelectScreen extends ConsumerWidget {
               onPressed: () {
                 _navigateToGame(context, ref, Game.multipleChoiceReversed);
               },
-              child: const Text(
-                'Multiple Choice\n(from translations)',
+              child: Text(
+                '${l10n.gameMultipleChoice}\n(${l10n.gameFromTranslations})',
                 textAlign: TextAlign.center,
               ),
             ),
             const SizedBox(height: 8),
-            Text("Hard", style: Theme.of(context).textTheme.labelSmall),
+            Text(l10n.gameDifficultyHard, style: Theme.of(context).textTheme.labelSmall),
             const SizedBox(height: 8),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
@@ -85,8 +87,8 @@ class GameSelectScreen extends ConsumerWidget {
               onPressed: () {
                 _navigateToGame(context, ref, Game.write);
               },
-              child: const Text(
-                'Write Words',
+              child: Text(
+                l10n.gameWriteWords,
                 textAlign: TextAlign.center,
               ),
             ),
@@ -99,13 +101,13 @@ class GameSelectScreen extends ConsumerWidget {
               onPressed: () {
                 _navigateToGame(context, ref, Game.writeReversed);
               },
-              child: const Text(
-                'Write Words\n(from translations)',
+              child: Text(
+                '${l10n.gameWriteWords}\n(${l10n.gameFromTranslations})',
                 textAlign: TextAlign.center,
               ),
             ),
             const SizedBox(height: 8),
-            Text("Random", style: Theme.of(context).textTheme.labelSmall),
+            Text(l10n.gameDifficultyRandom, style: Theme.of(context).textTheme.labelSmall),
             const SizedBox(height: 8),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
@@ -115,8 +117,8 @@ class GameSelectScreen extends ConsumerWidget {
               onPressed: () {
                 _navigateToRandomGame(context, ref);
               },
-              child: const Text(
-                'Any Game Mode',
+              child: Text(
+                l10n.gameAnyGameMode,
                 textAlign: TextAlign.center,
               ),
             ),

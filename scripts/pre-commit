@@ -1,0 +1,11 @@
+#!/bin/bash
+
+echo "Running code formatting..."
+
+# Format all Dart files
+flutter format lib test integration_test --fix
+
+# Add the formatted files back to staging
+git add -A
+
+echo "Code formatting complete."

@@ -1,0 +1,144 @@
+{
+  "@@locale": "de",
+  "appTitle": "Vokabel-Spiel",
+  "appLoading": "Wird geladen...",
+  "homeWelcome": "Willkommen zum Vokabel-Spiel!",
+  "homeYouAreLearning": "Du lernst {language}",
+  "homeStartGame": "Spiel starten",
+  "homeVocabularyTooSmall": "Du brauchst mindestens 5 Wörter, um ein Spiel zu starten",
+  "homeLanguages": "Lernsprachen",
+  "homeVocabulary": "Vokabeln",
+  "languagesTitle": "Lernsprachen",
+  "languagesAdd": "Sprache hinzufügen",
+  "languagesSelect": "Lernsprache auswählen",
+  "languagesCurrent": "Aktuell: {language}",
+  "vocabularyTitle": "Vokabeln",
+  "vocabularyAddWord": "Wort hinzufügen",
+  "vocabularyNoWords": "Noch keine Wörter. Fügen Sie welche hinzu, um zu beginnen!",
+  "vocabularyDeleteConfirm": "Bist du sicher, dass du dieses Wort löschen möchtest?",
+  "vocabularyDelete": "Löschen",
+  "vocabularyCancel": "Abbrechen",
+  "gameSelectTitle": "Spiel auswählen",
+  "gameSelectGameMode": "Wählen Sie einen Spielmodus:",
+  "gameDifficultyEasy": "Leicht",
+  "gameDifficultyMedium": "Mittel",
+  "gameDifficultyHard": "Schwer",
+  "gameDifficultyRandom": "Zufällig",
+  "gameConnectWords": "Wörter verbinden",
+  "gameMultipleChoice": "Multiple-Choice",
+  "gameWriteWords": "Wörter schreiben",
+  "connectionGameTitle": "Verbindungsspiel",
+  "multipleChoiceGameTitle": "Multiple-Choice-Spiel",
+  "writeGameTitle": "Schreibspiel",
+  "gameFromTranslations": "von Übersetzungen",
+  "gameAnyGameMode": "Beliebiger Spielmodus",
+  "gameFlashcards": "Karteikarten",
+  "gameTyping": "Tippen",
+  "gamePlayButton": "Spielen",
+  "gameBack": "Zurück",
+  "gameScore": "Punktzahl: {score}",
+  "gameCompleted": "Spiel abgeschlossen!",
+  "gameFinalScore": "Endsumme: {score}",
+  "dataTitle": "Daten verwalten",
+  "dataTooltip": "Datenmenu",
+  "dataExport": "Vokabeln exportieren",
+  "dataImport": "Vokabeln importieren",
+  "dataClear": "Alle Daten löschen",
+  "dataClearConfirm": "Dadurch werden alle Ihre Daten gelöscht. Diese Aktion kann nicht rückgängig gemacht werden.",
+  "newWordTitle": "Neues Wort hinzufügen",
+  "newWordInputLabel": "Wort in Lernsprache",
+  "newWordTranslationLabel": "Übersetzung in Ihre Sprache",
+  "newWordExamplesLabel": "Beispiele (optional)",
+  "newWordWord": "Wort",
+  "newWordTranslation": "Übersetzung",
+  "newWordExample": "Beispiel (optional)",
+  "newWordSave": "Speichern",
+  "fluencyLevel": "Sprachniveau",
+  "fluencyLevelHelper": "Wörter mit niedrigeren Sprachniveaus werden in Spielen häufiger angezeigt.",
+  "validationCharacterRange": "Muss zwischen {minLength} und {maxLength} Zeichen liegen.",
+  "errorTitle": "Fehler",
+  "errorLoadingData": "Fehler beim Laden der Daten",
+  "errorSavingData": "Fehler beim Speichern der Daten",
+  "successTitle": "Erfolg",
+  "successWordAdded": "Wort erfolgreich hinzugefügt",
+  "commonCancel": "Abbrechen",
+  "commonDelete": "Löschen",
+  "commonSave": "Speichern",
+  "commonNext": "Weiter",
+  "commonPlayAgain": "Nochmal spielen",
+  "commonRestore": "Wiederherstellen",
+  "allLanguages": "Alle Sprachen",
+  "nameLabel": "Name",
+  "deleteLanguageTitle": "Sprache löschen",
+  "deleteWordTitle": "Wort löschen",
+  "incorrectMatch": "Falsche Übereinstimmung! Versuchen Sie es erneut.",
+  "vocabularyEmptyMessage": "Keine Wörter in diesem Vokabular.",
+  "saveLanguage": "Sprache speichern",
+  "restoreDefaults": "Auf Standardwerte zurücksetzen",
+  "confirmRestore": "Wiederherstellung bestätigen",
+  "gameWriteInstruction": "Schreiben Sie die Übersetzung des Wortes:",
+  "gameAnswerLabel": "Ihre Antwort",
+  "gameSubmit": "Absenden",
+  "gameCompleteMessage": "Glückwunsch! Sie haben das Spiel abgeschlossen!",
+  "deleteLanguageConfirm": "Bist du sicher, dass du {language} und sein Vokabular löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden.",
+  "deleteWordTitle": "Wort löschen",
+  "deleteWordConfirm": "Bist du sicher, dass du das Wort {word} löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden.",
+
+  "noWordsInVocabulary": "Keine Wörter in diesem Vokabular.",
+  "dataManageTitle": "Verwalten Sie Ihre Vokabulardaten",
+  "dataSaveBackupTitle": "Sicherung speichern",
+  "dataSaveBackupSubtitle": "Speichern Sie Ihr aktuelles Vokabular und Ihre Sprachen",
+  "dataRestoreBackupTitle": "Sicherung wiederherstellen",
+  "dataRestoreBackupSubtitle": "Stellen Sie eine zuvor gespeicherte Sicherung wieder her",
+  "dataRestoreDefaultsTitle": "Standardeinstellungen wiederherstellen",
+  "dataRestoreDefaultsSubtitle": "Auf Standardeinstellungen zurücksetzen und alle Daten löschen",
+  "dataSaveFileDialogTitle": "Vokabularsicherung speichern",
+  "dataSaveSuccessMessage": "Sicherung erfolgreich gespeichert in: {filename}",
+  "@dataSaveSuccessMessage": {
+    "description": "Success message when backup is saved",
+    "placeholders": {
+      "filename": {
+        "type": "String",
+        "example": "my_vocabulary_backup_2024-01-01.json"
+      }
+    }
+  },
+  "dataSaveErrorMessage": "Fehler beim Speichern der Sicherung: {error}",
+  "@dataSaveErrorMessage": {
+    "description": "Error message when backup fails to save",
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Permission denied"
+      }
+    }
+  },
+  "dataRestoreFileDialogTitle": "Wählen Sie die wiederherzustellende Sicherungsdatei aus",
+  "dataRestoreErrorMessage": "Fehler beim Wiederherstellen der Sicherung: {error}",
+  "@dataRestoreErrorMessage": {
+    "description": "Error message when backup fails to restore",
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Invalid file format"
+      }
+    }
+  },
+  "dataRestoreDefaultsConfirmMessage": "Dies löscht alle Ihre Vokabulardaten und Sprachen und setzt die App auf ihren ursprünglichen Zustand zurück. Sie können zuerst eine Sicherung erstellen, wenn Sie Ihre aktuellen Daten speichern möchten. Diese Aktion kann nicht rückgängig gemacht werden.\n\nSind Sie sicher, dass Sie fortfahren möchten?",
+  "dataRestoreDefaultsSuccessMessage": "Standardeinstellungen erfolgreich wiederhergestellt",
+  "dataRestoreDefaultsErrorMessage": "Fehler beim Wiederherstellen der Standardeinstellungen: {error}",
+  "@dataRestoreDefaultsErrorMessage": {
+    "description": "Error message when restore to defaults fails",
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Storage error"
+      }
+    }
+  },
+  "dataConfirmRestoreTitle": "Wiederherstellung bestätigen",
+  "dataConfirmRestoreMessage": "Dies ersetzt alle Ihre aktuellen Daten durch die Sicherungsdaten. Diese Aktion kann nicht rückgängig gemacht werden.\n\nSind Sie sicher, dass Sie fortfahren möchten?",
+  "dataRestoreSuccessMessage": "Sicherung erfolgreich wiederhergestellt",
+  "dataRestoreDefaultsButton": "Standardeinstellungen wiederherstellen",
+  "dataRestoreButton": "Wiederherstellen"
+}

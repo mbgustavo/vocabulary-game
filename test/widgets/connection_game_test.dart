@@ -5,6 +5,8 @@ import 'package:vocabulary_game/models/word.dart';
 import 'package:vocabulary_game/widgets/word_card.dart';
 import 'package:vocabulary_game/widgets/game_completed.dart';
 
+import '../helpers/test_app_wrapper.dart';
+
 void main() {
   group('ConnectionGame Widget Tests', () {
     // Helper function to create test words
@@ -22,13 +24,9 @@ void main() {
     }
 
     // Helper function to create test widget
-    Widget createTestWidget({
-      List<Word>? words,
-    }) {
-      return MaterialApp(
-        home: Scaffold(
-          body: ConnectionGame(words ?? createTestWords(5)),
-        ),
+    Widget createTestWidget({List<Word>? words}) {
+      return createTestAppWrapper(
+        child: Scaffold(body: ConnectionGame(words ?? createTestWords(5))),
       );
     }
 
@@ -57,9 +55,7 @@ void main() {
         ];
 
         // Act
-        await tester.pumpWidget(
-          createTestWidget(words: words),
-        );
+        await tester.pumpWidget(createTestWidget(words: words));
 
         // Assert
         expect(find.text('Hello'), findsOneWidget);
@@ -82,9 +78,7 @@ void main() {
         ];
 
         // Act
-        await tester.pumpWidget(
-          createTestWidget(words: words),
-        );
+        await tester.pumpWidget(createTestWidget(words: words));
 
         // Assert
         expect(find.text('Hello, world!'), findsNothing);
@@ -100,9 +94,7 @@ void main() {
         ];
 
         // Act
-        await tester.pumpWidget(
-          createTestWidget(words: words),
-        );
+        await tester.pumpWidget(createTestWidget(words: words));
         await tester.pumpAndSettle();
 
         // Tap on first word
@@ -123,9 +115,7 @@ void main() {
         ];
 
         // Act
-        await tester.pumpWidget(
-          createTestWidget(words: words),
-        );
+        await tester.pumpWidget(createTestWidget(words: words));
         await tester.pumpAndSettle();
 
         // Tap on translation
@@ -147,9 +137,7 @@ void main() {
         ];
 
         // Act
-        await tester.pumpWidget(
-          createTestWidget(words: words),
-        );
+        await tester.pumpWidget(createTestWidget(words: words));
         await tester.pumpAndSettle();
 
         // Select multiple words
@@ -174,9 +162,7 @@ void main() {
         ];
 
         // Act
-        await tester.pumpWidget(
-          createTestWidget(words: words),
-        );
+        await tester.pumpWidget(createTestWidget(words: words));
         await tester.pumpAndSettle();
 
         // Select mismatched pair
@@ -205,9 +191,7 @@ void main() {
         ];
 
         // Act
-        await tester.pumpWidget(
-          createTestWidget(words: words),
-        );
+        await tester.pumpWidget(createTestWidget(words: words));
         await tester.pumpAndSettle();
 
         // Make correct match
@@ -231,9 +215,7 @@ void main() {
         ];
 
         // Act
-        await tester.pumpWidget(
-          createTestWidget(words: words),
-        );
+        await tester.pumpWidget(createTestWidget(words: words));
         await tester.pumpAndSettle();
 
         // Verify no game completed widget initially
@@ -264,9 +246,7 @@ void main() {
         ];
 
         // Act
-        await tester.pumpWidget(
-          createTestWidget(words: words),
-        );
+        await tester.pumpWidget(createTestWidget(words: words));
         await tester.pumpAndSettle();
 
         // Rapid taps
@@ -305,9 +285,7 @@ void main() {
         ];
 
         // Act & Assert - Should handle mixed levels without error
-        await tester.pumpWidget(
-          createTestWidget(words: words),
-        );
+        await tester.pumpWidget(createTestWidget(words: words));
         expect(find.byType(ConnectionGame), findsOneWidget);
         expect(
           find.byType(WordCard),

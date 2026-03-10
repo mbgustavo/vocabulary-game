@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:vocabulary_game/models/word.dart';
 import 'package:vocabulary_game/widgets/word_item.dart';
 
@@ -13,8 +14,8 @@ class WordList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (words.isEmpty) {
-      return const Center(
-        child: Text('No words in this vocabulary.'),
+      return Center(
+        child: Text(AppLocalizations.of(context)!.noWordsInVocabulary),
       );
     }
 

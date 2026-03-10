@@ -4,6 +4,8 @@ import 'package:vocabulary_game/games/write_game.dart';
 import 'package:vocabulary_game/models/word.dart';
 import 'package:vocabulary_game/widgets/game_completed.dart';
 
+import '../helpers/test_app_wrapper.dart';
+
 void main() {
   group('WriteGame Widget Tests', () {
     // Helper function to create test words
@@ -25,8 +27,7 @@ void main() {
       List<Word>? words,
       bool playWithTranslations = false,
     }) {
-      return MaterialApp(
-        home: Scaffold(
+      return createTestAppWrapper(child: Scaffold(
           body: WriteGame(
             words ?? createTestWords(5),
             playWithTranslations: playWithTranslations,
@@ -40,6 +41,7 @@ void main() {
         WidgetTester tester,
       ) async {
         await tester.pumpWidget(createTestWidget());
+        await tester.pumpAndSettle();
 
         expect(find.byType(WriteGame), findsOneWidget);
         expect(
@@ -67,6 +69,7 @@ void main() {
         await tester.pumpWidget(
           createTestWidget(words: words),
         );
+        await tester.pumpAndSettle();
 
         // Should show one of the words (since getWordsForGame may shuffle)
         expect(
@@ -89,6 +92,7 @@ void main() {
               playWithTranslations: true,
             ),
           );
+          await tester.pumpAndSettle();
 
           expect(
             find.text('Olá').evaluate().isNotEmpty,
@@ -114,6 +118,7 @@ void main() {
         await tester.pumpWidget(
           createTestWidget(words: words),
         );
+        await tester.pumpAndSettle();
 
         // Assert
         expect(find.text('Hello, world!'), findsNothing);
