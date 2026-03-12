@@ -14,9 +14,7 @@ class DataScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
     return Scaffold(
-      appBar: AppBar(
-        title: Text(l10n.dataTitle),
-      ),
+      appBar: AppBar(title: Text(l10n.dataTitle)),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -72,9 +70,10 @@ class DataScreen extends ConsumerWidget {
       child: ListTile(
         leading: Icon(
           icon,
-          color: isDestructive
-              ? Theme.of(context).colorScheme.error
-              : Theme.of(context).colorScheme.primary,
+          color:
+              isDestructive
+                  ? Theme.of(context).colorScheme.error
+                  : Theme.of(context).colorScheme.primary,
           size: 32,
         ),
         title: Text(
@@ -87,9 +86,10 @@ class DataScreen extends ConsumerWidget {
         subtitle: Text(subtitle),
         trailing: Icon(
           Icons.chevron_right,
-          color: isDestructive
-              ? Theme.of(context).colorScheme.error
-              : Theme.of(context).colorScheme.onSurfaceVariant,
+          color:
+              isDestructive
+                  ? Theme.of(context).colorScheme.error
+                  : Theme.of(context).colorScheme.onSurfaceVariant,
         ),
         onTap: onTap,
       ),
@@ -101,14 +101,14 @@ class DataScreen extends ConsumerWidget {
     try {
       final timestamp = DateTime.now().toIso8601String().replaceAll(':', '-');
       final defaultFileName = 'my_vocabulary_backup_$timestamp.json';
-      
+
       // Get backup data from storage
       final storage = ref.read(storageProvider);
       final backupData = await storage.getBackupData();
-      
+
       // Convert string to bytes for mobile platforms
       final bytes = utf8.encode(backupData);
-      
+
       // Let user select where to save the backup with bytes
       String? selectedPath = await FilePicker.platform.saveFile(
         dialogTitle: l10n.dataSaveFileDialogTitle,
@@ -117,12 +117,12 @@ class DataScreen extends ConsumerWidget {
         allowedExtensions: ['json'],
         bytes: bytes,
       );
-      
+
       if (selectedPath == null) {
         // User cancelled the dialog
         return;
       }
-      
+
       if (context.mounted) {
         final filename = selectedPath.split('/').last;
         ScaffoldMessenger.of(context).showSnackBar(
@@ -155,12 +155,12 @@ class DataScreen extends ConsumerWidget {
         allowedExtensions: ['json'],
         allowMultiple: false,
       );
-      
+
       if (result == null || result.files.isEmpty) {
         // User cancelled the dialog
         return;
       }
-      
+
       final selectedFile = result.files.first;
       if (selectedFile.path != null && context.mounted) {
         await _performRestore(context, ref, selectedFile.path!);
@@ -211,11 +211,11 @@ class DataScreen extends ConsumerWidget {
     try {
       final storage = ref.read(storageProvider);
       await storage.restoreDefaults();
-      
+
       // Refresh providers to reflect the changes
       ref.invalidate(languagesProvider);
       ref.invalidate(vocabularyProvider);
-      
+
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -235,8 +235,12 @@ class DataScreen extends ConsumerWidget {
       }
     }
   }
-  
-  Future<void> _performRestore(BuildContext context, WidgetRef ref, String filePath) async {
+
+  Future<void> _performRestore(
+    BuildContext context,
+    WidgetRef ref,
+    String filePath,
+  ) async {
     final l10n = AppLocalizations.of(context)!;
     final confirmed = await showDialog<bool>(
       context: context,
@@ -260,16 +264,16 @@ class DataScreen extends ConsumerWidget {
         );
       },
     );
-    
+
     if (confirmed == true && context.mounted) {
       try {
         final storage = ref.read(storageProvider);
         await storage.restoreFromBackup(filePath);
-        
+
         // Refresh providers to reflect the changes
         ref.invalidate(languagesProvider);
         ref.invalidate(vocabularyProvider);
-        
+
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(

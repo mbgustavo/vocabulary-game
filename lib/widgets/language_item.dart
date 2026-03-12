@@ -17,10 +17,7 @@ class LanguageItem extends ConsumerWidget {
     required this.isSelected,
   });
 
-  Future<void> _onDelete(
-    BuildContext context,
-    WidgetRef ref,
-  ) async {
+  Future<void> _onDelete(BuildContext context, WidgetRef ref) async {
     final error = await ref
         .read(languagesProvider.notifier)
         .deleteLanguage(language);
@@ -40,19 +37,14 @@ class LanguageItem extends ConsumerWidget {
     }
   }
 
-  void _showDeleteDialog(
-    BuildContext context,
-    WidgetRef ref,
-  ) {
+  void _showDeleteDialog(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text(l10n.deleteLanguageTitle),
-          content: Text(
-            l10n.deleteLanguageConfirm(language.name),
-          ),
+          content: Text(l10n.deleteLanguageConfirm(language.name)),
           actions: [
             TextButton(
               child: Text(l10n.commonCancel),

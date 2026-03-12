@@ -87,9 +87,9 @@ class _MultipleChoiceGameState extends State<MultipleChoiceGame> {
       return;
     }
 
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text(AppLocalizations.of(context)!.incorrectMatch)));
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(AppLocalizations.of(context)!.incorrectMatch)),
+    );
 
     setState(() {
       answer.status = WordStatus.disabled;
@@ -143,7 +143,10 @@ class _MultipleChoiceGameState extends State<MultipleChoiceGame> {
                         foregroundColor: Theme.of(context).colorScheme.primary,
                       ),
                       icon: const Icon(Icons.navigate_next, size: 32),
-                      label: Text(AppLocalizations.of(context)!.commonNext, style: TextStyle(fontSize: 20)),
+                      label: Text(
+                        AppLocalizations.of(context)!.commonNext,
+                        style: TextStyle(fontSize: 20),
+                      ),
                     ),
                   )
                   : Padding(

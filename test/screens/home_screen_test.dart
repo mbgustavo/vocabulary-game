@@ -188,9 +188,7 @@ void main() {
         await tester.pumpWidget(createTestWidget(mockWordsSufficient));
         await tester.pumpAndSettle();
 
-        await tester.tap(
-          find.widgetWithText(ElevatedButton, 'Vocabulary'),
-        );
+        await tester.tap(find.widgetWithText(ElevatedButton, 'Vocabulary'));
         await tester.pumpAndSettle();
 
         expect(find.byType(VocabularyScreen), findsOneWidget);

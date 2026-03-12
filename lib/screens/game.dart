@@ -102,6 +102,9 @@ class _GameScreenState extends ConsumerState<GameScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(appBar: AppBar(title: Text(getGameTitle(context))), body: gameWidget);
+    return Scaffold(
+      appBar: AppBar(title: Text(getGameTitle(context))),
+      body: gameWidget,
+    );
   }
 }

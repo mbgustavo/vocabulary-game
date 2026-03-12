@@ -37,9 +37,7 @@ class WordItem extends ConsumerWidget {
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text(l10n.deleteWordTitle),
-          content: Text(
-            l10n.deleteWordConfirm(word.input),
-          ),
+          content: Text(l10n.deleteWordConfirm(word.input)),
           actions: [
             TextButton(
               child: Text(l10n.commonCancel),

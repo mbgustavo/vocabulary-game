@@ -62,7 +62,8 @@ void main() {
       bool playWithTranslations = false,
       void Function(WordInGame)? onAnswerSelected,
     }) {
-      return createTestAppWrapper(child: Scaffold(
+      return createTestAppWrapper(
+        child: Scaffold(
           body: MultipleChoiceQuestion(
             question: question,
             answers: answers,

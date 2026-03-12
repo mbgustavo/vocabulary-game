@@ -75,9 +75,9 @@ class _WriteGameState extends State<WriteGame> {
     }
 
     setState(() => _error = true);
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text(AppLocalizations.of(context)!.incorrectMatch)));
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(AppLocalizations.of(context)!.incorrectMatch)),
+    );
   }
 
   @override

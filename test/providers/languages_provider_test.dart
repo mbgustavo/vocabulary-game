@@ -37,9 +37,7 @@ void main() {
       ).thenAnswer((_) async => {});
 
       container = ProviderContainer(
-        overrides: [
-          storageProvider.overrideWithValue(mockStorage),
-        ],
+        overrides: [storageProvider.overrideWithValue(mockStorage)],
       );
     });
 
@@ -392,7 +390,10 @@ void main() {
         final notificationsState = testContainer.read(notificationsProvider);
         expect(notificationsState.length, 1);
         expect(notificationsState[0].type, NotificationType.error);
-        expect(notificationsState[0].message, contains('Failed to load languages'));
+        expect(
+          notificationsState[0].message,
+          contains('Failed to load languages'),
+        );
 
         verify(() => mockStorage.getLanguages()).called(1);
 

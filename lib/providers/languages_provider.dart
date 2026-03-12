@@ -39,7 +39,9 @@ class LanguagesNotifier extends StateNotifier<Map<String, dynamic>> {
       }
 
       if (_loadingErrorNotification != null) {
-        ref.read(notificationsProvider.notifier).dismissNotification(_loadingErrorNotification!);
+        ref
+            .read(notificationsProvider.notifier)
+            .dismissNotification(_loadingErrorNotification!);
         _loadingErrorNotification = null;
       }
     } catch (e) {
@@ -84,7 +86,10 @@ class LanguagesNotifier extends StateNotifier<Map<String, dynamic>> {
     }
   }
 
-  Future<String?> updateLanguage(Language oldLanguage, Language newLanguage) async {
+  Future<String?> updateLanguage(
+    Language oldLanguage,
+    Language newLanguage,
+  ) async {
     try {
       if (newLanguage.name == "") {
         throw 'Language name cannot be empty';
@@ -92,14 +97,21 @@ class LanguagesNotifier extends StateNotifier<Map<String, dynamic>> {
 
       List<Language> currentLanguages = [...getLanguages()];
       final conflictingLanguages = currentLanguages.where(
-        (language) => language.value == newLanguage.value && language.value != oldLanguage.value,
+        (language) =>
+            language.value == newLanguage.value &&
+            language.value != oldLanguage.value,
       );
       if (conflictingLanguages.isNotEmpty) {
         throw 'Language already exists';
       }
 
-      final updatedLanguages = await _storage.updateLanguage(oldLanguage, newLanguage);
-      await ref.read(vocabularyProvider.notifier).updateWordsLanguage(oldLanguage.value, newLanguage.value);
+      final updatedLanguages = await _storage.updateLanguage(
+        oldLanguage,
+        newLanguage,
+      );
+      await ref
+          .read(vocabularyProvider.notifier)
+          .updateWordsLanguage(oldLanguage.value, newLanguage.value);
 
       state = {...state, 'languages': updatedLanguages};
       if (state['learning_language'] == oldLanguage.value) {
@@ -114,7 +126,9 @@ class LanguagesNotifier extends StateNotifier<Map<String, dynamic>> {
   Future<String?> deleteLanguage(Language language) async {
     try {
       final remainingLanguages = await _storage.deleteLanguage(language);
-      ref.read(vocabularyProvider.notifier).deleteWordsByLanguage(language.value);
+      ref
+          .read(vocabularyProvider.notifier)
+          .deleteWordsByLanguage(language.value);
       state = {...state, 'languages': remainingLanguages};
       return null;
     } catch (e) {
@@ -127,13 +141,15 @@ class LanguagesNotifier extends StateNotifier<Map<String, dynamic>> {
       _storage.setLearningLanguage(newLanguage);
       state = {...state, 'learning_language': newLanguage};
     } catch (e) {
-      ref.read(notificationsProvider.notifier).pushNotification(
-        CustomNotification(
-          'Failed to change learning language: ${e.toString()}',
-          type: NotificationType.error,
-          isDismissable: true,
-        ),
-      );
+      ref
+          .read(notificationsProvider.notifier)
+          .pushNotification(
+            CustomNotification(
+              'Failed to change learning language: ${e.toString()}',
+              type: NotificationType.error,
+              isDismissable: true,
+            ),
+          );
     }
   }
 

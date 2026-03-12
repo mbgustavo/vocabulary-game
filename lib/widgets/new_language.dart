@@ -130,7 +130,9 @@ class _NewLanguageState extends ConsumerState<NewLanguage> {
                   padding: const EdgeInsets.only(top: 8),
                   child: Text(
                     _error!,
-                    style: TextStyle(color: Theme.of(context).colorScheme.error),
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.error,
+                    ),
                   ),
                 ),
               const SizedBox(height: 12),

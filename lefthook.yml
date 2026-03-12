@@ -1,0 +1,14 @@
+# Lefthook configuration
+# https://github.com/evilmartians/lefthook
+
+pre-commit:
+  parallel: true
+  commands:
+    format:
+      glob: "lib/**/*.dart,test/**/*.dart,integration_test/**/*.dart"
+      run: dart format {staged_files}
+      stage_fixed: true
+
+    lint:
+      glob: "lib/**/*.dart,test/**/*.dart,integration_test/**/*.dart"
+      run: flutter analyze

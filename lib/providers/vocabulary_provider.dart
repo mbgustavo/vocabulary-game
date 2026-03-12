@@ -44,11 +44,9 @@ class VocabularyNotifier extends StateNotifier<Map<String, dynamic>> {
 
   List<Word> getVocabulary({String? language}) {
     final vocabulary = state['vocabulary'] as List<Word>? ?? <Word>[];
-    
+
     if (language != null && language.isNotEmpty) {
-      return vocabulary
-          .where((word) => word.language == language)
-          .toList();
+      return vocabulary.where((word) => word.language == language).toList();
     }
     return vocabulary;
   }
@@ -63,9 +61,15 @@ class VocabularyNotifier extends StateNotifier<Map<String, dynamic>> {
     }
   }
 
-  Future<String?> updateWordsLanguage(String oldLanguage, String newLanguage) async {
+  Future<String?> updateWordsLanguage(
+    String oldLanguage,
+    String newLanguage,
+  ) async {
     try {
-      final updatedVocabulary = await _storage.updateWordsLanguage(oldLanguage, newLanguage);
+      final updatedVocabulary = await _storage.updateWordsLanguage(
+        oldLanguage,
+        newLanguage,
+      );
       state = {...state, 'vocabulary': updatedVocabulary};
       return null;
     } catch (e) {
@@ -85,16 +89,20 @@ class VocabularyNotifier extends StateNotifier<Map<String, dynamic>> {
 
   Future<void> deleteWordsByLanguage(String language) async {
     try {
-      final remainingVocabulary = await _storage.deleteWordsByLanguage(language);
+      final remainingVocabulary = await _storage.deleteWordsByLanguage(
+        language,
+      );
       state = {...state, 'vocabulary': remainingVocabulary};
     } catch (e) {
-      ref.read(notificationsProvider.notifier).pushNotification(
-        CustomNotification(
-          'Failed to delete words for language $language: ${e.toString()}',
-          type: NotificationType.error,
-          isDismissable: false,
-        ),
-      );
+      ref
+          .read(notificationsProvider.notifier)
+          .pushNotification(
+            CustomNotification(
+              'Failed to delete words for language $language: ${e.toString()}',
+              type: NotificationType.error,
+              isDismissable: false,
+            ),
+          );
     }
   }
 }

@@ -277,7 +277,7 @@ class PrefStorage implements StorageInterface {
 
     // Get app version dynamically
     final packageInfo = await PackageInfo.fromPlatform();
-    
+
     // Add metadata to the backup
     final backupWithMetadata = {
       'backup_timestamp': DateTime.now().toIso8601String(),
@@ -297,7 +297,7 @@ class PrefStorage implements StorageInterface {
 
     // Create the backup file at the specified path
     final backupFile = File(filePath);
-    
+
     // Create directory if it doesn't exist
     final directory = backupFile.parent;
     if (!await directory.exists()) {

@@ -18,8 +18,9 @@ class HomeScreen extends ConsumerWidget {
     ref.watch(vocabularyProvider)["vocabulary"];
     final learningLanguage =
         ref.read(languagesProvider.notifier).getLearningLanguage();
-    final vocabulary =
-        ref.read(vocabularyProvider.notifier).getVocabulary(language: learningLanguage.value);
+    final vocabulary = ref
+        .read(vocabularyProvider.notifier)
+        .getVocabulary(language: learningLanguage.value);
 
     return Scaffold(
       appBar: AppBar(title: Text(AppLocalizations.of(context)!.appTitle)),
@@ -32,20 +33,28 @@ class HomeScreen extends ConsumerWidget {
               children: [
                 Text(AppLocalizations.of(context)!.homeWelcome),
                 SizedBox(height: 20),
-                Text(AppLocalizations.of(context)!.homeYouAreLearning(learningLanguage.name)),
+                Text(
+                  AppLocalizations.of(
+                    context,
+                  )!.homeYouAreLearning(learningLanguage.name),
+                ),
                 SizedBox(height: 80),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Theme.of(context).colorScheme.onPrimaryFixed,
+                    backgroundColor:
+                        Theme.of(context).colorScheme.onPrimaryFixed,
                     foregroundColor: Theme.of(context).colorScheme.primary,
                   ),
-                  onPressed: vocabulary.length < 5 ? null : () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (ctx) => GameSelectScreen(),
-                      ),
-                    );
-                  },
+                  onPressed:
+                      vocabulary.length < 5
+                          ? null
+                          : () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (ctx) => GameSelectScreen(),
+                              ),
+                            );
+                          },
                   child: Text(AppLocalizations.of(context)!.homeStartGame),
                 ),
                 if (vocabulary.length < 5)
@@ -53,14 +62,17 @@ class HomeScreen extends ConsumerWidget {
                     padding: const EdgeInsets.all(8),
                     child: Text(
                       AppLocalizations.of(context)!.homeVocabularyTooSmall,
-                      style: TextStyle(color: Theme.of(context).colorScheme.error),
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.error,
+                      ),
                       textAlign: TextAlign.center,
                     ),
                   ),
                 SizedBox(height: 40),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Theme.of(context).colorScheme.onPrimaryFixed,
+                    backgroundColor:
+                        Theme.of(context).colorScheme.onPrimaryFixed,
                     foregroundColor: Theme.of(context).colorScheme.primary,
                   ),
                   onPressed: () {
@@ -75,7 +87,8 @@ class HomeScreen extends ConsumerWidget {
                 SizedBox(height: 40),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Theme.of(context).colorScheme.onPrimaryFixed,
+                    backgroundColor:
+                        Theme.of(context).colorScheme.onPrimaryFixed,
                     foregroundColor: Theme.of(context).colorScheme.primary,
                   ),
                   onPressed: () {

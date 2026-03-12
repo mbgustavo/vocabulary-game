@@ -1,6 +1,7 @@
 import 'package:uuid/uuid.dart';
 
 enum WordLevel { beginner, intermediate, advanced }
+
 enum WordStatus { notSelected, selected, completed, error, disabled }
 
 extension WordLevelExtension on WordLevel {
@@ -26,8 +27,8 @@ class Word {
   final List<String> examples;
   final WordLevel level;
 
-  Word(
-    {required this.language,
+  Word({
+    required this.language,
     required this.input,
     required this.translation,
     this.examples = const [],

@@ -57,10 +57,7 @@ class _VocabularyScreenState extends ConsumerState<VocabularyScreen> {
               },
             ),
           ),
-          Expanded(
-            flex: 1,
-            child: WordList(words: vocabulary),
-          ),
+          Expanded(flex: 1, child: WordList(words: vocabulary)),
         ],
       ),
     );

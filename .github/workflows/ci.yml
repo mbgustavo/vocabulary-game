@@ -7,8 +7,35 @@ on:
   pull_request:
 
 jobs:
+  code-quality:
+    name: Code Quality
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set Up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.29.3'
+          channel: stable
+
+      - name: Install Lefthook
+        run: npm install -g @evilmartians/lefthook
+
+      - name: Install Flutter Dependencies
+        run: flutter pub get
+
+      - name: Run Lefthook
+        run: lefthook run pre-commit --all-files
+
+      - name: Analyze Code
+        run: flutter analyze
+
   test:
-    name: Analyze & Test
+    name: Test
+    needs: [code-quality]
     runs-on: ubuntu-latest
 
     steps:
@@ -30,14 +57,12 @@ jobs:
       - name: Install Dependencies
         run: flutter pub get
 
-      - name: Analyze Code
-        run: flutter analyze
-
       - name: Run Tests
         run: flutter test
 
   integration-test:
     name: Integration Tests
+    needs: [code-quality]
     runs-on: ubuntu-latest
 
     steps:
@@ -61,7 +86,8 @@ jobs:
             ninja-build \
             libblkid-dev \
             liblzma-dev \
-            libsecret-1-dev
+            libsecret-1-dev \
+            xvfb
 
       - name: Install Flutter Dependencies
         run: flutter pub get
@@ -70,11 +96,11 @@ jobs:
         run: flutter config --enable-linux-desktop
 
       - name: Run Integration Tests
-        run: flutter drive --driver=test_driver/integration_test.dart --target=integration_test/app_test.dart -d linux
+        run: xvfb-run flutter drive --driver=test_driver/integration_test.dart --target=integration_test/app_test.dart -d linux
 
   build:
     name: Debug Build
-    needs: test
+    needs: [test, integration-test]
     runs-on: ubuntu-latest
 
     steps:
