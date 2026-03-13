@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:vocabulary_game/models/word.dart';
 import 'package:vocabulary_game/models/language.dart';
 import 'package:vocabulary_game/providers/languages_provider.dart';
@@ -274,24 +272,7 @@ void main() {
               (ref) => MockVocabularyNotifier(ref, mockWordsSufficient),
             ),
           ],
-          child: MaterialApp(
-            locale: const Locale('en'),
-            localizationsDelegates: const [
-              AppLocalizations.delegate,
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
-            supportedLocales: const [
-              Locale('en'),
-              Locale('es'),
-              Locale('fr'),
-              Locale('de'),
-              Locale('it'),
-              Locale('pt'),
-            ],
-            home: HomeScreen(),
-          ),
+          child: createTestAppWrapper(child: HomeScreen()),
         );
         await tester.pumpWidget(providerScope);
         await tester.pumpAndSettle();

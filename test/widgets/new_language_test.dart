@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:vocabulary_game/storage/pref_storage.dart';
 import 'package:vocabulary_game/widgets/new_language.dart';
@@ -415,23 +413,8 @@ void main() {
                 languagesProvider.overrideWith((ref) => mockLanguagesNotifier),
                 storageProvider.overrideWithValue(mockStorage),
               ],
-              child: MaterialApp(
-                locale: const Locale('en'),
-                localizationsDelegates: const [
-                  AppLocalizations.delegate,
-                  GlobalMaterialLocalizations.delegate,
-                  GlobalWidgetsLocalizations.delegate,
-                  GlobalCupertinoLocalizations.delegate,
-                ],
-                supportedLocales: const [
-                  Locale('en'),
-                  Locale('es'),
-                  Locale('fr'),
-                  Locale('de'),
-                  Locale('it'),
-                  Locale('pt'),
-                ],
-                home: Scaffold(
+              child: createTestAppWrapper(
+                child: Scaffold(
                   body: Builder(
                     builder:
                         (context) => ElevatedButton(
@@ -510,23 +493,8 @@ void main() {
         ) async {
           await tester.pumpWidget(
             ProviderScope(
-              child: MaterialApp(
-                locale: const Locale('en'),
-                localizationsDelegates: const [
-                  AppLocalizations.delegate,
-                  GlobalMaterialLocalizations.delegate,
-                  GlobalWidgetsLocalizations.delegate,
-                  GlobalCupertinoLocalizations.delegate,
-                ],
-                supportedLocales: const [
-                  Locale('en'),
-                  Locale('es'),
-                  Locale('fr'),
-                  Locale('de'),
-                  Locale('it'),
-                  Locale('pt'),
-                ],
-                home: Scaffold(
+              child: createTestAppWrapper(
+                child: Scaffold(
                   body: Builder(
                     builder:
                         (context) => ElevatedButton(

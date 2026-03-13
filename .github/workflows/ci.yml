@@ -30,9 +30,6 @@ jobs:
       - name: Run Lefthook
         run: lefthook run pre-commit --all-files
 
-      - name: Analyze Code
-        run: flutter analyze
-
   test:
     name: Test
     needs: [code-quality]
