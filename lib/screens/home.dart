@@ -22,23 +22,61 @@ class HomeScreen extends ConsumerWidget {
         .read(vocabularyProvider.notifier)
         .getVocabulary(language: learningLanguage.value);
 
+    final appLanguage =
+        ref.watch(languagesProvider)['app_language'] as String? ?? 'en';
+
     return Scaffold(
       appBar: AppBar(title: Text(AppLocalizations.of(context)!.appTitle)),
       body: Stack(
         children: [
           NotificationBanners(),
+          Positioned(
+            top: 8,
+            right: 40,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.onPrimary,
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: DropdownButtonHideUnderline(
+                child: DropdownButton<String>(
+                  dropdownColor: Theme.of(context).colorScheme.onPrimaryFixed,
+                  value: appLanguage,
+                  isDense: true,
+                  borderRadius: BorderRadius.circular(16),
+                  items: const [
+                    DropdownMenuItem(value: 'de', child: Text('🇩🇪  DE')),
+                    DropdownMenuItem(value: 'en', child: Text('🇬🇧  EN')),
+                    DropdownMenuItem(value: 'es', child: Text('🇪🇸  ES')),
+                    DropdownMenuItem(value: 'fr', child: Text('🇫🇷  FR')),
+                    DropdownMenuItem(value: 'it', child: Text('🇮🇹  IT')),
+                    DropdownMenuItem(value: 'pt', child: Text('🇧🇷  PT')),
+                  ],
+                  onChanged: (code) {
+                    if (code != null) {
+                      ref.read(languagesProvider.notifier).setAppLanguage(code);
+                    }
+                  },
+                ),
+              ),
+            ),
+          ),
           Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(AppLocalizations.of(context)!.homeWelcome),
+                Text(
+                  AppLocalizations.of(context)!.homeWelcome,
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
                 SizedBox(height: 20),
                 Text(
                   AppLocalizations.of(
                     context,
                   )!.homeYouAreLearning(learningLanguage.name),
                 ),
-                SizedBox(height: 80),
+                SizedBox(height: 60),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor:

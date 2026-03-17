@@ -142,6 +142,24 @@ class PrefStorage implements StorageInterface {
   }
 
   @override
+  Future<String?> getAppLanguage() async {
+    if (_pref == null) {
+      await _initialize();
+    }
+
+    return _pref!.getString('app_language') ?? 'en';
+  }
+
+  @override
+  Future<void> setAppLanguage(String languageCode) async {
+    if (_pref == null) {
+      await _initialize();
+    }
+
+    await _pref!.setString('app_language', languageCode);
+  }
+
+  @override
   Future<List<Word>> getVocabulary() async {
     if (_pref == null) {
       await _initialize();

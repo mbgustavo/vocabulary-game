@@ -29,12 +29,14 @@ void main() {
       when(
         () => mockStorage.getLearningLanguage(),
       ).thenAnswer((_) async => null);
+      when(() => mockStorage.getAppLanguage()).thenAnswer((_) async => 'en');
       when(
         () => mockStorage.addLanguage(any()),
       ).thenAnswer((invocation) async => [invocation.positionalArguments[0]]);
       when(
         () => mockStorage.setLearningLanguage(any()),
       ).thenAnswer((_) async => {});
+      when(() => mockStorage.setAppLanguage(any())).thenAnswer((_) async => {});
 
       container = ProviderContainer(
         overrides: [storageProvider.overrideWithValue(mockStorage)],
@@ -102,6 +104,7 @@ void main() {
         when(
           () => mockStorage.getLearningLanguage(),
         ).thenAnswer((_) async => spanish.value);
+        when(() => mockStorage.getAppLanguage()).thenAnswer((_) async => 'en');
 
         // Create new container with updated mock
         final testContainer = ProviderContainer(

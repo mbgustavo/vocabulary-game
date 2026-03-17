@@ -15,6 +15,11 @@ class App extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
+    final languageState = ref.watch(languagesProvider);
+
+    // Get the current locale from the app_language in the state
+    final Locale currentLocale = Locale(languageState['app_language'] ?? 'en');
+
     return MaterialApp(
       title: 'Vocabulary Game',
       localizationsDelegates: const [
@@ -31,7 +36,7 @@ class App extends ConsumerWidget {
         Locale('it'),
         Locale('pt'),
       ],
-      locale: const Locale('en'),
+      locale: currentLocale,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
           seedColor: Colors.blueAccent,

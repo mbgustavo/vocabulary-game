@@ -23,6 +23,12 @@ abstract class StorageInterface {
   // Set the current learning language value from storage
   Future<void> setLearningLanguage(String newLanguage);
 
+  // Get the current app language (UI locale) from storage
+  Future<String?> getAppLanguage();
+
+  // Set the current app language (UI locale) in storage
+  Future<void> setAppLanguage(String languageCode);
+
   // Get all vocabulary
   Future<List<Word>> getVocabulary();
 

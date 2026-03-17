@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabulary_game/providers/vocabulary_provider.dart';
 import 'package:vocabulary_game/storage/storage_interface.dart';
@@ -8,7 +9,7 @@ import 'package:vocabulary_game/providers/notifications_provider.dart';
 class LanguagesNotifier extends StateNotifier<Map<String, dynamic>> {
   LanguagesNotifier(this.ref) : super({}) {
     _storage = ref.read(storageProvider);
-    state = {'loading': true};
+    state = {'loading': true, 'app_language': 'en'};
     Future.microtask(() => loadLanguages());
   }
 
@@ -19,6 +20,8 @@ class LanguagesNotifier extends StateNotifier<Map<String, dynamic>> {
   Future<void> loadLanguages() async {
     try {
       final languages = await _storage.getLanguages();
+      final appLanguage = await _storage.getAppLanguage();
+
       if (languages.isEmpty) {
         await _storage.addLanguage(defaultLanguage);
         await _storage.setLearningLanguage(defaultLanguage.value);
@@ -26,6 +29,7 @@ class LanguagesNotifier extends StateNotifier<Map<String, dynamic>> {
           ...state,
           'languages': [defaultLanguage],
           'learning_language': defaultLanguage.value,
+          'app_language': appLanguage ?? 'en',
         };
         return;
       } else {
@@ -35,6 +39,7 @@ class LanguagesNotifier extends StateNotifier<Map<String, dynamic>> {
           ...state,
           'languages': languages,
           'learning_language': learningLanguage,
+          'app_language': appLanguage ?? 'en',
         };
       }
 
@@ -167,6 +172,34 @@ class LanguagesNotifier extends StateNotifier<Map<String, dynamic>> {
       (l) => l.value == language,
       orElse: () => defaultLanguage,
     );
+  }
+
+  Locale getCurrentLocale() {
+    final appLanguage = state['app_language'] as String?;
+    return Locale(appLanguage ?? 'en');
+  }
+
+  Future<void> setAppLanguage(String languageCode) async {
+    try {
+      const supportedLanguages = {'en', 'es', 'fr', 'de', 'it', 'pt'};
+
+      if (!supportedLanguages.contains(languageCode)) {
+        throw 'Unsupported language code: $languageCode';
+      }
+
+      await _storage.setAppLanguage(languageCode);
+      state = {...state, 'app_language': languageCode};
+    } catch (e) {
+      ref
+          .read(notificationsProvider.notifier)
+          .pushNotification(
+            CustomNotification(
+              'Failed to change app language: ${e.toString()}',
+              type: NotificationType.error,
+              isDismissable: true,
+            ),
+          );
+    }
   }
 }
 
