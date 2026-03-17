@@ -26,13 +26,11 @@ class HomeScreen extends ConsumerWidget {
         ref.watch(languagesProvider)['app_language'] as String? ?? 'en';
 
     return Scaffold(
-      appBar: AppBar(title: Text(AppLocalizations.of(context)!.appTitle)),
-      body: Stack(
-        children: [
-          NotificationBanners(),
-          Positioned(
-            top: 8,
-            right: 40,
+      appBar: AppBar(
+        title: Text(AppLocalizations.of(context)!.appTitle),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 8),
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
               decoration: BoxDecoration(
@@ -62,6 +60,11 @@ class HomeScreen extends ConsumerWidget {
               ),
             ),
           ),
+        ],
+      ),
+      body: Stack(
+        children: [
+          NotificationBanners(),
           Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
