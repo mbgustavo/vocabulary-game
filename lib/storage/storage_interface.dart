@@ -9,7 +9,10 @@ abstract class StorageInterface {
   Future<List<Language>> addLanguage(Language language);
 
   // Update language in data storage and return updated list of languages
-  Future<List<Language>> updateLanguage(Language oldLanguage, Language newlanguage);
+  Future<List<Language>> updateLanguage(
+    Language oldLanguage,
+    Language newlanguage,
+  );
 
   // Add language from data storage and return updated list of languages
   Future<List<Language>> deleteLanguage(Language language);
@@ -20,6 +23,12 @@ abstract class StorageInterface {
   // Set the current learning language value from storage
   Future<void> setLearningLanguage(String newLanguage);
 
+  // Get the current app language (UI locale) from storage
+  Future<String?> getAppLanguage();
+
+  // Set the current app language (UI locale) in storage
+  Future<void> setAppLanguage(String languageCode);
+
   // Get all vocabulary
   Future<List<Word>> getVocabulary();
 
@@ -27,7 +36,10 @@ abstract class StorageInterface {
   Future<List<Word>> saveWord(Word word);
 
   // Update all words with the old language to the new language and return updated vocabulary
-  Future<List<Word>> updateWordsLanguage(String oldLanguage, String newLanguage);
+  Future<List<Word>> updateWordsLanguage(
+    String oldLanguage,
+    String newLanguage,
+  );
 
   // Add or update word and return updated vocabulary
   Future<List<Word>> deleteWord(Word word);

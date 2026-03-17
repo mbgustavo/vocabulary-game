@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:vocabulary_game/l10n/app_localizations.dart';
 import 'package:vocabulary_game/models/word.dart';
 import 'package:vocabulary_game/providers/notifications_provider.dart';
 import 'package:vocabulary_game/providers/languages_provider.dart';
@@ -76,9 +77,10 @@ class _NewWordScreenState extends ConsumerState<NewWordScreen> {
   @override
   Widget build(BuildContext context) {
     final languages = ref.read(languagesProvider.notifier).getLanguages();
+    final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Add new word')),
+      appBar: AppBar(title: Text(l10n.newWordTitle)),
       body: Form(
         key: _formKey,
         child: SingleChildScrollView(
@@ -106,8 +108,8 @@ class _NewWordScreenState extends ConsumerState<NewWordScreen> {
                 TextFormField(
                   textCapitalization: TextCapitalization.sentences,
                   maxLength: 30,
-                  decoration: const InputDecoration(
-                    label: Text('Word in learning language'),
+                  decoration: InputDecoration(
+                    label: Text(l10n.newWordInputLabel),
                   ),
                   initialValue: _enteredInput,
                   validator: (value) {
@@ -115,7 +117,7 @@ class _NewWordScreenState extends ConsumerState<NewWordScreen> {
                         value.isEmpty ||
                         value.trim().length <= 1 ||
                         value.trim().length > 50) {
-                      return 'Must be between 1 and 50 characters.';
+                      return l10n.validationCharacterRange(1, 50);
                     }
                     return null;
                   },
@@ -126,8 +128,8 @@ class _NewWordScreenState extends ConsumerState<NewWordScreen> {
                 TextFormField(
                   textCapitalization: TextCapitalization.sentences,
                   maxLength: 30,
-                  decoration: const InputDecoration(
-                    label: Text('Translation in your language'),
+                  decoration: InputDecoration(
+                    label: Text(l10n.newWordTranslationLabel),
                   ),
                   initialValue: _enteredTranslation,
                   validator: (value) {
@@ -135,7 +137,7 @@ class _NewWordScreenState extends ConsumerState<NewWordScreen> {
                         value.isEmpty ||
                         value.trim().length <= 1 ||
                         value.trim().length > 50) {
-                      return 'Must be between 1 and 50 characters.';
+                      return l10n.validationCharacterRange(1, 50);
                     }
                     return null;
                   },
@@ -147,9 +149,9 @@ class _NewWordScreenState extends ConsumerState<NewWordScreen> {
                 DropdownButtonFormField(
                   value: _selectedLevel,
                   decoration: InputDecoration(
-                    labelText: 'Fluency level',
+                    labelText: l10n.fluencyLevel,
                     helper: Text(
-                      'Words with lower fluency levels will appear more often in games.',
+                      l10n.fluencyLevelHelper,
                       style: TextStyle(
                         fontSize: 10,
                         color: Theme.of(
@@ -173,7 +175,7 @@ class _NewWordScreenState extends ConsumerState<NewWordScreen> {
                   },
                 ),
                 SizedBox(height: 20),
-                const Text("Examples (optional)"),
+                Text(l10n.newWordExamplesLabel),
                 ..._examples.asMap().entries.map(
                   (entry) => TextFormField(
                     textCapitalization: TextCapitalization.sentences,
@@ -198,7 +200,7 @@ class _NewWordScreenState extends ConsumerState<NewWordScreen> {
                     minimumSize: const Size.fromHeight(50),
                   ),
                   onPressed: _addWord,
-                  child: const Text('Save'),
+                  child: Text(l10n.commonSave),
                 ),
               ],
             ),

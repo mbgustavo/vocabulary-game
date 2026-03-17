@@ -1,0 +1,22 @@
+# Lefthook configuration
+# https://github.com/evilmartians/lefthook
+
+pre-commit:
+  parallel: true
+  commands:
+    gen-l10n:
+      glob: "lib/l10n/*.arb"
+      run: flutter gen-l10n --no-format
+      stage_fixed: true
+      priority: 1
+
+    format:
+      priority: 2
+      glob: "lib/**/*.dart,test/**/*.dart,integration_test/**/*.dart"
+      run: dart format {staged_files}
+      stage_fixed: true
+
+    lint:
+      glob: "lib/**/*.dart,test/**/*.dart,integration_test/**/*.dart"
+      run: flutter analyze
+      priority: 2

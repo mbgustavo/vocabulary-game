@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vocabulary_game/l10n/app_localizations.dart';
 
 class GameCompleted extends StatelessWidget {
   final void Function()? onReset;
@@ -7,11 +8,12 @@ class GameCompleted extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
         Text(
-          'Congratulations! You completed the game!',
+          l10n.gameCompleteMessage,
           style: TextStyle(
             fontSize: 20,
             color: const Color.fromARGB(255, 104, 235, 111),
@@ -28,7 +30,7 @@ class GameCompleted extends StatelessWidget {
               foregroundColor: Theme.of(context).colorScheme.primary,
             ),
             icon: const Icon(Icons.restart_alt, size: 28),
-            label: const Text('Play again', style: TextStyle(fontSize: 18)),
+            label: Text(l10n.commonPlayAgain, style: TextStyle(fontSize: 18)),
           ),
         const SizedBox(height: 20),
       ],

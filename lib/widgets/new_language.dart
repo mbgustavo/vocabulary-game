@@ -1,6 +1,7 @@
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:vocabulary_game/l10n/app_localizations.dart';
 import 'package:vocabulary_game/models/language.dart';
 import 'package:vocabulary_game/providers/languages_provider.dart';
 import 'package:vocabulary_game/widgets/flag_selector.dart';
@@ -68,6 +69,7 @@ class _NewLanguageState extends ConsumerState<NewLanguage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Padding(
       padding: EdgeInsets.all(20),
       child: Form(
@@ -104,14 +106,14 @@ class _NewLanguageState extends ConsumerState<NewLanguage> {
                     child: TextFormField(
                       textCapitalization: TextCapitalization.sentences,
                       maxLength: 30,
-                      decoration: const InputDecoration(label: Text('Name')),
+                      decoration: InputDecoration(label: Text(l10n.nameLabel)),
                       initialValue: _enteredName,
                       validator: (value) {
                         if (value == null ||
                             value.isEmpty ||
                             value.trim().length <= 1 ||
                             value.trim().length > 30) {
-                          return 'Must be between 1 and 30 characters.';
+                          return l10n.validationCharacterRange(1, 30);
                         }
                         return null;
                       },
@@ -128,7 +130,9 @@ class _NewLanguageState extends ConsumerState<NewLanguage> {
                   padding: const EdgeInsets.only(top: 8),
                   child: Text(
                     _error!,
-                    style: TextStyle(color: Theme.of(context).colorScheme.error),
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.error,
+                    ),
                   ),
                 ),
               const SizedBox(height: 12),
@@ -143,7 +147,7 @@ class _NewLanguageState extends ConsumerState<NewLanguage> {
                               _formKey.currentState!.reset();
                               Navigator.of(context).pop();
                             },
-                    child: const Text('Cancel'),
+                    child: Text(l10n.commonCancel),
                   ),
                   ElevatedButton(
                     onPressed: _isSending ? null : _saveLanguage,
@@ -154,7 +158,7 @@ class _NewLanguageState extends ConsumerState<NewLanguage> {
                               width: 16,
                               child: CircularProgressIndicator(),
                             )
-                            : const Text('Save language'),
+                            : Text(l10n.saveLanguage),
                   ),
                 ],
               ),

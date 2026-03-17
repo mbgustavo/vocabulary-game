@@ -9,9 +9,10 @@ class FlagSelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Pegue os emojis da categoria desejada
-    final flagEmojis = defaultEmojiSet.firstWhere((emoji) {
-      return emoji.category == Category.FLAGS;
-    }).emoji;
+    final flagEmojis =
+        defaultEmojiSet.firstWhere((emoji) {
+          return emoji.category == Category.FLAGS;
+        }).emoji;
 
     return GridView.builder(
       itemCount: flagEmojis.length,
@@ -22,7 +23,9 @@ class FlagSelector extends StatelessWidget {
         final emoji = flagEmojis[index];
         return GestureDetector(
           onTap: () => onEmojiSelected(emoji),
-          child: Center(child: Text(emoji.emoji, style: TextStyle(fontSize: 24))),
+          child: Center(
+            child: Text(emoji.emoji, style: TextStyle(fontSize: 24)),
+          ),
         );
       },
     );

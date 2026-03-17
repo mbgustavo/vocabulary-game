@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:vocabulary_game/l10n/app_localizations.dart';
 import 'package:vocabulary_game/storage/pref_storage.dart';
 import 'package:vocabulary_game/providers/languages_provider.dart';
 import 'package:vocabulary_game/providers/vocabulary_provider.dart';
@@ -11,10 +12,9 @@ class DataScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Data Management'),
-      ),
+      appBar: AppBar(title: Text(l10n.dataTitle)),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -22,7 +22,7 @@ class DataScreen extends ConsumerWidget {
           children: [
             const SizedBox(height: 20),
             Text(
-              'Manage your vocabulary data',
+              l10n.dataManageTitle,
               style: Theme.of(context).textTheme.headlineSmall,
               textAlign: TextAlign.center,
             ),
@@ -30,24 +30,24 @@ class DataScreen extends ConsumerWidget {
             _buildDataOption(
               context,
               icon: Icons.save,
-              title: 'Save Backup',
-              subtitle: 'Save your current vocabulary and languages',
+              title: l10n.dataSaveBackupTitle,
+              subtitle: l10n.dataSaveBackupSubtitle,
               onTap: () => _saveBackup(context, ref),
             ),
             const SizedBox(height: 16),
             _buildDataOption(
               context,
               icon: Icons.restore,
-              title: 'Restore Backup',
-              subtitle: 'Restore from a previously saved backup',
+              title: l10n.dataRestoreBackupTitle,
+              subtitle: l10n.dataRestoreBackupSubtitle,
               onTap: () => _restoreBackup(context, ref),
             ),
             const SizedBox(height: 16),
             _buildDataOption(
               context,
               icon: Icons.refresh,
-              title: 'Restore Defaults',
-              subtitle: 'Reset to default settings and clear all data',
+              title: l10n.dataRestoreDefaultsTitle,
+              subtitle: l10n.dataRestoreDefaultsSubtitle,
               onTap: () => _showRestoreDefaultsDialog(context, ref),
               isDestructive: true,
             ),
@@ -70,9 +70,10 @@ class DataScreen extends ConsumerWidget {
       child: ListTile(
         leading: Icon(
           icon,
-          color: isDestructive
-              ? Theme.of(context).colorScheme.error
-              : Theme.of(context).colorScheme.primary,
+          color:
+              isDestructive
+                  ? Theme.of(context).colorScheme.error
+                  : Theme.of(context).colorScheme.primary,
           size: 32,
         ),
         title: Text(
@@ -85,9 +86,10 @@ class DataScreen extends ConsumerWidget {
         subtitle: Text(subtitle),
         trailing: Icon(
           Icons.chevron_right,
-          color: isDestructive
-              ? Theme.of(context).colorScheme.error
-              : Theme.of(context).colorScheme.onSurfaceVariant,
+          color:
+              isDestructive
+                  ? Theme.of(context).colorScheme.error
+                  : Theme.of(context).colorScheme.onSurfaceVariant,
         ),
         onTap: onTap,
       ),
@@ -95,35 +97,37 @@ class DataScreen extends ConsumerWidget {
   }
 
   void _saveBackup(BuildContext context, WidgetRef ref) async {
+    final l10n = AppLocalizations.of(context)!;
     try {
       final timestamp = DateTime.now().toIso8601String().replaceAll(':', '-');
       final defaultFileName = 'my_vocabulary_backup_$timestamp.json';
-      
+
       // Get backup data from storage
       final storage = ref.read(storageProvider);
       final backupData = await storage.getBackupData();
-      
+
       // Convert string to bytes for mobile platforms
       final bytes = utf8.encode(backupData);
-      
+
       // Let user select where to save the backup with bytes
       String? selectedPath = await FilePicker.platform.saveFile(
-        dialogTitle: 'Save vocabulary backup',
+        dialogTitle: l10n.dataSaveFileDialogTitle,
         fileName: defaultFileName,
         type: FileType.custom,
         allowedExtensions: ['json'],
         bytes: bytes,
       );
-      
+
       if (selectedPath == null) {
         // User cancelled the dialog
         return;
       }
-      
+
       if (context.mounted) {
+        final filename = selectedPath.split('/').last;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Backup saved successfully to:\n${selectedPath.split('/').last}'),
+            content: Text(l10n.dataSaveSuccessMessage(filename)),
             backgroundColor: Colors.green,
             duration: const Duration(seconds: 4),
           ),
@@ -133,7 +137,7 @@ class DataScreen extends ConsumerWidget {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Failed to save backup: $e'),
+            content: Text(l10n.dataSaveErrorMessage(e.toString())),
             backgroundColor: Colors.red,
           ),
         );
@@ -142,20 +146,21 @@ class DataScreen extends ConsumerWidget {
   }
 
   void _restoreBackup(BuildContext context, WidgetRef ref) async {
+    final l10n = AppLocalizations.of(context)!;
     try {
       // Let user select backup file to restore
       FilePickerResult? result = await FilePicker.platform.pickFiles(
-        dialogTitle: 'Select backup file to restore',
+        dialogTitle: l10n.dataRestoreFileDialogTitle,
         type: FileType.custom,
         allowedExtensions: ['json'],
         allowMultiple: false,
       );
-      
+
       if (result == null || result.files.isEmpty) {
         // User cancelled the dialog
         return;
       }
-      
+
       final selectedFile = result.files.first;
       if (selectedFile.path != null && context.mounted) {
         await _performRestore(context, ref, selectedFile.path!);
@@ -164,7 +169,7 @@ class DataScreen extends ConsumerWidget {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Failed to restore backup: $e'),
+            content: Text(l10n.dataRestoreErrorMessage(e.toString())),
             backgroundColor: Colors.red,
           ),
         );
@@ -173,20 +178,17 @@ class DataScreen extends ConsumerWidget {
   }
 
   void _showRestoreDefaultsDialog(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Restore Defaults'),
-          content: const Text(
-            'This will delete all your vocabulary data and languages, returning the app to its initial state. \n\n'
-            'You can create a backup first if you want to save your current data. This action cannot be undone.\n\n'
-            'Are you sure you want to continue? ',
-          ),
+          title: Text(l10n.dataRestoreDefaultsTitle),
+          content: Text(l10n.dataRestoreDefaultsConfirmMessage),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Cancel'),
+              child: Text(l10n.commonCancel),
             ),
             TextButton(
               onPressed: () {
@@ -196,7 +198,7 @@ class DataScreen extends ConsumerWidget {
               style: TextButton.styleFrom(
                 foregroundColor: Theme.of(context).colorScheme.error,
               ),
-              child: const Text('Restore Defaults'),
+              child: Text(l10n.dataRestoreDefaultsButton),
             ),
           ],
         );
@@ -205,18 +207,19 @@ class DataScreen extends ConsumerWidget {
   }
 
   void _restoreDefaults(BuildContext context, WidgetRef ref) async {
+    final l10n = AppLocalizations.of(context)!;
     try {
       final storage = ref.read(storageProvider);
       await storage.restoreDefaults();
-      
+
       // Refresh providers to reflect the changes
       ref.invalidate(languagesProvider);
       ref.invalidate(vocabularyProvider);
-      
+
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Successfully restored to defaults'),
+          SnackBar(
+            content: Text(l10n.dataRestoreDefaultsSuccessMessage),
             backgroundColor: Colors.green,
           ),
         );
@@ -225,54 +228,56 @@ class DataScreen extends ConsumerWidget {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Failed to restore defaults: $e'),
+            content: Text(l10n.dataRestoreDefaultsErrorMessage(e.toString())),
             backgroundColor: Colors.red,
           ),
         );
       }
     }
   }
-  
-  Future<void> _performRestore(BuildContext context, WidgetRef ref, String filePath) async {
+
+  Future<void> _performRestore(
+    BuildContext context,
+    WidgetRef ref,
+    String filePath,
+  ) async {
+    final l10n = AppLocalizations.of(context)!;
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Confirm Restore'),
-          content: const Text(
-            'This will replace all your current data with the backup data. '
-            'This action cannot be undone.\n\nAre you sure you want to continue?',
-          ),
+          title: Text(l10n.dataConfirmRestoreTitle),
+          content: Text(l10n.dataConfirmRestoreMessage),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(false),
-              child: const Text('Cancel'),
+              child: Text(l10n.commonCancel),
             ),
             TextButton(
               onPressed: () => Navigator.of(context).pop(true),
               style: TextButton.styleFrom(
                 foregroundColor: Theme.of(context).colorScheme.primary,
               ),
-              child: const Text('Restore'),
+              child: Text(l10n.dataRestoreButton),
             ),
           ],
         );
       },
     );
-    
+
     if (confirmed == true && context.mounted) {
       try {
         final storage = ref.read(storageProvider);
         await storage.restoreFromBackup(filePath);
-        
+
         // Refresh providers to reflect the changes
         ref.invalidate(languagesProvider);
         ref.invalidate(vocabularyProvider);
-        
+
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Backup restored successfully'),
+            SnackBar(
+              content: Text(l10n.dataRestoreSuccessMessage),
               backgroundColor: Colors.green,
             ),
           );
@@ -281,7 +286,7 @@ class DataScreen extends ConsumerWidget {
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Failed to restore backup: $e'),
+              content: Text(l10n.dataRestoreErrorMessage(e.toString())),
               backgroundColor: Colors.red,
             ),
           );

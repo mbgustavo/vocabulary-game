@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vocabulary_game/l10n/app_localizations.dart';
 import 'package:vocabulary_game/models/word.dart';
 import 'package:vocabulary_game/widgets/game_completed.dart';
 
@@ -74,13 +75,14 @@ class _WriteGameState extends State<WriteGame> {
     }
 
     setState(() => _error = true);
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text('Incorrect match! Try again.')));
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(AppLocalizations.of(context)!.incorrectMatch)),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(24),
@@ -88,7 +90,7 @@ class _WriteGameState extends State<WriteGame> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              'Write the translation for the word:',
+              l10n.gameWriteInstruction,
               style: Theme.of(context).textTheme.headlineSmall,
               textAlign: TextAlign.center,
             ),
@@ -118,7 +120,7 @@ class _WriteGameState extends State<WriteGame> {
                           ? Color.fromARGB(255, 104, 235, 111)
                           : null,
                 ),
-                decoration: InputDecoration(labelText: 'Your answer'),
+                decoration: InputDecoration(labelText: l10n.gameAnswerLabel),
               ),
             ),
             const SizedBox(height: 36),
@@ -158,7 +160,7 @@ class _WriteGameState extends State<WriteGame> {
                       size: 28,
                     ),
                     label: Text(
-                      _questionCompleted ? 'Next' : 'Submit',
+                      _questionCompleted ? l10n.commonNext : l10n.gameSubmit,
                       style: TextStyle(fontSize: 18),
                     ),
                   ),

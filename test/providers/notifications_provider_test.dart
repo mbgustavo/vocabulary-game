@@ -6,7 +6,7 @@ void main() {
   group('CustomNotification', () {
     test('should create notification with default values', () {
       final notification = CustomNotification('Test message');
-      
+
       expect(notification.message, 'Test message');
       expect(notification.type, NotificationType.info);
       expect(notification.isDismissable, true);
@@ -22,7 +22,7 @@ void main() {
         timeout: 5,
       );
       notification.setId(42);
-      
+
       expect(notification.message, 'Error message');
       expect(notification.type, NotificationType.error);
       expect(notification.isDismissable, true);
@@ -52,9 +52,9 @@ void main() {
     test('should push notification and assign ID', () {
       final notification = CustomNotification('Test message');
       final returnedId = notifier.pushNotification(notification);
-      
+
       final notifications = container.read(notificationsProvider);
-      
+
       expect(notifications.length, 1);
       expect(notifications[0].message, 'Test message');
       expect(notifications[0].id, 0);
@@ -65,13 +65,13 @@ void main() {
       final notification1 = CustomNotification('Message 1');
       final notification2 = CustomNotification('Message 2');
       final notification3 = CustomNotification('Message 3');
-      
+
       notifier.pushNotification(notification1);
       notifier.pushNotification(notification2);
       notifier.pushNotification(notification3);
-      
+
       final notifications = container.read(notificationsProvider);
-      
+
       expect(notifications.length, 3);
       expect(notifications[0].id, 0);
       expect(notifications[1].id, 1);
@@ -85,16 +85,16 @@ void main() {
       final notification1 = CustomNotification('Message 1');
       final notification2 = CustomNotification('Message 2');
       final notification3 = CustomNotification('Message 3');
-      
+
       notifier.pushNotification(notification1);
       notifier.pushNotification(notification2);
       notifier.pushNotification(notification3);
-      
+
       // Dismiss middle notification
       notifier.dismissNotification(1);
-      
+
       final notifications = container.read(notificationsProvider);
-      
+
       expect(notifications.length, 2);
       expect(notifications[0].id, 0);
       expect(notifications[1].id, 2);
@@ -105,12 +105,12 @@ void main() {
     test('should handle dismissing non-existent notification', () {
       final notification = CustomNotification('Test message');
       notifier.pushNotification(notification);
-      
+
       // Try to dismiss non-existent ID
       notifier.dismissNotification(999);
-      
+
       final notifications = container.read(notificationsProvider);
-      
+
       expect(notifications.length, 1);
       expect(notifications[0].message, 'Test message');
     });
@@ -119,15 +119,15 @@ void main() {
       final notification1 = CustomNotification('Message 1');
       final notification2 = CustomNotification('Message 2');
       final notification3 = CustomNotification('Message 3');
-      
+
       notifier.pushNotification(notification1);
       notifier.pushNotification(notification2);
       notifier.pushNotification(notification3);
-      
+
       notifier.clearNotifications();
-      
+
       final notifications = container.read(notificationsProvider);
-      
+
       expect(notifications, isEmpty);
     });
 
@@ -144,13 +144,13 @@ void main() {
         'Info message',
         type: NotificationType.info,
       );
-      
+
       notifier.pushNotification(errorNotification);
       notifier.pushNotification(successNotification);
       notifier.pushNotification(infoNotification);
-      
+
       final notifications = container.read(notificationsProvider);
-      
+
       expect(notifications.length, 3);
       expect(notifications[0].type, NotificationType.error);
       expect(notifications[1].type, NotificationType.success);
@@ -166,12 +166,12 @@ void main() {
         'Non-dismissable message',
         isDismissable: false,
       );
-      
+
       notifier.pushNotification(dismissableNotification);
       notifier.pushNotification(nonDismissableNotification);
-      
+
       final notifications = container.read(notificationsProvider);
-      
+
       expect(notifications.length, 2);
       expect(notifications[0].isDismissable, true);
       expect(notifications[1].isDismissable, false);
@@ -182,16 +182,16 @@ void main() {
         'Timeout message',
         timeout: 1, // 1 second timeout
       );
-      
+
       notifier.pushNotification(notification);
-      
+
       // Check notification is present
       var notifications = container.read(notificationsProvider);
       expect(notifications.length, 1);
-      
+
       // Wait for timeout + a bit more
       await Future.delayed(Duration(milliseconds: 1100));
-      
+
       // Check notification is automatically dismissed
       notifications = container.read(notificationsProvider);
       expect(notifications.length, 0);
@@ -199,16 +199,16 @@ void main() {
 
     test('should not auto-dismiss notification without timeout', () async {
       final notification = CustomNotification('No timeout message');
-      
+
       notifier.pushNotification(notification);
-      
+
       // Check notification is present
       var notifications = container.read(notificationsProvider);
       expect(notifications.length, 1);
-      
+
       // Wait a bit
       await Future.delayed(Duration(milliseconds: 100));
-      
+
       // Check notification is still present
       notifications = container.read(notificationsProvider);
       expect(notifications.length, 1);
@@ -219,15 +219,15 @@ void main() {
       notifier.pushNotification(CustomNotification('Message 1'));
       notifier.pushNotification(CustomNotification('Message 2'));
       notifier.pushNotification(CustomNotification('Message 3'));
-      
+
       // Remove middle one
       notifier.dismissNotification(1);
-      
+
       // Add another
       notifier.pushNotification(CustomNotification('Message 4'));
-      
+
       final notifications = container.read(notificationsProvider);
-      
+
       expect(notifications.length, 3);
       expect(notifications[0].id, 0);
       expect(notifications[1].id, 2);

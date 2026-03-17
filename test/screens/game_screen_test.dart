@@ -11,6 +11,8 @@ import 'package:vocabulary_game/providers/vocabulary_provider.dart';
 import 'package:vocabulary_game/screens/game.dart';
 import 'package:vocabulary_game/widgets/game_completed.dart';
 
+import '../helpers/test_app_wrapper.dart';
+
 void main() {
   group('GameScreen Widget Tests', () {
     // Mock data for testing
@@ -33,8 +35,8 @@ void main() {
             (ref) => MockVocabularyNotifier(ref, mockWords),
           ),
         ],
-        child: MaterialApp(
-          home: GameScreen(game: game, wordsQty: wordsQty ?? defaultQty),
+        child: createTestAppWrapper(
+          child: GameScreen(game: game, wordsQty: wordsQty ?? defaultQty),
         ),
       );
     }

@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabulary_game/providers/vocabulary_provider.dart';
 import 'package:vocabulary_game/storage/storage_interface.dart';
@@ -8,7 +9,7 @@ import 'package:vocabulary_game/providers/notifications_provider.dart';
 class LanguagesNotifier extends StateNotifier<Map<String, dynamic>> {
   LanguagesNotifier(this.ref) : super({}) {
     _storage = ref.read(storageProvider);
-    state = {'loading': true};
+    state = {'loading': true, 'app_language': 'en'};
     Future.microtask(() => loadLanguages());
   }
 
@@ -19,6 +20,8 @@ class LanguagesNotifier extends StateNotifier<Map<String, dynamic>> {
   Future<void> loadLanguages() async {
     try {
       final languages = await _storage.getLanguages();
+      final appLanguage = await _storage.getAppLanguage();
+
       if (languages.isEmpty) {
         await _storage.addLanguage(defaultLanguage);
         await _storage.setLearningLanguage(defaultLanguage.value);
@@ -26,6 +29,7 @@ class LanguagesNotifier extends StateNotifier<Map<String, dynamic>> {
           ...state,
           'languages': [defaultLanguage],
           'learning_language': defaultLanguage.value,
+          'app_language': appLanguage ?? 'en',
         };
         return;
       } else {
@@ -35,11 +39,14 @@ class LanguagesNotifier extends StateNotifier<Map<String, dynamic>> {
           ...state,
           'languages': languages,
           'learning_language': learningLanguage,
+          'app_language': appLanguage ?? 'en',
         };
       }
 
       if (_loadingErrorNotification != null) {
-        ref.read(notificationsProvider.notifier).dismissNotification(_loadingErrorNotification!);
+        ref
+            .read(notificationsProvider.notifier)
+            .dismissNotification(_loadingErrorNotification!);
         _loadingErrorNotification = null;
       }
     } catch (e) {
@@ -84,7 +91,10 @@ class LanguagesNotifier extends StateNotifier<Map<String, dynamic>> {
     }
   }
 
-  Future<String?> updateLanguage(Language oldLanguage, Language newLanguage) async {
+  Future<String?> updateLanguage(
+    Language oldLanguage,
+    Language newLanguage,
+  ) async {
     try {
       if (newLanguage.name == "") {
         throw 'Language name cannot be empty';
@@ -92,14 +102,21 @@ class LanguagesNotifier extends StateNotifier<Map<String, dynamic>> {
 
       List<Language> currentLanguages = [...getLanguages()];
       final conflictingLanguages = currentLanguages.where(
-        (language) => language.value == newLanguage.value && language.value != oldLanguage.value,
+        (language) =>
+            language.value == newLanguage.value &&
+            language.value != oldLanguage.value,
       );
       if (conflictingLanguages.isNotEmpty) {
         throw 'Language already exists';
       }
 
-      final updatedLanguages = await _storage.updateLanguage(oldLanguage, newLanguage);
-      await ref.read(vocabularyProvider.notifier).updateWordsLanguage(oldLanguage.value, newLanguage.value);
+      final updatedLanguages = await _storage.updateLanguage(
+        oldLanguage,
+        newLanguage,
+      );
+      await ref
+          .read(vocabularyProvider.notifier)
+          .updateWordsLanguage(oldLanguage.value, newLanguage.value);
 
       state = {...state, 'languages': updatedLanguages};
       if (state['learning_language'] == oldLanguage.value) {
@@ -114,7 +131,9 @@ class LanguagesNotifier extends StateNotifier<Map<String, dynamic>> {
   Future<String?> deleteLanguage(Language language) async {
     try {
       final remainingLanguages = await _storage.deleteLanguage(language);
-      ref.read(vocabularyProvider.notifier).deleteWordsByLanguage(language.value);
+      ref
+          .read(vocabularyProvider.notifier)
+          .deleteWordsByLanguage(language.value);
       state = {...state, 'languages': remainingLanguages};
       return null;
     } catch (e) {
@@ -127,13 +146,15 @@ class LanguagesNotifier extends StateNotifier<Map<String, dynamic>> {
       _storage.setLearningLanguage(newLanguage);
       state = {...state, 'learning_language': newLanguage};
     } catch (e) {
-      ref.read(notificationsProvider.notifier).pushNotification(
-        CustomNotification(
-          'Failed to change learning language: ${e.toString()}',
-          type: NotificationType.error,
-          isDismissable: true,
-        ),
-      );
+      ref
+          .read(notificationsProvider.notifier)
+          .pushNotification(
+            CustomNotification(
+              'Failed to change learning language: ${e.toString()}',
+              type: NotificationType.error,
+              isDismissable: true,
+            ),
+          );
     }
   }
 
@@ -151,6 +172,34 @@ class LanguagesNotifier extends StateNotifier<Map<String, dynamic>> {
       (l) => l.value == language,
       orElse: () => defaultLanguage,
     );
+  }
+
+  Locale getCurrentLocale() {
+    final appLanguage = state['app_language'] as String?;
+    return Locale(appLanguage ?? 'en');
+  }
+
+  Future<void> setAppLanguage(String languageCode) async {
+    try {
+      const supportedLanguages = {'en', 'es', 'fr', 'de', 'it', 'pt'};
+
+      if (!supportedLanguages.contains(languageCode)) {
+        throw 'Unsupported language code: $languageCode';
+      }
+
+      await _storage.setAppLanguage(languageCode);
+      state = {...state, 'app_language': languageCode};
+    } catch (e) {
+      ref
+          .read(notificationsProvider.notifier)
+          .pushNotification(
+            CustomNotification(
+              'Failed to change app language: ${e.toString()}',
+              type: NotificationType.error,
+              isDismissable: true,
+            ),
+          );
+    }
   }
 }
 

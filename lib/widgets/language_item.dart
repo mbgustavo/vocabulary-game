@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:vocabulary_game/l10n/app_localizations.dart';
 import 'package:vocabulary_game/models/language.dart';
 import 'package:vocabulary_game/providers/notifications_provider.dart';
 import 'package:vocabulary_game/providers/languages_provider.dart';
@@ -16,10 +17,7 @@ class LanguageItem extends ConsumerWidget {
     required this.isSelected,
   });
 
-  Future<void> _onDelete(
-    BuildContext context,
-    WidgetRef ref,
-  ) async {
+  Future<void> _onDelete(BuildContext context, WidgetRef ref) async {
     final error = await ref
         .read(languagesProvider.notifier)
         .deleteLanguage(language);
@@ -39,27 +37,23 @@ class LanguageItem extends ConsumerWidget {
     }
   }
 
-  void _showDeleteDialog(
-    BuildContext context,
-    WidgetRef ref,
-  ) {
+  void _showDeleteDialog(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Delete Language'),
-          content: Text(
-            "Are you sure you want to delete ${language.name} and its vocabulary? This action can't be undone.",
-          ),
+          title: Text(l10n.deleteLanguageTitle),
+          content: Text(l10n.deleteLanguageConfirm(language.name)),
           actions: [
             TextButton(
-              child: Text('Cancel'),
+              child: Text(l10n.commonCancel),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             ElevatedButton(
-              child: Text('Delete'),
+              child: Text(l10n.commonDelete),
               onPressed: () => _onDelete(context, ref),
             ),
           ],

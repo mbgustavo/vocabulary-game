@@ -6,6 +6,8 @@ import 'package:vocabulary_game/widgets/multiple_choice_question.dart';
 import 'package:vocabulary_game/widgets/game_completed.dart';
 import 'package:vocabulary_game/widgets/word_card.dart';
 
+import '../helpers/test_app_wrapper.dart';
+
 void main() {
   group('MultipleChoiceGame Widget Tests', () {
     // Helper function to create test words
@@ -28,8 +30,8 @@ void main() {
       List<Word>? words,
       bool playWithTranslations = false,
     }) {
-      return MaterialApp(
-        home: Scaffold(
+      return createTestAppWrapper(
+        child: Scaffold(
           body: MultipleChoiceGame(
             words ?? createTestWords(5),
             vocabulary: vocabulary,

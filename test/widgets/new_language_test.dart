@@ -10,6 +10,8 @@ import 'package:vocabulary_game/models/language.dart';
 import 'package:vocabulary_game/providers/languages_provider.dart';
 import 'package:vocabulary_game/storage/storage_interface.dart';
 
+import '../helpers/test_app_wrapper.dart';
+
 class MockStorage extends Mock implements StorageInterface {}
 
 class MockLanguagesNotifier extends Mock implements LanguagesNotifier {}
@@ -53,10 +55,9 @@ void main() {
     }) {
       return ProviderScope(
         overrides:
-            overrides ??
-            [storageProvider.overrideWithValue(mockStorage)],
-        child: MaterialApp(
-          home: Scaffold(body: NewLanguage(initialLanguage: initialLanguage)),
+            overrides ?? [storageProvider.overrideWithValue(mockStorage)],
+        child: createTestAppWrapper(
+          child: Scaffold(body: NewLanguage(initialLanguage: initialLanguage)),
         ),
       );
     }
@@ -357,7 +358,9 @@ void main() {
               createTestWidget(
                 initialLanguage: initialLanguage,
                 overrides: [
-                  languagesProvider.overrideWith((ref) => mockLanguagesNotifier),
+                  languagesProvider.overrideWith(
+                    (ref) => mockLanguagesNotifier,
+                  ),
                   storageProvider.overrideWithValue(mockStorage),
                 ],
               ),
@@ -410,8 +413,8 @@ void main() {
                 languagesProvider.overrideWith((ref) => mockLanguagesNotifier),
                 storageProvider.overrideWithValue(mockStorage),
               ],
-              child: MaterialApp(
-                home: Scaffold(
+              child: createTestAppWrapper(
+                child: Scaffold(
                   body: Builder(
                     builder:
                         (context) => ElevatedButton(
@@ -453,7 +456,9 @@ void main() {
             await tester.pumpWidget(
               createTestWidget(
                 overrides: [
-                  languagesProvider.overrideWith((ref) => mockLanguagesNotifier),
+                  languagesProvider.overrideWith(
+                    (ref) => mockLanguagesNotifier,
+                  ),
                   storageProvider.overrideWithValue(mockStorage),
                 ],
               ),
@@ -488,8 +493,8 @@ void main() {
         ) async {
           await tester.pumpWidget(
             ProviderScope(
-              child: MaterialApp(
-                home: Scaffold(
+              child: createTestAppWrapper(
+                child: Scaffold(
                   body: Builder(
                     builder:
                         (context) => ElevatedButton(

@@ -21,7 +21,13 @@ class HighlightedText extends StatelessWidget {
                   ..maskFilter = MaskFilter.blur(BlurStyle.normal, 1),
           ),
         ),
-        Text(text, style: TextStyle(fontSize: 16, color: Theme.of(context).colorScheme.onSurface)),
+        Text(
+          text,
+          style: TextStyle(
+            fontSize: 16,
+            color: Theme.of(context).colorScheme.onSurface,
+          ),
+        ),
       ],
     );
   }

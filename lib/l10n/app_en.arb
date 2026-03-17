@@ -1,0 +1,210 @@
+{
+  "@@locale": "en",
+  "appTitle": "Vocabulary Game",
+  "appLoading": "Loading...",
+  "homeWelcome": "Welcome to Vocabulary Game!",
+  "homeYouAreLearning": "You are learning {language}",
+  "@homeYouAreLearning": {
+    "description": "Text showing what language the user is learning",
+    "placeholders": {
+      "language": {
+        "type": "String",
+        "example": "Spanish"
+      }
+    }
+  },
+  "homeStartGame": "Start game",
+  "homeVocabularyTooSmall": "You need at least 5 words to start a game",
+  "homeLanguages": "Learning Languages",
+  "homeVocabulary": "Vocabulary",
+  "languagesTitle": "Learning languages",
+  "languagesAdd": "Add Language",
+  "languagesSelect": "Select learning language",
+  "languagesCurrent": "Current: {language}",
+  "@languagesCurrent": {
+    "description": "Shows the current learning language",
+    "placeholders": {
+      "language": {
+        "type": "String",
+        "example": "Spanish"
+      }
+    }
+  },
+  "vocabularyTitle": "Vocabulary",
+  "vocabularyAddWord": "Add Word",
+  "vocabularyNoWords": "No words yet. Add some to get started!",
+  "vocabularyDeleteConfirm": "Are you sure you want to delete this word?",
+  "vocabularyDelete": "Delete",
+  "vocabularyCancel": "Cancel",
+  "gameSelectTitle": "Select Game",
+  "gameSelectGameMode": "Select a game mode:",
+  "gameDifficultyEasy": "Easy",
+  "gameDifficultyMedium": "Medium",
+  "gameDifficultyHard": "Hard",
+  "gameDifficultyRandom": "Random",
+  "gameConnectWords": "Connect Words",
+  "gameMultipleChoice": "Multiple Choice",
+  "gameWriteWords": "Write Words",
+  "connectionGameTitle": "Connection Game",
+  "multipleChoiceGameTitle": "Multiple Choice Game",
+  "writeGameTitle": "Write Game",
+  "gameFromTranslations": "from translations",
+  "gameAnyGameMode": "Any Game Mode",
+  "gameFlashcards": "Flashcards",
+  "gameTyping": "Typing",
+  "gamePlayButton": "Play",
+  "gameBack": "Back",
+  "gameScore": "Score: {score}",
+  "@gameScore": {
+    "description": "Shows the player's current score",
+    "placeholders": {
+      "score": {
+        "type": "int",
+        "example": "10"
+      }
+    }
+  },
+  "gameCompleted": "Game Completed!",
+  "gameFinalScore": "Final Score: {score}",
+  "@gameFinalScore": {
+    "description": "Shows the final score after game completion",
+    "placeholders": {
+      "score": {
+        "type": "int",
+        "example": "25"
+      }
+    }
+  },
+  "dataTitle": "Data Management",
+  "dataTooltip": "Data Menu",
+  "dataExport": "Export Vocabulary",
+  "dataImport": "Import Vocabulary",
+  "dataClear": "Clear All Data",
+  "dataClearConfirm": "This will delete all your data. This action cannot be undone.",
+  "newWordTitle": "Add New Word",
+  "newWordInputLabel": "Word in learning language",
+  "newWordTranslationLabel": "Translation in your language",
+  "newWordExamplesLabel": "Examples (optional)",
+  "newWordWord": "Word",
+  "newWordTranslation": "Translation",
+  "newWordExample": "Example (optional)",
+  "newWordSave": "Save",
+  "fluencyLevel": "Fluency level",
+  "fluencyLevelHelper": "Words with lower fluency levels will appear more often in games.",
+  "validationCharacterRange": "Must be between {minLength} and {maxLength} characters.",
+  "@validationCharacterRange": {
+    "description": "Validation message for character range",
+    "placeholders": {
+      "minLength": {
+        "type": "int",
+        "example": "1"
+      },
+      "maxLength": {
+        "type": "int",
+        "example": "50"
+      }
+    }
+  },
+  "errorTitle": "Error",
+  "errorLoadingData": "Error loading data",
+  "errorSavingData": "Error saving data",
+  "successTitle": "Success",
+  "successWordAdded": "Word added successfully",
+  "commonCancel": "Cancel",
+  "commonDelete": "Delete",
+  "commonSave": "Save",
+  "commonNext": "Next",
+  "commonPlayAgain": "Play again",
+  "commonRestore": "Restore",
+  "allLanguages": "All Languages",
+  "nameLabel": "Name",
+  "deleteLanguageTitle": "Delete Language",
+  "deleteWordTitle": "Delete Word",
+  "incorrectMatch": "Incorrect match! Try again.",
+  "vocabularyEmptyMessage": "No words in this vocabulary.",
+  "saveLanguage": "Save language",
+  "restoreDefaults": "Restore Defaults",
+  "confirmRestore": "Confirm Restore",
+  "gameWriteInstruction": "Write the translation for the word:",
+  "gameAnswerLabel": "Your answer",
+  "gameSubmit": "Submit",
+  "gameCompleteMessage": "Congratulations! You completed the game!",
+  "deleteLanguageConfirm": "Are you sure you want to delete {language} and its vocabulary? This action can't be undone.",
+  "@deleteLanguageConfirm": {
+    "description": "Confirmation message for deleting a language",
+    "placeholders": {
+      "language": {
+        "type": "String",
+        "example": "Spanish"
+      }
+    }
+  },
+  "deleteWordTitle": "Delete Word",
+  "deleteWordConfirm": "Are you sure you want to delete the word {word}? This action can't be undone.",
+  "@deleteWordConfirm": {
+    "description": "Confirmation message for deleting a word",
+    "placeholders": {
+      "word": {
+        "type": "String",
+        "example": "hello"
+      }
+    }
+  },
+  "noWordsInVocabulary": "No words in this vocabulary.",
+  "dataManageTitle": "Manage your vocabulary data",
+  "dataSaveBackupTitle": "Save Backup",
+  "dataSaveBackupSubtitle": "Save your current vocabulary and languages",
+  "dataRestoreBackupTitle": "Restore Backup",
+  "dataRestoreBackupSubtitle": "Restore from a previously saved backup",
+  "dataRestoreDefaultsTitle": "Restore Defaults",
+  "dataRestoreDefaultsSubtitle": "Reset to default settings and clear all data",
+  "dataSaveFileDialogTitle": "Save vocabulary backup",
+  "dataSaveSuccessMessage": "Backup saved successfully to: {filename}",
+  "@dataSaveSuccessMessage": {
+    "description": "Success message when backup is saved",
+    "placeholders": {
+      "filename": {
+        "type": "String",
+        "example": "my_vocabulary_backup_2024-01-01.json"
+      }
+    }
+  },
+  "dataSaveErrorMessage": "Failed to save backup: {error}",
+  "@dataSaveErrorMessage": {
+    "description": "Error message when backup fails to save",
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Permission denied"
+      }
+    }
+  },
+  "dataRestoreFileDialogTitle": "Select backup file to restore",
+  "dataRestoreErrorMessage": "Failed to restore backup: {error}",
+  "@dataRestoreErrorMessage": {
+    "description": "Error message when backup fails to restore",
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Invalid file format"
+      }
+    }
+  },
+  "dataRestoreDefaultsConfirmMessage": "This will delete all your vocabulary data and languages, returning the app to its initial state.\n\nYou can create a backup first if you want to save your current data. This action cannot be undone.\n\nAre you sure you want to continue?",
+  "dataRestoreDefaultsSuccessMessage": "Successfully restored to defaults",
+  "dataRestoreDefaultsErrorMessage": "Failed to restore defaults: {error}",
+  "@dataRestoreDefaultsErrorMessage": {
+    "description": "Error message when restore to defaults fails",
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Storage error"
+      }
+    }
+  },
+  "dataConfirmRestoreTitle": "Confirm Restore",
+  "dataConfirmRestoreMessage": "This will replace all your current data with the backup data. This action cannot be undone.\n\nAre you sure you want to continue?",
+  "dataRestoreSuccessMessage": "Backup restored successfully",
+  "dataRestoreDefaultsButton": "Restore Defaults",
+  "dataRestoreButton": "Restore"
+}

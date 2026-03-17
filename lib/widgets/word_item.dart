@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:vocabulary_game/l10n/app_localizations.dart';
 import 'package:vocabulary_game/models/word.dart';
 import 'package:vocabulary_game/providers/notifications_provider.dart';
 import 'package:vocabulary_game/providers/languages_provider.dart';
@@ -30,23 +31,22 @@ class WordItem extends ConsumerWidget {
   }
 
   void _showDeleteDialog(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Delete Word'),
-          content: Text(
-            "Are you sure you want to delete the word ${word.input}? This action can't be undone.",
-          ),
+          title: Text(l10n.deleteWordTitle),
+          content: Text(l10n.deleteWordConfirm(word.input)),
           actions: [
             TextButton(
-              child: Text('Cancel'),
+              child: Text(l10n.commonCancel),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             ElevatedButton(
-              child: Text('Delete'),
+              child: Text(l10n.commonDelete),
               onPressed: () => _onDelete(context, ref),
             ),
           ],

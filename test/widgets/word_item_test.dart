@@ -11,9 +11,11 @@ import 'package:vocabulary_game/providers/vocabulary_provider.dart';
 import 'package:vocabulary_game/providers/notifications_provider.dart';
 import 'package:vocabulary_game/storage/storage_interface.dart';
 
+import '../helpers/test_app_wrapper.dart';
+
 class MockLanguagesNotifier extends Mock implements LanguagesNotifier {
   final Language mockLanguage = Language('English', '🇬🇧');
-  
+
   final List<Language> mockLanguages = [
     Language('English', '🇬🇧'),
     Language('Portuguese', '🇧🇷'),
@@ -21,16 +23,18 @@ class MockLanguagesNotifier extends Mock implements LanguagesNotifier {
 
   @override
   Language getLanguage(String languageCode) => mockLanguages.firstWhere(
-        (lang) => lang.value == languageCode,
-        orElse: () => mockLanguage,
-      );
-  
+    (lang) => lang.value == languageCode,
+    orElse: () => mockLanguage,
+  );
+
   @override
   List<Language> getLanguages() => mockLanguages;
 }
 
 class MockVocabularyNotifier extends Mock implements VocabularyNotifier {}
+
 class MockNotificationsNotifier extends Mock implements NotificationsNotifier {}
+
 class MockStorage extends Mock implements StorageInterface {}
 
 void main() {
@@ -40,7 +44,9 @@ void main() {
   late MockStorage mockStorage;
 
   setUpAll(() {
-    registerFallbackValue(Word(language: 'English', input: 'test', translation: 'teste'));
+    registerFallbackValue(
+      Word(language: 'English', input: 'test', translation: 'teste'),
+    );
     registerFallbackValue(CustomNotification('Test notification'));
   });
 
@@ -56,37 +62,34 @@ void main() {
     String input = 'test',
     String translation = 'teste',
   }) {
-    return Word(
-      language: language,
-      input: input,
-      translation: translation,
-    );
+    return Word(language: language, input: input, translation: translation);
   }
 
-  Widget createTestWidget({
-    Word? word,
-    List<Override>? overrides,
-  }) {
+  Widget createTestWidget({Word? word, List<Override>? overrides}) {
     final testWord = word ?? createTestWord();
-    
+
     return ProviderScope(
-      overrides: overrides ?? [
-        languagesProvider.overrideWith((ref) => mockLanguagesNotifier),
-        vocabularyProvider.overrideWith((ref) => mockVocabularyNotifier),
-        notificationsProvider.overrideWith((ref) => mockNotificationsNotifier),
-        storageProvider.overrideWithValue(mockStorage),
-      ],
-      child: MaterialApp(
-        home: Scaffold(
-          body: WordItem(word: testWord),
-        ),
+      overrides:
+          overrides ??
+          [
+            languagesProvider.overrideWith((ref) => mockLanguagesNotifier),
+            vocabularyProvider.overrideWith((ref) => mockVocabularyNotifier),
+            notificationsProvider.overrideWith(
+              (ref) => mockNotificationsNotifier,
+            ),
+            storageProvider.overrideWithValue(mockStorage),
+          ],
+      child: createTestAppWrapper(
+        child: Scaffold(body: WordItem(word: testWord)),
       ),
     );
   }
 
   group('WordItem Widget Tests', () {
     group('Display Tests', () {
-      testWidgets('should display word information correctly', (WidgetTester tester) async {
+      testWidgets('should display word information correctly', (
+        WidgetTester tester,
+      ) async {
         // Arrange
         final word = createTestWord(input: 'Hello', translation: 'Olá');
 
@@ -109,14 +112,17 @@ void main() {
         // Assert
         expect(find.byType(WordItem), findsOneWidget);
         // Find the specific RichText that contains the icon
-        final richTexts = tester.widgetList<RichText>(find.byType(RichText)).toList();
+        final richTexts =
+            tester.widgetList<RichText>(find.byType(RichText)).toList();
         final iconRichText = richTexts.firstWhere(
           (richText) => richText.text.toPlainText().contains('🇧🇷'),
         );
         expect(iconRichText.text.toPlainText(), equals('🇧🇷'));
       });
 
-      testWidgets('should display edit and delete buttons', (WidgetTester tester) async {
+      testWidgets('should display edit and delete buttons', (
+        WidgetTester tester,
+      ) async {
         // Arrange
         final word = createTestWord();
 
@@ -131,7 +137,9 @@ void main() {
     });
 
     group('Delete Dialog Tests', () {
-      testWidgets('should cancel delete when cancel is pressed', (WidgetTester tester) async {
+      testWidgets('should cancel delete when cancel is pressed', (
+        WidgetTester tester,
+      ) async {
         // Arrange
         final word = createTestWord();
 
@@ -153,13 +161,17 @@ void main() {
         verifyNever(() => mockVocabularyNotifier.deleteWord(any()));
       });
 
-      testWidgets('should confirm delete when delete is pressed', (WidgetTester tester) async {
+      testWidgets('should confirm delete when delete is pressed', (
+        WidgetTester tester,
+      ) async {
         // Arrange
         final word = createTestWord();
-        when(() => mockVocabularyNotifier.deleteWord(word))
-            .thenAnswer((_) async => 'Word deleted successfully');
-        when(() => mockNotificationsNotifier.pushNotification(any()))
-            .thenReturn(1);
+        when(
+          () => mockVocabularyNotifier.deleteWord(word),
+        ).thenAnswer((_) async => 'Word deleted successfully');
+        when(
+          () => mockNotificationsNotifier.pushNotification(any()),
+        ).thenReturn(1);
 
         // Act
         await tester.pumpWidget(createTestWidget(word: word));

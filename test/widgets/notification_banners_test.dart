@@ -5,6 +5,8 @@ import 'package:mocktail/mocktail.dart';
 import 'package:vocabulary_game/widgets/notification_banners.dart';
 import 'package:vocabulary_game/providers/notifications_provider.dart';
 
+import '../helpers/test_app_wrapper.dart';
+
 class MockNotificationsNotifier extends Mock implements NotificationsNotifier {}
 
 void main() {
@@ -15,8 +17,8 @@ void main() {
     }) {
       return ProviderScope(
         overrides: overrides ?? [],
-        child: MaterialApp(
-          home: Scaffold(
+        child: createTestAppWrapper(
+          child: Scaffold(
             body: Column(
               children: [
                 NotificationBanners(),

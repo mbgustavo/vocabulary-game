@@ -19,10 +19,7 @@ class LanguageList extends StatelessWidget {
       itemBuilder: (ctx, index) {
         final isSelected = languages[index].value == learningLanguage;
 
-        return LanguageItem(
-          language: languages[index],
-          isSelected: isSelected,
-        );
+        return LanguageItem(language: languages[index], isSelected: isSelected);
       },
     );
   }

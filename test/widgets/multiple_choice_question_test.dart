@@ -4,6 +4,8 @@ import 'package:vocabulary_game/widgets/multiple_choice_question.dart';
 import 'package:vocabulary_game/widgets/word_card.dart';
 import 'package:vocabulary_game/models/word.dart';
 
+import '../helpers/test_app_wrapper.dart';
+
 void main() {
   group('MultipleChoiceQuestion Widget Tests', () {
     late Word testQuestion;
@@ -60,8 +62,8 @@ void main() {
       bool playWithTranslations = false,
       void Function(WordInGame)? onAnswerSelected,
     }) {
-      return MaterialApp(
-        home: Scaffold(
+      return createTestAppWrapper(
+        child: Scaffold(
           body: MultipleChoiceQuestion(
             question: question,
             answers: answers,

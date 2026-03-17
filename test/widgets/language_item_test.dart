@@ -11,6 +11,8 @@ import 'package:vocabulary_game/providers/languages_provider.dart';
 import 'package:vocabulary_game/providers/notifications_provider.dart';
 import 'package:vocabulary_game/storage/storage_interface.dart';
 
+import '../helpers/test_app_wrapper.dart';
+
 class MockStorage extends Mock implements StorageInterface {}
 
 class MockLanguagesNotifier extends Mock implements LanguagesNotifier {}
@@ -66,10 +68,9 @@ void main() {
     }) {
       return ProviderScope(
         overrides:
-            overrides ??
-            [storageProvider.overrideWithValue(mockStorage)],
-        child: MaterialApp(
-          home: Scaffold(
+            overrides ?? [storageProvider.overrideWithValue(mockStorage)],
+        child: createTestAppWrapper(
+          child: Scaffold(
             body: LanguageItem(language: language, isSelected: isSelected),
           ),
         ),
@@ -180,8 +181,9 @@ void main() {
           await tester.pumpAndSettle();
 
           verify(
-            () =>
-                mockLanguagesNotifier.changeLearningLanguage(testLanguage.value),
+            () => mockLanguagesNotifier.changeLearningLanguage(
+              testLanguage.value,
+            ),
           ).called(1);
         },
       );
@@ -206,7 +208,9 @@ void main() {
 
           await tester.tap(find.byType(ListTile));
 
-          verifyNever(() => mockLanguagesNotifier.changeLearningLanguage(any()));
+          verifyNever(
+            () => mockLanguagesNotifier.changeLearningLanguage(any()),
+          );
         },
       );
 

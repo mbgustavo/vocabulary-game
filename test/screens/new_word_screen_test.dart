@@ -7,6 +7,8 @@ import 'package:vocabulary_game/providers/languages_provider.dart';
 import 'package:vocabulary_game/providers/vocabulary_provider.dart';
 import 'package:vocabulary_game/screens/new_word.dart';
 
+import '../helpers/test_app_wrapper.dart';
+
 class MockLanguagesNotifier extends LanguagesNotifier {
   final Language _testLanguage;
 
@@ -87,7 +89,9 @@ void main() {
                 MockVocabularyNotifier(ref, mockWords, saveError: saveError),
           ),
         ],
-        child: MaterialApp(home: NewWordScreen(initialWord: initialWord)),
+        child: createTestAppWrapper(
+          child: NewWordScreen(initialWord: initialWord),
+        ),
       );
     }
 
@@ -99,13 +103,18 @@ void main() {
         await tester.pumpAndSettle();
 
         expect(find.byType(NewWordScreen), findsOneWidget);
-        expect(find.text('Add new word'), findsOneWidget);
+        expect(find.text('Add New Word'), findsOneWidget);
         expect(find.byType(Form), findsOneWidget);
         expect(find.text(testLanguage.name), findsWidgets);
         expect(find.text('Word in learning language'), findsOneWidget);
         expect(find.text('Translation in your language'), findsOneWidget);
         expect(find.text('Fluency level'), findsOneWidget);
-        expect(find.text('Words with lower fluency levels will appear more often in games.'), findsOneWidget);
+        expect(
+          find.text(
+            'Words with lower fluency levels will appear more often in games.',
+          ),
+          findsOneWidget,
+        );
         expect(find.text('Examples (optional)'), findsOneWidget);
         expect(find.text('Save'), findsOneWidget);
         expect(

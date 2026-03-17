@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vocabulary_game/l10n/app_localizations.dart';
 import 'package:vocabulary_game/models/word.dart';
 import 'package:vocabulary_game/widgets/game_completed.dart';
 import 'package:vocabulary_game/widgets/multiple_choice_question.dart';
@@ -86,9 +87,9 @@ class _MultipleChoiceGameState extends State<MultipleChoiceGame> {
       return;
     }
 
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text('Incorrect match! Try again.')));
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(AppLocalizations.of(context)!.incorrectMatch)),
+    );
 
     setState(() {
       answer.status = WordStatus.disabled;
@@ -142,7 +143,10 @@ class _MultipleChoiceGameState extends State<MultipleChoiceGame> {
                         foregroundColor: Theme.of(context).colorScheme.primary,
                       ),
                       icon: const Icon(Icons.navigate_next, size: 32),
-                      label: const Text('Next', style: TextStyle(fontSize: 20)),
+                      label: Text(
+                        AppLocalizations.of(context)!.commonNext,
+                        style: TextStyle(fontSize: 20),
+                      ),
                     ),
                   )
                   : Padding(

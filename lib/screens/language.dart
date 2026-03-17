@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:vocabulary_game/l10n/app_localizations.dart';
 import 'package:vocabulary_game/providers/languages_provider.dart';
 import 'package:vocabulary_game/widgets/language_list.dart';
 import 'package:vocabulary_game/widgets/new_language.dart';
@@ -23,7 +24,7 @@ class _LanguageScreenState extends ConsumerState<LanguageScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Learning languages'),
+        title: Text(AppLocalizations.of(context)!.languagesTitle),
         actions: [
           IconButton(
             icon: const Icon(Icons.add),

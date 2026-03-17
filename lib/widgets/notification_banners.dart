@@ -13,7 +13,7 @@ class NotificationBanners extends ConsumerWidget {
       return const SizedBox.shrink();
     }
 
-    Color getBackgroundColor (NotificationType type) {
+    Color getBackgroundColor(NotificationType type) {
       switch (type) {
         case NotificationType.error:
           return Theme.of(context).colorScheme.errorContainer;
@@ -29,7 +29,10 @@ class NotificationBanners extends ConsumerWidget {
       children:
           notifications.map((notification) {
             return MaterialBanner(
-              content: Text(notification.message, style: TextStyle(color: Colors.white),),
+              content: Text(
+                notification.message,
+                style: TextStyle(color: Colors.white),
+              ),
               backgroundColor: getBackgroundColor(notification.type),
               actions:
                   notification.isDismissable

@@ -29,17 +29,17 @@ void main() {
       when(
         () => mockStorage.getLearningLanguage(),
       ).thenAnswer((_) async => null);
+      when(() => mockStorage.getAppLanguage()).thenAnswer((_) async => 'en');
       when(
         () => mockStorage.addLanguage(any()),
       ).thenAnswer((invocation) async => [invocation.positionalArguments[0]]);
       when(
         () => mockStorage.setLearningLanguage(any()),
       ).thenAnswer((_) async => {});
+      when(() => mockStorage.setAppLanguage(any())).thenAnswer((_) async => {});
 
       container = ProviderContainer(
-        overrides: [
-          storageProvider.overrideWithValue(mockStorage),
-        ],
+        overrides: [storageProvider.overrideWithValue(mockStorage)],
       );
     });
 
@@ -104,6 +104,7 @@ void main() {
         when(
           () => mockStorage.getLearningLanguage(),
         ).thenAnswer((_) async => spanish.value);
+        when(() => mockStorage.getAppLanguage()).thenAnswer((_) async => 'en');
 
         // Create new container with updated mock
         final testContainer = ProviderContainer(
@@ -392,7 +393,10 @@ void main() {
         final notificationsState = testContainer.read(notificationsProvider);
         expect(notificationsState.length, 1);
         expect(notificationsState[0].type, NotificationType.error);
-        expect(notificationsState[0].message, contains('Failed to load languages'));
+        expect(
+          notificationsState[0].message,
+          contains('Failed to load languages'),
+        );
 
         verify(() => mockStorage.getLanguages()).called(1);
 

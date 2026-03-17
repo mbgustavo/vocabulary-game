@@ -390,10 +390,13 @@ void main() {
         );
 
         when(() => mockStorage.deleteWordsByLanguage(any())).thenAnswer(
-          (invocation) async => [
-            frenchWord,
-            spanishWord,
-          ].where((word) => word.language != invocation.positionalArguments[0]).toList(),
+          (invocation) async =>
+              [frenchWord, spanishWord]
+                  .where(
+                    (word) =>
+                        word.language != invocation.positionalArguments[0],
+                  )
+                  .toList(),
         );
 
         final notifier = container.read(vocabularyProvider.notifier);
@@ -446,7 +449,10 @@ void main() {
         final notificationsState = testContainer.read(notificationsProvider);
         expect(notificationsState.length, 1);
         expect(notificationsState[0].type, NotificationType.error);
-        expect(notificationsState[0].message, contains('Failed to load vocabulary'));
+        expect(
+          notificationsState[0].message,
+          contains('Failed to load vocabulary'),
+        );
 
         verify(() => mockStorage.getVocabulary()).called(1);
 
