@@ -24,6 +24,7 @@ class MockLanguagesNotifier extends LanguagesNotifier {
       'loading': false,
       'languages': [_testLanguage],
       'learning_language': _testLanguage.value,
+      'app_language': 'en',
     };
   }
 
@@ -60,12 +61,15 @@ class MockVocabularyNotifier extends VocabularyNotifier {
 class MockStorage extends Mock implements StorageInterface {}
 
 void main() {
+  late MockStorage mockStorage;
+
   setUpAll(() {
     // Register fallback values for mocktail
     registerFallbackValue(Language('Test', '🔤'));
     registerFallbackValue(
       Word(language: 'test', input: 'test', translation: 'test'),
     );
+    mockStorage = MockStorage();
   });
 
   group('HomeScreen Widget Tests', () {
@@ -89,8 +93,10 @@ void main() {
     ];
 
     Widget createTestWidget(List<Word> mockWords) {
+      when(() => mockStorage.getLanguages()).thenAnswer((_) async => []);
       return ProviderScope(
         overrides: [
+          storageProvider.overrideWithValue(mockStorage),
           languagesProvider.overrideWith(
             (ref) => MockLanguagesNotifier(ref, testLanguage),
           ),
@@ -119,6 +125,8 @@ void main() {
         expect(find.text('Vocabulary'), findsOneWidget);
         expect(find.text('Learning Languages'), findsOneWidget);
         expect(find.byType(ElevatedButton), findsNWidgets(3));
+        expect(find.byType(DropdownButton<String>), findsOneWidget);
+        expect(find.text('🇬🇧  EN'), findsOneWidget);
       });
     });
 
@@ -204,6 +212,107 @@ void main() {
         await tester.pumpAndSettle();
 
         expect(find.byType(LanguageScreen), findsOneWidget);
+      });
+
+      group('App Language Dropdown Tests', () {
+        testWidgets(
+          'App language dropdown is displayed with all language options',
+          (WidgetTester tester) async {
+            await tester.pumpWidget(createTestWidget(mockWordsSufficient));
+            await tester.pumpAndSettle();
+
+            // Tap dropdown to open menu
+            await tester.tap(find.byType(DropdownButton<String>));
+            await tester.pumpAndSettle();
+
+            // Verify all language options are available
+            expect(find.text('🇩🇪  DE'), findsWidgets);
+            expect(find.text('🇬🇧  EN'), findsWidgets);
+            expect(find.text('🇪🇸  ES'), findsWidgets);
+            expect(find.text('🇫🇷  FR'), findsWidgets);
+            expect(find.text('🇮🇹  IT'), findsWidgets);
+            expect(find.text('🇧🇷  PT'), findsWidgets);
+          },
+        );
+
+        testWidgets(
+          'App language dropdown calls setAppLanguage and updates UI',
+          (WidgetTester tester) async {
+            when(
+              () => mockStorage.setAppLanguage(any()),
+            ).thenAnswer((_) async {});
+
+            await tester.pumpWidget(createTestWidget(mockWordsSufficient));
+            await tester.pumpAndSettle();
+
+            // Verify English UI is displayed
+            expect(find.text('Vocabulary Game'), findsOneWidget);
+            expect(find.text('Welcome to Vocabulary Game!'), findsOneWidget);
+
+            // Tap dropdown to open menu
+            await tester.tap(find.byType(DropdownButton<String>));
+            await tester.pumpAndSettle();
+
+            // Tap on Spanish language option
+            await tester.tap(
+              find.widgetWithText(DropdownMenuItem<String>, '🇪🇸  ES'),
+            );
+            await tester.pumpAndSettle();
+
+            // Verify setAppLanguage was called with 'es'
+            verify(() => mockStorage.setAppLanguage('es')).called(1);
+
+            // Verify Spanish UI text is now displayed
+            expect(find.text('Juego de Vocabulario'), findsOneWidget);
+            expect(
+              find.text('¡Bienvenido a Juego de Vocabulario!'),
+              findsOneWidget,
+            );
+          },
+        );
+
+        testWidgets('App language can return to previous language', (
+          WidgetTester tester,
+        ) async {
+          when(
+            () => mockStorage.setAppLanguage(any()),
+          ).thenAnswer((_) async {});
+
+          await tester.pumpWidget(createTestWidget(mockWordsSufficient));
+          await tester.pumpAndSettle();
+
+          // Verify English UI is displayed
+          expect(find.text('Vocabulary Game'), findsOneWidget);
+
+          // Tap dropdown to open menu
+          await tester.tap(find.byType(DropdownButton<String>));
+          await tester.pumpAndSettle();
+
+          // Tap on Spanish language option
+          await tester.tap(
+            find.widgetWithText(DropdownMenuItem<String>, '🇪🇸  ES'),
+          );
+          await tester.pumpAndSettle();
+
+          // Verify setAppLanguage was called with 'es'
+          verify(() => mockStorage.setAppLanguage('es')).called(1);
+
+          // Verify Spanish UI text is now displayed
+          expect(find.text('Juego de Vocabulario'), findsOneWidget);
+
+          // Tap dropdown to open menu
+          await tester.tap(find.byType(DropdownButton<String>));
+          await tester.pumpAndSettle();
+
+          // Tap on English language option
+          await tester.tap(
+            find.widgetWithText(DropdownMenuItem<String>, '🇬🇧  EN'),
+          );
+          await tester.pumpAndSettle();
+
+          // Verify English UI is displayed back
+          expect(find.text('Vocabulary Game'), findsOneWidget);
+        });
       });
     });
 
