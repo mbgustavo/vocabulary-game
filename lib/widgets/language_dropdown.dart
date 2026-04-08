@@ -20,7 +20,7 @@ class LanguageDropdown extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     return DropdownButtonFormField(
-      value: selectedLanguage,
+      initialValue: selectedLanguage,
       items: [
         if (showAllLanguages)
           DropdownMenuItem(value: '', child: Text(l10n.allLanguages)),
