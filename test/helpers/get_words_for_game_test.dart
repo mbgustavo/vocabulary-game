@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:vocabulary_game/models/word.dart';
-import 'package:vocabulary_game/games/get_words_for_game.dart';
+import 'package:vocabulary_game/utils/get_words_for_game.dart';
 
 void main() {
   group('getWordsForGame', () {

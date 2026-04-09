@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:vocabulary_game/l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabulary_game/games/connection_game.dart';
-import 'package:vocabulary_game/games/get_words_for_game.dart';
+import 'package:vocabulary_game/utils/get_words_for_game.dart';
 import 'package:vocabulary_game/games/multiple_choice_game.dart';
 import 'package:vocabulary_game/games/write_game.dart';
 import 'package:vocabulary_game/models/word.dart';
