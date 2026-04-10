@@ -36,6 +36,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get homeVocabulary => 'Vokabeln';
 
   @override
+  String get homeWordOfTheMoment => 'Wort des Moments';
+
+  @override
   String get languagesTitle => 'Lernsprachen';
 
   @override
@@ -356,4 +359,62 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get dataRestoreButton => 'Wiederherstellen';
+
+  @override
+  String get wordOfTheMomentTitle => 'Wort des Moments';
+
+  @override
+  String get wordOfTheMomentNoWords =>
+      'Kein Wort verfügbar für die gewählten Einstellungen.';
+
+  @override
+  String get wordOfTheMomentGenerateNewWord => 'Neues Wort generieren';
+
+  @override
+  String get wordOfTheMomentVocabularyScope => 'Wortschatzbereich';
+
+  @override
+  String wordOfTheMomentLearningLanguageOnly(String language) {
+    return 'Nur Lernsprache ($language)';
+  }
+
+  @override
+  String get wordOfTheMomentWholeVocabulary => 'Gesamter Wortschatz';
+
+  @override
+  String get wordOfTheMomentCustomWeightsTitle =>
+      'Benutzerdefinierte Gewichtungen für Wortstufen verwenden';
+
+  @override
+  String get wordOfTheMomentCustomWeightsSubtitle =>
+      'Höhere Werte bedeuten eine höhere Wahrscheinlichkeit, dass ein Wort dieser Stufe ausgewählt wird.';
+
+  @override
+  String get wordOfTheMomentNotificationsEnabled =>
+      'Benachrichtigungen für Wort des Moments aktivieren';
+
+  @override
+  String get wordOfTheMomentInterval => 'Intervall';
+
+  @override
+  String get wordOfTheMomentStartTime => 'Startzeit';
+
+  @override
+  String get wordOfTheMomentPickTime => 'Uhrzeit wählen';
+
+  @override
+  String wordOfTheMomentSaveSettingsError(String error) {
+    return 'Speichern der Einstellungen fehlgeschlagen: $error';
+  }
+
+  @override
+  String wordOfTheMomentLevel(String level) {
+    return 'Stufe: $level';
+  }
+
+  @override
+  String get wordOfTheMomentIntervalHours => 'Stunden';
+
+  @override
+  String get wordOfTheMomentIntervalDays => 'Tage';
 }

@@ -7,6 +7,7 @@ import 'package:vocabulary_game/screens/data.dart';
 import 'package:vocabulary_game/screens/game_select.dart';
 import 'package:vocabulary_game/screens/language.dart';
 import 'package:vocabulary_game/screens/vocabulary.dart';
+import 'package:vocabulary_game/screens/word_of_the_moment.dart';
 import 'package:vocabulary_game/widgets/notification_banners.dart';
 
 class HomeScreen extends ConsumerWidget {
@@ -140,6 +141,24 @@ class HomeScreen extends ConsumerWidget {
                     );
                   },
                   child: Text(AppLocalizations.of(context)!.homeLanguages),
+                ),
+                SizedBox(height: 40),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor:
+                        Theme.of(context).colorScheme.onPrimaryFixed,
+                    foregroundColor: Theme.of(context).colorScheme.primary,
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (ctx) => const WordOfTheMomentScreen(),
+                      ),
+                    );
+                  },
+                  child: Text(
+                    AppLocalizations.of(context)!.homeWordOfTheMoment,
+                  ),
                 ),
               ],
             ),

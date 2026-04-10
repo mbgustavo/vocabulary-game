@@ -8,6 +8,49 @@
   "homeVocabularyTooSmall": "Du brauchst mindestens 5 Wörter, um ein Spiel zu starten",
   "homeLanguages": "Lernsprachen",
   "homeVocabulary": "Vokabeln",
+  "homeWordOfTheMoment": "Wort des Moments",
+  "wordOfTheMomentNoWords": "Kein Wort verfügbar für die gewählten Einstellungen.",
+  "wordOfTheMomentGenerateNewWord": "Neues Wort generieren",
+  "wordOfTheMomentVocabularyScope": "Wortschatzbereich",
+  "wordOfTheMomentLearningLanguageOnly": "Nur Lernsprache ({language})",
+  "@wordOfTheMomentLearningLanguageOnly": {
+    "description": "Label for using only the learning language",
+    "placeholders": {
+      "language": {
+        "type": "String",
+        "example": "Spanisch"
+      }
+    }
+  },
+  "wordOfTheMomentWholeVocabulary": "Gesamter Wortschatz",
+  "wordOfTheMomentCustomWeightsTitle": "Benutzerdefinierte Gewichtungen für Wortstufen verwenden",
+  "wordOfTheMomentCustomWeightsSubtitle": "Höhere Werte bedeuten eine höhere Wahrscheinlichkeit, dass ein Wort dieser Stufe ausgewählt wird.",
+  "wordOfTheMomentNotificationsEnabled": "Benachrichtigungen für Wort des Moments aktivieren",
+  "wordOfTheMomentInterval": "Intervall",
+  "wordOfTheMomentStartTime": "Startzeit",
+  "wordOfTheMomentPickTime": "Uhrzeit wählen",
+  "wordOfTheMomentSaveSettingsError": "Speichern der Einstellungen fehlgeschlagen: {error}",
+  "@wordOfTheMomentSaveSettingsError": {
+    "description": "Error message shown when word of the moment settings fail to save",
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Festplatte voll"
+      }
+    }
+  },
+  "wordOfTheMomentLevel": "Stufe: {level}",
+  "@wordOfTheMomentLevel": {
+    "description": "Word level label shown in the word card",
+    "placeholders": {
+      "level": {
+        "type": "String",
+        "example": "Anfänger"
+      }
+    }
+  },
+  "wordOfTheMomentIntervalHours": "Stunden",
+  "wordOfTheMomentIntervalDays": "Tage",
   "languagesTitle": "Lernsprachen",
   "languagesAdd": "Sprache hinzufügen",
   "languagesSelect": "Lernsprache auswählen",
@@ -140,5 +183,6 @@
   "dataConfirmRestoreMessage": "Dies ersetzt alle Ihre aktuellen Daten durch die Sicherungsdaten. Diese Aktion kann nicht rückgängig gemacht werden.\n\nSind Sie sicher, dass Sie fortfahren möchten?",
   "dataRestoreSuccessMessage": "Sicherung erfolgreich wiederhergestellt",
   "dataRestoreDefaultsButton": "Standardeinstellungen wiederherstellen",
-  "dataRestoreButton": "Wiederherstellen"
+  "dataRestoreButton": "Wiederherstellen",
+  "wordOfTheMomentTitle": "Wort des Moments"
 }

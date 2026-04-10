@@ -124,7 +124,8 @@ void main() {
         expect(find.text('Start game'), findsOneWidget);
         expect(find.text('Vocabulary'), findsOneWidget);
         expect(find.text('Learning Languages'), findsOneWidget);
-        expect(find.byType(ElevatedButton), findsNWidgets(3));
+        expect(find.text('Word Of The Moment'), findsOneWidget);
+        expect(find.byType(ElevatedButton), findsNWidgets(4));
         expect(find.byType(DropdownButton<String>), findsOneWidget);
         expect(find.text('🇬🇧  EN'), findsOneWidget);
       });

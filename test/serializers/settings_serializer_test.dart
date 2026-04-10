@@ -16,7 +16,7 @@ void main() {
   group('WordOfTheMomentSettingsSerializer', () {
     test('toMap should serialize WordOfTheMomentSettings correctly', () {
       final settings = WordOfTheMomentSettings(
-        enabled: true,
+        notificationsEnabled: true,
         fullVocabularyEnabled: false,
         wordLevelWeights: {WordLevel.beginner: 1, WordLevel.intermediate: 2},
         interval: NotificationInterval(value: 1, type: IntervalType.hours),
@@ -25,7 +25,7 @@ void main() {
 
       final map = wordSerializer.toMap(settings);
 
-      expect(map['enabled'], true);
+      expect(map['notificationsEnabled'], true);
       expect(map['fullVocabularyEnabled'], false);
       expect(map['wordLevelWeights'], {'beginner': 1, 'intermediate': 2});
       expect(map['interval'], {'value': 1, 'type': 'hours'});
@@ -34,7 +34,7 @@ void main() {
 
     test('fromMap should deserialize map correctly', () {
       final map = {
-        'enabled': true,
+        'notificationsEnabled': true,
         'fullVocabularyEnabled': true,
         'wordLevelWeights': {'advanced': 3},
         'interval': {'value': 2, 'type': 'days'},
@@ -43,7 +43,7 @@ void main() {
 
       final settings = wordSerializer.fromMap(map);
 
-      expect(settings.enabled, true);
+      expect(settings.notificationsEnabled, true);
       expect(settings.fullVocabularyEnabled, true);
       expect(settings.wordLevelWeights, {WordLevel.advanced: 3});
       expect(settings.interval!.value, 2);
@@ -59,11 +59,11 @@ void main() {
     });
 
     test('fromMap should handle partial map', () {
-      final map = {'enabled': false};
+      final map = {'notificationsEnabled': false};
 
       final settings = wordSerializer.fromMap(map);
 
-      expect(settings.enabled, false);
+      expect(settings.notificationsEnabled, false);
       expect(settings.fullVocabularyEnabled, false);
       expect(settings.wordLevelWeights, null);
       expect(settings.interval, null);
@@ -104,26 +104,28 @@ void main() {
   group('AppSettingsSerializer', () {
     test('toMap should serialize AppSettings correctly', () {
       final settings = AppSettings(
-        wordOfTheMomentSettings: WordOfTheMomentSettings(enabled: true),
+        wordOfTheMomentSettings: WordOfTheMomentSettings(
+          notificationsEnabled: true,
+        ),
       );
 
       final map = appSerializer.toMap(settings);
 
       expect(map['wordOfTheMomentSettings'], isA<Map<String, dynamic>>());
-      expect(map['wordOfTheMomentSettings']['enabled'], true);
+      expect(map['wordOfTheMomentSettings']['notificationsEnabled'], true);
     });
 
     test('fromMap should deserialize map correctly', () {
       final map = {
         'wordOfTheMomentSettings': {
-          'enabled': false,
+          'notificationsEnabled': false,
           'fullVocabularyEnabled': true,
         },
       };
 
       final settings = appSerializer.fromMap(map);
 
-      expect(settings.wordOfTheMomentSettings.enabled, false);
+      expect(settings.wordOfTheMomentSettings.notificationsEnabled, false);
       expect(settings.wordOfTheMomentSettings.fullVocabularyEnabled, true);
     });
 

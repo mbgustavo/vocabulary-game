@@ -39,7 +39,7 @@ class WordOfTheMomentSettingsSerializer
   @override
   Map<String, dynamic> toMap(WordOfTheMomentSettings value) {
     final map = <String, dynamic>{
-      'enabled': value.enabled,
+      'notificationsEnabled': value.notificationsEnabled,
       'fullVocabularyEnabled': value.fullVocabularyEnabled,
     };
 
@@ -120,7 +120,7 @@ class WordOfTheMomentSettingsSerializer
     }
 
     return WordOfTheMomentSettings(
-      enabled: map['enabled'] as bool? ?? false,
+      notificationsEnabled: map['notificationsEnabled'] as bool? ?? false,
       fullVocabularyEnabled: map['fullVocabularyEnabled'] as bool? ?? false,
       wordLevelWeights: parsedWeights,
       interval: parsedInterval,

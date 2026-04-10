@@ -36,6 +36,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get homeVocabulary => 'Vocabulary';
 
   @override
+  String get homeWordOfTheMoment => 'Word Of The Moment';
+
+  @override
   String get languagesTitle => 'Learning languages';
 
   @override
@@ -348,4 +351,62 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get dataRestoreButton => 'Restore';
+
+  @override
+  String get wordOfTheMomentTitle => 'Word Of The Moment';
+
+  @override
+  String get wordOfTheMomentNoWords =>
+      'No available word for the chosen settings.';
+
+  @override
+  String get wordOfTheMomentGenerateNewWord => 'Generate new word';
+
+  @override
+  String get wordOfTheMomentVocabularyScope => 'Vocabulary scope';
+
+  @override
+  String wordOfTheMomentLearningLanguageOnly(String language) {
+    return 'Learning language only ($language)';
+  }
+
+  @override
+  String get wordOfTheMomentWholeVocabulary => 'Whole vocabulary';
+
+  @override
+  String get wordOfTheMomentCustomWeightsTitle =>
+      'Use custom weights for word levels';
+
+  @override
+  String get wordOfTheMomentCustomWeightsSubtitle =>
+      'Higher values mean higher probability of a word of that level being selected.';
+
+  @override
+  String get wordOfTheMomentNotificationsEnabled =>
+      'Enable Word of the Moment notifications';
+
+  @override
+  String get wordOfTheMomentInterval => 'Interval';
+
+  @override
+  String get wordOfTheMomentStartTime => 'Start time';
+
+  @override
+  String get wordOfTheMomentPickTime => 'Pick time';
+
+  @override
+  String wordOfTheMomentSaveSettingsError(String error) {
+    return 'Failed to save settings: $error';
+  }
+
+  @override
+  String wordOfTheMomentLevel(String level) {
+    return 'Level: $level';
+  }
+
+  @override
+  String get wordOfTheMomentIntervalHours => 'Hours';
+
+  @override
+  String get wordOfTheMomentIntervalDays => 'Days';
 }

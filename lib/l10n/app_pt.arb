@@ -8,6 +8,49 @@
   "homeVocabularyTooSmall": "Você precisa de pelo menos 5 palavras para começar um jogo",
   "homeLanguages": "Idiomas de aprendizagem",
   "homeVocabulary": "Vocabulário",
+  "homeWordOfTheMoment": "Palavra do Momento",
+  "wordOfTheMomentNoWords": "Nenhuma palavra disponível para as configurações escolhidas.",
+  "wordOfTheMomentGenerateNewWord": "Gerar nova palavra",
+  "wordOfTheMomentVocabularyScope": "Escopo do vocabulário",
+  "wordOfTheMomentLearningLanguageOnly": "Somente idioma de aprendizado ({language})",
+  "@wordOfTheMomentLearningLanguageOnly": {
+    "description": "Label for using only the learning language",
+    "placeholders": {
+      "language": {
+        "type": "String",
+        "example": "Português"
+      }
+    }
+  },
+  "wordOfTheMomentWholeVocabulary": "Vocabulário completo",
+  "wordOfTheMomentCustomWeightsTitle": "Usar pesos personalizados para os níveis de palavras",
+  "wordOfTheMomentCustomWeightsSubtitle": "Valores mais altos significam maior probabilidade de selecionar uma palavra desse nível.",
+  "wordOfTheMomentNotificationsEnabled": "Ativar notificações Palavra do Momento",
+  "wordOfTheMomentInterval": "Intervalo",
+  "wordOfTheMomentStartTime": "Horário de início",
+  "wordOfTheMomentPickTime": "Selecionar horário",
+  "wordOfTheMomentSaveSettingsError": "Falha ao salvar as configurações: {error}",
+  "@wordOfTheMomentSaveSettingsError": {
+    "description": "Error message shown when word of the moment settings fail to save",
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Espaço insuficiente"
+      }
+    }
+  },
+  "wordOfTheMomentLevel": "Nível: {level}",
+  "@wordOfTheMomentLevel": {
+    "description": "Word level label shown in the word card",
+    "placeholders": {
+      "level": {
+        "type": "String",
+        "example": "Iniciante"
+      }
+    }
+  },
+  "wordOfTheMomentIntervalHours": "Horas",
+  "wordOfTheMomentIntervalDays": "Dias",
   "languagesTitle": "Idiomas de aprendizagem",
   "languagesAdd": "Adicionar idioma",
   "languagesSelect": "Selecionar idioma de aprendizagem",
@@ -139,5 +182,6 @@
   "dataConfirmRestoreMessage": "Isso substituirá todos os seus dados atuais pelos dados do backup. Esta ação não pode ser desfeita.\n\nTem certeza de que deseja continuar?",
   "dataRestoreSuccessMessage": "Backup restaurado com sucesso",
   "dataRestoreDefaultsButton": "Restaurar padrões",
-  "dataRestoreButton": "Restaurar"
+  "dataRestoreButton": "Restaurar",
+  "wordOfTheMomentTitle": "Palavra do Momento"
 }

@@ -47,7 +47,9 @@ void main() {
   group('SettingsNotifier', () {
     test('loadSettings should load settings successfully', () async {
       final testSettings = AppSettings(
-        wordOfTheMomentSettings: WordOfTheMomentSettings(enabled: true),
+        wordOfTheMomentSettings: WordOfTheMomentSettings(
+          notificationsEnabled: true,
+        ),
       );
 
       when(
@@ -84,7 +86,9 @@ void main() {
 
     test('saveSettings should save successfully', () async {
       final testSettings = AppSettings(
-        wordOfTheMomentSettings: WordOfTheMomentSettings(enabled: true),
+        wordOfTheMomentSettings: WordOfTheMomentSettings(
+          notificationsEnabled: true,
+        ),
       );
 
       when(
@@ -103,7 +107,9 @@ void main() {
 
     test('saveSettings should return error on failure', () async {
       final testSettings = AppSettings(
-        wordOfTheMomentSettings: WordOfTheMomentSettings(enabled: true),
+        wordOfTheMomentSettings: WordOfTheMomentSettings(
+          notificationsEnabled: true,
+        ),
       );
       final error = Exception('Save error');
 

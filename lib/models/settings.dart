@@ -11,16 +11,16 @@ class NotificationInterval {
 }
 
 class WordOfTheMomentSettings {
-  final bool enabled;
   final bool fullVocabularyEnabled;
   final Map<WordLevel, int>? wordLevelWeights;
+  final bool notificationsEnabled;
   final NotificationInterval? interval;
   final TimeOfDay? startTime;
 
   WordOfTheMomentSettings({
-    this.enabled = false,
     this.fullVocabularyEnabled = false,
     this.wordLevelWeights,
+    this.notificationsEnabled = false,
     this.interval,
     this.startTime,
   });

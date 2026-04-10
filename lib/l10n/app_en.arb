@@ -17,6 +17,7 @@
   "homeVocabularyTooSmall": "You need at least 5 words to start a game",
   "homeLanguages": "Learning Languages",
   "homeVocabulary": "Vocabulary",
+  "homeWordOfTheMoment": "Word Of The Moment",
   "languagesTitle": "Learning languages",
   "languagesAdd": "Add Language",
   "languagesSelect": "Select learning language",
@@ -206,5 +207,48 @@
   "dataConfirmRestoreMessage": "This will replace all your current data with the backup data. This action cannot be undone.\n\nAre you sure you want to continue?",
   "dataRestoreSuccessMessage": "Backup restored successfully",
   "dataRestoreDefaultsButton": "Restore Defaults",
-  "dataRestoreButton": "Restore"
+  "dataRestoreButton": "Restore",
+  "wordOfTheMomentTitle": "Word Of The Moment",
+  "wordOfTheMomentNoWords": "No available word for the chosen settings.",
+  "wordOfTheMomentGenerateNewWord": "Generate new word",
+  "wordOfTheMomentVocabularyScope": "Vocabulary scope",
+  "wordOfTheMomentLearningLanguageOnly": "Learning language only ({language})",
+  "@wordOfTheMomentLearningLanguageOnly": {
+    "description": "Label for using only the learning language",
+    "placeholders": {
+      "language": {
+        "type": "String",
+        "example": "Spanish"
+      }
+    }
+  },
+  "wordOfTheMomentWholeVocabulary": "Whole vocabulary",
+  "wordOfTheMomentCustomWeightsTitle": "Use custom weights for word levels",
+  "wordOfTheMomentCustomWeightsSubtitle": "Higher values mean higher probability of a word of that level being selected.",
+  "wordOfTheMomentNotificationsEnabled": "Enable Word of the Moment notifications",
+  "wordOfTheMomentInterval": "Interval",
+  "wordOfTheMomentStartTime": "Start time",
+  "wordOfTheMomentPickTime": "Pick time",
+  "wordOfTheMomentSaveSettingsError": "Failed to save settings: {error}",
+  "@wordOfTheMomentSaveSettingsError": {
+    "description": "Error message shown when word of the moment settings fail to save",
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Disk full"
+      }
+    }
+  },
+  "wordOfTheMomentLevel": "Level: {level}",
+  "@wordOfTheMomentLevel": {
+    "description": "Word level label shown in the word card",
+    "placeholders": {
+      "level": {
+        "type": "String",
+        "example": "Beginner"
+      }
+    }
+  },
+  "wordOfTheMomentIntervalHours": "Hours",
+  "wordOfTheMomentIntervalDays": "Days"
 }
