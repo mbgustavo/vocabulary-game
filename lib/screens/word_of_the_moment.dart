@@ -404,10 +404,11 @@ class _WordOfTheMomentScreenState extends ConsumerState<WordOfTheMomentScreen> {
                                     ),
                                     const SizedBox(width: 12),
                                     SizedBox(
-                                      width: 80,
+                                      width: 100,
                                       child: DropdownButtonFormField<
                                         IntervalType
                                       >(
+                                        isExpanded: true,
                                         initialValue: _intervalType,
                                         items:
                                             IntervalType.values.map((type) {
