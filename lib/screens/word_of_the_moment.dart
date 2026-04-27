@@ -6,9 +6,11 @@ import 'package:vocabulary_game/models/word.dart';
 import 'package:vocabulary_game/providers/languages_provider.dart';
 import 'package:vocabulary_game/providers/settings_provider.dart';
 import 'package:vocabulary_game/providers/vocabulary_provider.dart';
+import 'package:vocabulary_game/providers/word_of_the_moment_notification_service_provider.dart';
 import 'package:vocabulary_game/utils/words.dart';
 import 'package:vocabulary_game/widgets/notification_banners.dart';
 import 'package:flutter/services.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class WordOfTheMomentScreen extends ConsumerStatefulWidget {
   const WordOfTheMomentScreen({super.key});
@@ -21,7 +23,6 @@ class WordOfTheMomentScreen extends ConsumerStatefulWidget {
 class _WordOfTheMomentScreenState extends ConsumerState<WordOfTheMomentScreen> {
   Word? _selectedWord;
   bool _customWeightsEnabled = false;
-  bool _notificationsEnabled = false;
   Map<WordLevel, int>? _weights;
   String _intervalText = '';
   IntervalType _intervalType = IntervalType.hours;
@@ -32,6 +33,7 @@ class _WordOfTheMomentScreenState extends ConsumerState<WordOfTheMomentScreen> {
   void initState() {
     super.initState();
     _intervalController = TextEditingController();
+    Permission.notification.request();
 
     final settings = ref.read(settingsProvider)['settings'] as AppSettings?;
     if (settings != null) {
@@ -48,8 +50,6 @@ class _WordOfTheMomentScreenState extends ConsumerState<WordOfTheMomentScreen> {
 
   void _syncLocalFields(AppSettings settings) {
     setState(() {
-      _notificationsEnabled =
-          settings.wordOfTheMomentSettings.notificationsEnabled;
       _customWeightsEnabled =
           settings.wordOfTheMomentSettings.wordLevelWeights != null;
       _weights = settings.wordOfTheMomentSettings.wordLevelWeights;
@@ -103,7 +103,9 @@ class _WordOfTheMomentScreenState extends ConsumerState<WordOfTheMomentScreen> {
           ),
         );
       }
+      return;
     }
+    ref.read(wordOfTheMomentNotificationServiceProvider).scheduleNotification();
   }
 
   Future<void> _updateSettings({
@@ -157,7 +159,6 @@ class _WordOfTheMomentScreenState extends ConsumerState<WordOfTheMomentScreen> {
     if (mounted) {
       setState(() {
         if (notificationsEnabled != null) {
-          _notificationsEnabled = notificationsEnabled;
           _generateWord(updatedSettings);
         }
         if (fullVocabularyEnabled != null) {
@@ -356,7 +357,7 @@ class _WordOfTheMomentScreenState extends ConsumerState<WordOfTheMomentScreen> {
                           const SizedBox(height: 12),
                         ],
                         const Divider(),
-                        const SizedBox(height: 12),
+                        const SizedBox(height: 8),
                         SwitchListTile(
                           title: Text(l10n.wordOfTheMomentNotificationsEnabled),
                           value:
@@ -367,7 +368,9 @@ class _WordOfTheMomentScreenState extends ConsumerState<WordOfTheMomentScreen> {
                             await _updateSettings(notificationsEnabled: value);
                           },
                         ),
-                        if (_notificationsEnabled)
+                        if (settings
+                            .wordOfTheMomentSettings
+                            .notificationsEnabled)
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 24),
                             child: Column(

@@ -45,6 +45,10 @@ dependencies:
   package_info_plus: ^8.0.2
   file_picker: ^8.1.2
   intl: ^0.20.2
+  flutter_local_notifications: ^21.0.0
+  timezone: ^0.11.0
+  flutter_timezone: ^5.0.2
+  permission_handler: ^11.3.0
 
 dev_dependencies:
   flutter_test:
