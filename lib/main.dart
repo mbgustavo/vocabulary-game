@@ -66,7 +66,7 @@ class _AppBuilder extends ConsumerWidget {
         ref.watch(settingsProvider)['loading'];
 
     // Initialize Word Of The Moment notifications on app startup
-    ref.read(wordOfTheMomentNotificationServiceProvider).scheduleNotification();
+    ref.read(wordOfTheMomentNotificationServiceProvider).initialize();
 
     if (loading) {
       return Scaffold(

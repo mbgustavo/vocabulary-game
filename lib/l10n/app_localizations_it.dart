@@ -388,6 +388,11 @@ class AppLocalizationsIt extends AppLocalizations {
       'Abilita notifiche Parola del Momento';
 
   @override
+  String wordOfTheMomentNotificationsScheduled(int count) {
+    return '$count notifiche verranno programmate, riavvia l\'app per rendere effettive le nuove notifiche';
+  }
+
+  @override
   String get wordOfTheMomentInterval => 'Intervallo';
 
   @override

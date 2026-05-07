@@ -784,6 +784,12 @@ abstract class AppLocalizations {
   /// **'Enable Word of the Moment notifications'**
   String get wordOfTheMomentNotificationsEnabled;
 
+  /// Message shown when notifications are scheduled
+  ///
+  /// In en, this message translates to:
+  /// **'{count} notifications are going to be scheduled, reopen the app for new ones'**
+  String wordOfTheMomentNotificationsScheduled(int count);
+
   /// No description provided for @wordOfTheMomentInterval.
   ///
   /// In en, this message translates to:

@@ -386,6 +386,11 @@ class AppLocalizationsEn extends AppLocalizations {
       'Enable Word of the Moment notifications';
 
   @override
+  String wordOfTheMomentNotificationsScheduled(int count) {
+    return '$count notifications are going to be scheduled, reopen the app for new ones';
+  }
+
+  @override
   String get wordOfTheMomentInterval => 'Interval';
 
   @override

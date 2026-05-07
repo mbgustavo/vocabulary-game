@@ -18,7 +18,7 @@ void main() {
       final settings = WordOfTheMomentSettings(
         notificationsEnabled: true,
         fullVocabularyEnabled: false,
-        wordLevelWeights: {WordLevel.beginner: 1, WordLevel.intermediate: 2},
+        wordLevelWeights: {WordLevel.beginner: 1, WordLevel.intermediate: 3},
         interval: NotificationInterval(value: 1, type: IntervalType.hours),
         startTime: TimeOfDay(hour: 8, minute: 30),
       );
@@ -27,7 +27,7 @@ void main() {
 
       expect(map['notificationsEnabled'], true);
       expect(map['fullVocabularyEnabled'], false);
-      expect(map['wordLevelWeights'], {'beginner': 1, 'intermediate': 2});
+      expect(map['wordLevelWeights'], {'beginner': 1, 'intermediate': 3});
       expect(map['interval'], {'value': 1, 'type': 'hours'});
       expect(map['startTime'], {'hour': 8, 'minute': 30});
     });

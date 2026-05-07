@@ -387,6 +387,11 @@ class AppLocalizationsPt extends AppLocalizations {
       'Ativar notificações Palavra do Momento';
 
   @override
+  String wordOfTheMomentNotificationsScheduled(int count) {
+    return '$count notificações serão agendadas, reabra o app para agendar novas';
+  }
+
+  @override
   String get wordOfTheMomentInterval => 'Intervalo';
 
   @override
@@ -406,8 +411,8 @@ class AppLocalizationsPt extends AppLocalizations {
   }
 
   @override
-  String get wordOfTheMomentIntervalHours => 'Horas';
+  String get wordOfTheMomentIntervalHours => 'Hora(s)';
 
   @override
-  String get wordOfTheMomentIntervalDays => 'Dias';
+  String get wordOfTheMomentIntervalDays => 'Dia(s)';
 }

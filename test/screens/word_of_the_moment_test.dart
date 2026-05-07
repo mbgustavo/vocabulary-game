@@ -114,9 +114,9 @@ void main() {
       await tester.pumpWidget(createTestWidget());
       await tester.pumpAndSettle();
 
-      final customWeightsSwitch = find.widgetWithText(
-        SwitchListTile,
-        'Use custom weights for word levels',
+      final customWeightsSwitch = find.descendant(
+        of: find.widgetWithText(ListTile, 'Use custom weights for word levels'),
+        matching: find.byWidgetPredicate((widget) => widget is Switch),
       );
       expect(customWeightsSwitch, findsOneWidget);
       expect(find.text('Beginner'), findsNothing);
@@ -137,9 +137,12 @@ void main() {
       await tester.pumpWidget(createTestWidget());
       await tester.pumpAndSettle();
 
-      final notificationsSwitch = find.widgetWithText(
-        SwitchListTile,
-        'Enable Word of the Moment notifications',
+      final notificationsSwitch = find.descendant(
+        of: find.widgetWithText(
+          ListTile,
+          'Enable Word of the Moment notifications',
+        ),
+        matching: find.byWidgetPredicate((widget) => widget is Switch),
       );
       expect(notificationsSwitch, findsOneWidget);
       expect(find.text('Interval'), findsNothing);
@@ -159,10 +162,15 @@ void main() {
       await tester.pumpWidget(createTestWidget());
       await tester.pumpAndSettle();
 
-      await tester.tap(find.widgetWithText(
-        SwitchListTile,
-        'Enable Word of the Moment notifications',
-      ));
+      await tester.tap(
+        find.descendant(
+          of: find.widgetWithText(
+            ListTile,
+            'Enable Word of the Moment notifications',
+          ),
+          matching: find.byWidgetPredicate((widget) => widget is Switch),
+        ),
+      );
       await tester.pumpAndSettle();
 
       final pickTimeButton = find.widgetWithText(ElevatedButton, 'Pick time');
@@ -189,9 +197,12 @@ void main() {
       await tester.pumpAndSettle();
 
       await tester.tap(
-        find.widgetWithText(
-          SwitchListTile,
-          'Enable Word of the Moment notifications',
+        find.descendant(
+          of: find.widgetWithText(
+            ListTile,
+            'Enable Word of the Moment notifications',
+          ),
+          matching: find.byWidgetPredicate((widget) => widget is Switch),
         ),
       );
       await tester.pumpAndSettle();

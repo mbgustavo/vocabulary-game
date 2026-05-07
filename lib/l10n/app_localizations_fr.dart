@@ -389,6 +389,11 @@ class AppLocalizationsFr extends AppLocalizations {
       'Activer les notifications Mot du Moment';
 
   @override
+  String wordOfTheMomentNotificationsScheduled(int count) {
+    return '$count notifications vont être programmées, rouvrez l\'application pour que nouvelles notifications';
+  }
+
+  @override
   String get wordOfTheMomentInterval => 'Intervalle';
 
   @override

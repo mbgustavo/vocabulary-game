@@ -26,6 +26,16 @@
   "wordOfTheMomentCustomWeightsTitle": "Usar pesos personalizados para os níveis de palavras",
   "wordOfTheMomentCustomWeightsSubtitle": "Valores mais altos significam maior probabilidade de selecionar uma palavra desse nível.",
   "wordOfTheMomentNotificationsEnabled": "Ativar notificações Palavra do Momento",
+  "wordOfTheMomentNotificationsScheduled": "{count} notificações serão agendadas, reabra o app para agendar novas",
+  "@wordOfTheMomentNotificationsScheduled": {
+    "description": "Message shown when notifications are scheduled",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
   "wordOfTheMomentInterval": "Intervalo",
   "wordOfTheMomentStartTime": "Horário de início",
   "wordOfTheMomentPickTime": "Selecionar horário",
@@ -49,8 +59,8 @@
       }
     }
   },
-  "wordOfTheMomentIntervalHours": "Horas",
-  "wordOfTheMomentIntervalDays": "Dias",
+  "wordOfTheMomentIntervalHours": "Hora(s)",
+  "wordOfTheMomentIntervalDays": "Dia(s)",
   "languagesTitle": "Idiomas de aprendizagem",
   "languagesAdd": "Adicionar idioma",
   "languagesSelect": "Selecionar idioma de aprendizagem",

@@ -11,19 +11,7 @@ import 'package:vocabulary_game/providers/settings_provider.dart';
 import 'package:vocabulary_game/providers/vocabulary_provider.dart';
 import 'package:vocabulary_game/utils/words.dart';
 
-// Global reference to access the notification service from callbacks
-WordOfTheMomentNotificationService? _notificationServiceInstance;
-
-// Callback when notification is tapped/interacted
-void _onNotificationResponse(NotificationResponse response) {
-  _notificationServiceInstance?.scheduleNotification();
-}
-
-// Background callback - must be a top-level function
-@pragma('vm:entry-point')
-void _notificationBackgroundCallback(NotificationResponse response) {
-  _notificationServiceInstance?.scheduleNotification();
-}
+const notificationsQueue = 20;
 
 class WordOfTheMomentNotificationService {
   WordOfTheMomentNotificationService(
@@ -55,9 +43,7 @@ class WordOfTheMomentNotificationService {
     final TimezoneInfo timeZone = await localTimeZoneGetter();
     tz.setLocalLocation(tz.getLocation(timeZone.identifier));
 
-    const androidInitializationSettings = AndroidInitializationSettings(
-      'assets/icon/icon.png',
-    );
+    const androidInitializationSettings = AndroidInitializationSettings('icon');
     const darwinInitializationSettings = DarwinInitializationSettings();
 
     final initializationSettings = InitializationSettings(
@@ -66,12 +52,8 @@ class WordOfTheMomentNotificationService {
       macOS: darwinInitializationSettings,
     );
 
-    await notificationsPlugin.initialize(
-      settings: initializationSettings,
-      onDidReceiveNotificationResponse: _onNotificationResponse,
-      onDidReceiveBackgroundNotificationResponse:
-          _notificationBackgroundCallback,
-    );
+    await notificationsPlugin.initialize(settings: initializationSettings);
+    scheduleNotifications();
     _initialized = true;
   }
 
@@ -87,7 +69,7 @@ class WordOfTheMomentNotificationService {
     return pending.any((request) => request.id == notificationId);
   }
 
-  Future<void> scheduleNotification() async {
+  Future<void> scheduleNotifications() async {
     await initialize();
 
     if (await _hasPendingNotification()) {
@@ -115,53 +97,88 @@ class WordOfTheMomentNotificationService {
       return;
     }
 
-    final word = getRandomWord(
-      vocabulary,
-      language: language,
-      weights: settings.wordOfTheMomentSettings.wordLevelWeights,
-    );
-    if (word == null) {
-      return;
-    }
-
-    final scheduledDate = nextNotificationDate(
-      tz.TZDateTime.now(tz.local),
-      startTime,
-      interval,
-    );
-
-    final androidDetails = AndroidNotificationDetails(
-      channelId,
-      channelName,
-      channelDescription: channelDescription,
-      importance: Importance.low,
-      priority: Priority.low,
-      ticker: '${word.input} - ${word.translation}',
-    );
     final darwinDetails = DarwinNotificationDetails();
+    tz.TZDateTime? previousDate;
 
-    final notificationDetails = NotificationDetails(
-      android: androidDetails,
-      iOS: darwinDetails,
-      macOS: darwinDetails,
-    );
+    for (var i = 0; i < notificationsQueue; i++) {
+      final word = getRandomWord(
+        vocabulary,
+        language: language,
+        weights: settings.wordOfTheMomentSettings.wordLevelWeights,
+      );
+      if (word == null) {
+        return;
+      }
 
-    await notificationsPlugin.zonedSchedule(
-      id: notificationId,
-      title: 'Word Of The Moment',
-      body: '${word.input} - ${word.translation}',
-      scheduledDate: scheduledDate,
-      notificationDetails: notificationDetails,
-      androidScheduleMode: AndroidScheduleMode.inexact,
-      payload: word.id,
-    );
+      final scheduledDate = nextNotificationDate(
+        previousDate,
+        startTime,
+        interval,
+      );
+      previousDate = scheduledDate;
+
+      final notificationUniqueId = notificationId + i;
+
+      final androidDetails = AndroidNotificationDetails(
+        channelId,
+        channelName,
+        channelDescription: channelDescription,
+        importance: Importance.low,
+        priority: Priority.low,
+        tag: 'word_of_the_moment',
+        ticker: '${word.input} - ${word.translation}',
+      );
+
+      final notificationDetails = NotificationDetails(
+        android: androidDetails,
+        iOS: darwinDetails,
+        macOS: darwinDetails,
+      );
+
+      await notificationsPlugin.zonedSchedule(
+        id: notificationUniqueId,
+        title: 'Word Of The Moment',
+        body: '${word.input} - ${word.translation}',
+        scheduledDate: scheduledDate,
+        notificationDetails: notificationDetails,
+        androidScheduleMode: AndroidScheduleMode.inexact,
+        payload: word.id,
+      );
+    }
   }
 
   tz.TZDateTime nextNotificationDate(
-    tz.TZDateTime now,
+    tz.TZDateTime? previousDate,
     TimeOfDay startTime,
     NotificationInterval interval,
   ) {
+    if (previousDate == null) {
+      return _initialNotificationDate(startTime, interval);
+    }
+
+    if (interval.type == IntervalType.hours) {
+      var scheduled = previousDate.add(Duration(hours: interval.value));
+      if (scheduled.day != previousDate.day) {
+        scheduled = tz.TZDateTime(
+          tz.local,
+          scheduled.year,
+          scheduled.month,
+          scheduled.day,
+          startTime.hour,
+          startTime.minute,
+        );
+      }
+      return scheduled;
+    } else {
+      return previousDate.add(Duration(days: interval.value));
+    }
+  }
+
+  tz.TZDateTime _initialNotificationDate(
+    TimeOfDay startTime,
+    NotificationInterval interval,
+  ) {
+    final now = tz.TZDateTime.now(tz.local);
     var scheduled = tz.TZDateTime(
       tz.local,
       now.year,
@@ -173,16 +190,24 @@ class WordOfTheMomentNotificationService {
 
     if (interval.type == IntervalType.hours) {
       final intervalDuration = Duration(hours: interval.value);
-      if (now.isAfter(scheduled)) {
+      if (!now.isBefore(scheduled)) {
         final delta = now.difference(scheduled);
         final increments =
             (delta.inSeconds / intervalDuration.inSeconds).ceil();
         scheduled = scheduled.add(intervalDuration * increments);
+        if (scheduled.day != now.day) {
+          scheduled = tz.TZDateTime(
+            tz.local,
+            scheduled.year,
+            scheduled.month,
+            scheduled.day,
+            startTime.hour,
+            startTime.minute,
+          );
+        }
       }
-    } else {
-      if (!scheduled.isAfter(now)) {
-        scheduled = scheduled.add(Duration(days: interval.value));
-      }
+    } else if (!now.isBefore(scheduled)) {
+      scheduled = scheduled.add(Duration(days: interval.value));
     }
 
     return scheduled;
@@ -195,7 +220,5 @@ final wordOfTheMomentNotificationServiceProvider =
         ref,
         FlutterLocalNotificationsPlugin(),
       );
-      // Store global reference for callbacks
-      _notificationServiceInstance = service;
       return service;
     });

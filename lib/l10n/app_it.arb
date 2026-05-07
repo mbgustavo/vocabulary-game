@@ -26,6 +26,16 @@
   "wordOfTheMomentCustomWeightsTitle": "Usa pesi personalizzati per i livelli di parole",
   "wordOfTheMomentCustomWeightsSubtitle": "Valori più alti significano una probabilità maggiore che venga selezionata una parola di quel livello.",
   "wordOfTheMomentNotificationsEnabled": "Abilita notifiche Parola del Momento",
+  "wordOfTheMomentNotificationsScheduled": "{count} notifiche verranno programmate, riavvia l'app per rendere effettive le nuove notifiche",
+  "@wordOfTheMomentNotificationsScheduled": {
+    "description": "Message shown when notifications are scheduled",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
   "wordOfTheMomentInterval": "Intervallo",
   "wordOfTheMomentStartTime": "Ora di inizio",
   "wordOfTheMomentPickTime": "Seleziona l'orario",

@@ -394,6 +394,11 @@ class AppLocalizationsDe extends AppLocalizations {
       'Benachrichtigungen für Wort des Moments aktivieren';
 
   @override
+  String wordOfTheMomentNotificationsScheduled(int count) {
+    return '$count Benachrichtigungen werden geplant, öffnen Sie die App erneut, damit die neuen Benachrichtigungen wirksam werden';
+  }
+
+  @override
   String get wordOfTheMomentInterval => 'Intervall';
 
   @override

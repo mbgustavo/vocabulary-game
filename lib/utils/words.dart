@@ -38,8 +38,8 @@ Word? getRandomWord(
   List<Word> vocabulary, {
   Language? language,
   Map<WordLevel, int>? weights = const {
-    WordLevel.beginner: 3,
-    WordLevel.intermediate: 2,
+    WordLevel.beginner: 5,
+    WordLevel.intermediate: 3,
     WordLevel.advanced: 1,
   },
 }) {

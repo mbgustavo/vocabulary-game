@@ -28,6 +28,10 @@ class _WordOfTheMomentScreenState extends ConsumerState<WordOfTheMomentScreen> {
   IntervalType _intervalType = IntervalType.hours;
   TimeOfDay? _startTime;
   late final TextEditingController _intervalController;
+  final GlobalKey<TooltipState> _customWeightsTooltipKey =
+      GlobalKey<TooltipState>();
+  final GlobalKey<TooltipState> _notificationsTooltipKey =
+      GlobalKey<TooltipState>();
 
   @override
   void initState() {
@@ -105,7 +109,9 @@ class _WordOfTheMomentScreenState extends ConsumerState<WordOfTheMomentScreen> {
       }
       return;
     }
-    ref.read(wordOfTheMomentNotificationServiceProvider).scheduleNotification();
+    ref
+        .read(wordOfTheMomentNotificationServiceProvider)
+        .scheduleNotifications();
   }
 
   Future<void> _updateSettings({
@@ -339,16 +345,37 @@ class _WordOfTheMomentScreenState extends ConsumerState<WordOfTheMomentScreen> {
                           ),
                         ),
                         const SizedBox(height: 12),
-                        SwitchListTile(
+                        ListTile(
                           title: Text(l10n.wordOfTheMomentCustomWeightsTitle),
-                          subtitle: Text(
-                            l10n.wordOfTheMomentCustomWeightsSubtitle,
-                            style: Theme.of(context).textTheme.labelSmall,
+                          trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Switch(
+                                value: _customWeightsEnabled,
+                                onChanged: (value) async {
+                                  await _updateSettings(
+                                    customWeightsEnabled: value,
+                                  );
+                                },
+                              ),
+                              const SizedBox(width: 8),
+                              Tooltip(
+                                key: _customWeightsTooltipKey,
+                                message:
+                                    l10n.wordOfTheMomentCustomWeightsSubtitle,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    _customWeightsTooltipKey.currentState
+                                        ?.ensureTooltipVisible();
+                                  },
+                                  child: const Icon(
+                                    Icons.info_outline,
+                                    size: 18,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                          value: _customWeightsEnabled,
-                          onChanged: (value) async {
-                            await _updateSettings(customWeightsEnabled: value);
-                          },
                         ),
                         if (_customWeightsEnabled) ...[
                           _buildWeightRow(WordLevel.beginner),
@@ -358,15 +385,42 @@ class _WordOfTheMomentScreenState extends ConsumerState<WordOfTheMomentScreen> {
                         ],
                         const Divider(),
                         const SizedBox(height: 8),
-                        SwitchListTile(
+                        ListTile(
                           title: Text(l10n.wordOfTheMomentNotificationsEnabled),
-                          value:
-                              settings
-                                  .wordOfTheMomentSettings
-                                  .notificationsEnabled,
-                          onChanged: (value) async {
-                            await _updateSettings(notificationsEnabled: value);
-                          },
+                          trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Switch(
+                                value:
+                                    settings
+                                        .wordOfTheMomentSettings
+                                        .notificationsEnabled,
+                                onChanged: (value) async {
+                                  await _updateSettings(
+                                    notificationsEnabled: value,
+                                  );
+                                },
+                              ),
+                              const SizedBox(width: 8),
+                              Tooltip(
+                                key: _notificationsTooltipKey,
+                                message: l10n
+                                    .wordOfTheMomentNotificationsScheduled(
+                                      notificationsQueue,
+                                    ),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    _notificationsTooltipKey.currentState
+                                        ?.ensureTooltipVisible();
+                                  },
+                                  child: const Icon(
+                                    Icons.info_outline,
+                                    size: 18,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                         if (settings
                             .wordOfTheMomentSettings
