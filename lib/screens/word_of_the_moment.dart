@@ -7,6 +7,7 @@ import 'package:vocabulary_game/providers/languages_provider.dart';
 import 'package:vocabulary_game/providers/settings_provider.dart';
 import 'package:vocabulary_game/providers/vocabulary_provider.dart';
 import 'package:vocabulary_game/providers/word_of_the_moment_notification_service_provider.dart';
+import 'package:vocabulary_game/utils/platform_info.dart';
 import 'package:vocabulary_game/utils/words.dart';
 import 'package:vocabulary_game/widgets/notification_banners.dart';
 import 'package:flutter/services.dart';
@@ -37,7 +38,9 @@ class _WordOfTheMomentScreenState extends ConsumerState<WordOfTheMomentScreen> {
   void initState() {
     super.initState();
     _intervalController = TextEditingController();
-    Permission.notification.request();
+    if (platformInfo.isAndroid || platformInfo.isIOS) {
+      Permission.notification.request();
+    }
 
     final settings = ref.read(settingsProvider)['settings'] as AppSettings?;
     if (settings != null) {
@@ -383,140 +386,146 @@ class _WordOfTheMomentScreenState extends ConsumerState<WordOfTheMomentScreen> {
                           _buildWeightRow(WordLevel.advanced),
                           const SizedBox(height: 12),
                         ],
-                        const Divider(),
-                        const SizedBox(height: 8),
-                        ListTile(
-                          title: Text(l10n.wordOfTheMomentNotificationsEnabled),
-                          trailing: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Switch(
-                                value:
-                                    settings
-                                        .wordOfTheMomentSettings
-                                        .notificationsEnabled,
-                                onChanged: (value) async {
-                                  await _updateSettings(
-                                    notificationsEnabled: value,
-                                  );
-                                },
-                              ),
-                              const SizedBox(width: 8),
-                              Tooltip(
-                                key: _notificationsTooltipKey,
-                                message: l10n
-                                    .wordOfTheMomentNotificationsScheduled(
-                                      notificationsQueue,
-                                    ),
-                                child: GestureDetector(
-                                  onTap: () {
-                                    _notificationsTooltipKey.currentState
-                                        ?.ensureTooltipVisible();
-                                  },
-                                  child: const Icon(
-                                    Icons.info_outline,
-                                    size: 18,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        if (settings
-                            .wordOfTheMomentSettings
-                            .notificationsEnabled)
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 24),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                        if (platformInfo.isAndroid || platformInfo.isIOS) ...[
+                          const Divider(),
+                          const SizedBox(height: 8),
+                          ListTile(
+                            title: Text(
+                              l10n.wordOfTheMomentNotificationsEnabled,
+                            ),
+                            trailing: Row(
+                              mainAxisSize: MainAxisSize.min,
                               children: [
-                                const SizedBox(height: 12),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: Text(
-                                        l10n.wordOfTheMomentInterval,
-                                        style:
-                                            Theme.of(
-                                              context,
-                                            ).textTheme.titleMedium,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 35,
-                                      child: TextFormField(
-                                        controller: _intervalController,
-                                        keyboardType: TextInputType.number,
-                                        inputFormatters: [
-                                          FilteringTextInputFormatter
-                                              .digitsOnly,
-                                          LengthLimitingTextInputFormatter(3),
-                                        ],
-                                        onChanged: (value) async {
-                                          await _updateSettings(
-                                            intervalText: value,
-                                          );
-                                        },
-                                      ),
-                                    ),
-                                    const SizedBox(width: 12),
-                                    SizedBox(
-                                      width: 100,
-                                      child: DropdownButtonFormField<
-                                        IntervalType
-                                      >(
-                                        isExpanded: true,
-                                        initialValue: _intervalType,
-                                        items:
-                                            IntervalType.values.map((type) {
-                                              return DropdownMenuItem(
-                                                value: type,
-                                                child: Text(
-                                                  type == IntervalType.hours
-                                                      ? l10n
-                                                          .wordOfTheMomentIntervalHours
-                                                      : l10n
-                                                          .wordOfTheMomentIntervalDays,
-                                                ),
-                                              );
-                                            }).toList(),
-                                        onChanged: (type) async {
-                                          if (type != null) {
-                                            await _updateSettings(
-                                              intervalType: type,
-                                            );
-                                          }
-                                        },
-                                      ),
-                                    ),
-                                  ],
+                                Switch(
+                                  value:
+                                      settings
+                                          .wordOfTheMomentSettings
+                                          .notificationsEnabled,
+                                  onChanged: (value) async {
+                                    await _updateSettings(
+                                      notificationsEnabled: value,
+                                    );
+                                  },
                                 ),
-                                const SizedBox(height: 12),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: Text(
-                                        l10n.wordOfTheMomentStartTime,
-                                        style:
-                                            Theme.of(
-                                              context,
-                                            ).textTheme.titleMedium,
+                                const SizedBox(width: 8),
+                                Tooltip(
+                                  key: _notificationsTooltipKey,
+                                  message: l10n
+                                      .wordOfTheMomentNotificationsScheduled(
+                                        notificationsQueue,
                                       ),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      _notificationsTooltipKey.currentState
+                                          ?.ensureTooltipVisible();
+                                    },
+                                    child: const Icon(
+                                      Icons.info_outline,
+                                      size: 18,
                                     ),
-                                    const SizedBox(width: 12),
-                                    ElevatedButton(
-                                      onPressed: _pickStartTime,
-                                      child: Text(
-                                        _startTime != null
-                                            ? _startTime!.format(context)
-                                            : l10n.wordOfTheMomentPickTime,
-                                      ),
-                                    ),
-                                  ],
+                                  ),
                                 ),
                               ],
                             ),
                           ),
+                          if (settings
+                              .wordOfTheMomentSettings
+                              .notificationsEnabled)
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 24,
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const SizedBox(height: 12),
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: Text(
+                                          l10n.wordOfTheMomentInterval,
+                                          style:
+                                              Theme.of(
+                                                context,
+                                              ).textTheme.titleMedium,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 35,
+                                        child: TextFormField(
+                                          controller: _intervalController,
+                                          keyboardType: TextInputType.number,
+                                          inputFormatters: [
+                                            FilteringTextInputFormatter
+                                                .digitsOnly,
+                                            LengthLimitingTextInputFormatter(3),
+                                          ],
+                                          onChanged: (value) async {
+                                            await _updateSettings(
+                                              intervalText: value,
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                      const SizedBox(width: 12),
+                                      SizedBox(
+                                        width: 100,
+                                        child: DropdownButtonFormField<
+                                          IntervalType
+                                        >(
+                                          isExpanded: true,
+                                          initialValue: _intervalType,
+                                          items:
+                                              IntervalType.values.map((type) {
+                                                return DropdownMenuItem(
+                                                  value: type,
+                                                  child: Text(
+                                                    type == IntervalType.hours
+                                                        ? l10n
+                                                            .wordOfTheMomentIntervalHours
+                                                        : l10n
+                                                            .wordOfTheMomentIntervalDays,
+                                                  ),
+                                                );
+                                              }).toList(),
+                                          onChanged: (type) async {
+                                            if (type != null) {
+                                              await _updateSettings(
+                                                intervalType: type,
+                                              );
+                                            }
+                                          },
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 12),
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: Text(
+                                          l10n.wordOfTheMomentStartTime,
+                                          style:
+                                              Theme.of(
+                                                context,
+                                              ).textTheme.titleMedium,
+                                        ),
+                                      ),
+                                      const SizedBox(width: 12),
+                                      ElevatedButton(
+                                        onPressed: _pickStartTime,
+                                        child: Text(
+                                          _startTime != null
+                                              ? _startTime!.format(context)
+                                              : l10n.wordOfTheMomentPickTime,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                        ],
                       ],
                     ),
                   ),

@@ -8,6 +8,7 @@ import 'package:vocabulary_game/providers/languages_provider.dart';
 import 'package:vocabulary_game/providers/settings_provider.dart';
 import 'package:vocabulary_game/providers/vocabulary_provider.dart';
 import 'package:vocabulary_game/screens/word_of_the_moment.dart';
+import 'package:vocabulary_game/utils/platform_info.dart';
 import '../helpers/test_app_wrapper.dart';
 
 class FakeSettingsNotifier extends SettingsNotifier {
@@ -54,6 +55,22 @@ class FakeVocabularyNotifier extends VocabularyNotifier {
   }
 }
 
+class FakeAndroidPlatformInfo implements PlatformInfo {
+  @override
+  bool get isAndroid => true;
+
+  @override
+  bool get isIOS => false;
+}
+
+class FakeDesktopPlatformInfo implements PlatformInfo {
+  @override
+  bool get isAndroid => false;
+
+  @override
+  bool get isIOS => false;
+}
+
 void main() {
   final testLanguage = Language('Spanish', '🇪🇸');
   final testWord = Word(
@@ -83,6 +100,14 @@ void main() {
       child: createTestAppWrapper(child: const WordOfTheMomentScreen()),
     );
   }
+
+  setUp(() {
+    platformInfo = FakeAndroidPlatformInfo();
+  });
+
+  tearDown(() {
+    platformInfo = SystemPlatformInfo();
+  });
 
   group('WordOfTheMomentScreen', () {
     testWidgets('renders selected word and base controls', (
@@ -218,5 +243,26 @@ void main() {
 
       expect(find.text('Days'), findsWidgets);
     });
+
+    testWidgets(
+      'notifications options do not appear on unsupported platforms',
+      (WidgetTester tester) async {
+        platformInfo =
+            FakeDesktopPlatformInfo(); // Simulate unsupported platform
+        await tester.pumpWidget(createTestWidget());
+        await tester.pumpAndSettle();
+
+        expect(
+          find.descendant(
+            of: find.widgetWithText(
+              ListTile,
+              'Enable Word of the Moment notifications',
+            ),
+            matching: find.byWidgetPredicate((widget) => widget is Switch),
+          ),
+          findsNothing,
+        );
+      },
+    );
   });
 }

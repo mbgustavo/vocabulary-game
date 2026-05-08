@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter/material.dart';
@@ -10,14 +9,25 @@ import 'package:vocabulary_game/models/settings.dart';
 import 'package:vocabulary_game/providers/languages_provider.dart';
 import 'package:vocabulary_game/providers/settings_provider.dart';
 import 'package:vocabulary_game/providers/vocabulary_provider.dart';
+import 'package:vocabulary_game/utils/platform_info.dart';
 import 'package:vocabulary_game/utils/words.dart';
 
 const notificationsQueue = 20;
 
+abstract class Clock {
+  tz.TZDateTime now();
+}
+
+class SystemClock implements Clock {
+  @override
+  tz.TZDateTime now() => tz.TZDateTime.now(tz.local);
+}
+
 abstract class WordOfTheMomentNotificationService {
-  WordOfTheMomentNotificationService(this.ref);
+  WordOfTheMomentNotificationService(this.ref, this.clock);
 
   final Ref ref;
+  final Clock clock;
 
   static const int notificationId = 1000;
   static const String channelId = 'word_of_the_moment';
@@ -60,7 +70,7 @@ abstract class WordOfTheMomentNotificationService {
     TimeOfDay startTime,
     NotificationInterval interval,
   ) {
-    final now = tz.TZDateTime.now(tz.local);
+    final now = clock.now();
     var scheduled = tz.TZDateTime(
       tz.local,
       now.year,
@@ -100,6 +110,7 @@ class WordOfTheMomentNotificationServiceMobile
     extends WordOfTheMomentNotificationService {
   WordOfTheMomentNotificationServiceMobile(
     super.ref,
+    super.clock,
     this.notificationsPlugin, {
     this.timeZoneInitializer = tzdata.initializeTimeZones,
     this.localTimeZoneGetter = FlutterTimezone.getLocalTimezone,
@@ -241,7 +252,7 @@ class WordOfTheMomentNotificationServiceMobile
 
 class WordOfTheMomentNotificationServiceDesktop
     extends WordOfTheMomentNotificationService {
-  WordOfTheMomentNotificationServiceDesktop(super.ref);
+  WordOfTheMomentNotificationServiceDesktop(super.ref, super.clock);
 
   @override
   Future<void> initialize() async {}
@@ -255,12 +266,13 @@ class WordOfTheMomentNotificationServiceDesktop
 
 final wordOfTheMomentNotificationServiceProvider =
     Provider<WordOfTheMomentNotificationService>((ref) {
-      if (Platform.isAndroid || Platform.isIOS) {
+      if (platformInfo.isAndroid || platformInfo.isIOS) {
         return WordOfTheMomentNotificationServiceMobile(
           ref,
+          SystemClock(),
           FlutterLocalNotificationsPlugin(),
         );
       }
 
-      return WordOfTheMomentNotificationServiceDesktop(ref);
+      return WordOfTheMomentNotificationServiceDesktop(ref, SystemClock());
     });

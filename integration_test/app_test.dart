@@ -12,6 +12,7 @@ import 'package:vocabulary_game/screens/home.dart';
 import 'package:vocabulary_game/screens/language.dart';
 import 'package:vocabulary_game/screens/new_word.dart';
 import 'package:vocabulary_game/screens/vocabulary.dart';
+import 'package:vocabulary_game/screens/word_of_the_moment.dart';
 import 'test_prefs_helper.dart';
 
 void main() {
@@ -287,5 +288,26 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.text('$testWord ($testTranslation)'), findsOneWidget);
     });
+
+    testWidgets(
+      'Word Of The Moment screen works on Linux without notification controls',
+      (WidgetTester tester) async {
+        app.main();
+        await tester.pumpAndSettle();
+        await tester.pumpAndSettle(const Duration(seconds: 3));
+
+        expect(find.byType(HomeScreen), findsOneWidget);
+
+        await tester.tap(find.text('Word Of The Moment'));
+        await tester.pumpAndSettle();
+
+        expect(find.byType(WordOfTheMomentScreen), findsOneWidget);
+        expect(find.text('Generate new word'), findsOneWidget);
+        expect(
+          find.text('Enable Word of the Moment notifications'),
+          findsNothing,
+        );
+      },
+    );
   });
 }
