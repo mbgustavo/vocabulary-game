@@ -206,14 +206,14 @@ class _WordOfTheMomentScreenState extends ConsumerState<WordOfTheMomentScreen> {
   }
 
   Widget _buildWeightRow(WordLevel level) {
-    final weight = _weights?[level] ?? 1;
+    final weight = _weights?[level] ?? defaultWordLevelWeights[level]!;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
       child: Row(
         children: [
           IconButton(
             onPressed: () {
-              final nextValue = (weight - 1).clamp(1, 99);
+              final nextValue = (weight - 1).clamp(0, 99);
               _updateSettings(weights: {...(_weights ?? {}), level: nextValue});
             },
             icon: const Icon(Icons.remove),
@@ -221,7 +221,7 @@ class _WordOfTheMomentScreenState extends ConsumerState<WordOfTheMomentScreen> {
           Text('$weight', style: const TextStyle(fontWeight: FontWeight.bold)),
           IconButton(
             onPressed: () {
-              final nextValue = (weight + 1).clamp(1, 99);
+              final nextValue = (weight + 1).clamp(0, 99);
               _updateSettings(weights: {...(_weights ?? {}), level: nextValue});
             },
             icon: const Icon(Icons.add),
@@ -373,7 +373,7 @@ class _WordOfTheMomentScreenState extends ConsumerState<WordOfTheMomentScreen> {
                                   },
                                   child: const Icon(
                                     Icons.info_outline,
-                                    size: 18,
+                                    size: 28,
                                   ),
                                 ),
                               ),
@@ -421,7 +421,7 @@ class _WordOfTheMomentScreenState extends ConsumerState<WordOfTheMomentScreen> {
                                     },
                                     child: const Icon(
                                       Icons.info_outline,
-                                      size: 18,
+                                      size: 28,
                                     ),
                                   ),
                                 ),

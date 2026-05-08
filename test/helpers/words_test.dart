@@ -195,5 +195,18 @@ void main() {
 
       expect(ratio, inInclusiveRange(0.5, 2.0));
     });
+
+    test('never select 0 weight word', () {
+      final vocabulary = [beginnerWord, advancedWord];
+
+      final weights = {WordLevel.beginner: 1, WordLevel.advanced: 0};
+
+      // Run multiple times to observe bias
+      for (int i = 0; i < 1000; i++) {
+        final result = getRandomWord(vocabulary, weights: weights);
+
+        expect(result, equals(beginnerWord));
+      }
+    });
   });
 }

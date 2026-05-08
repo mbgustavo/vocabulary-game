@@ -1,6 +1,12 @@
 import 'package:vocabulary_game/models/language.dart';
 import 'package:vocabulary_game/models/word.dart';
 
+const defaultWordLevelWeights = {
+  WordLevel.beginner: 5,
+  WordLevel.intermediate: 3,
+  WordLevel.advanced: 1,
+};
+
 // Try to fill all words with beginner level words first,
 // then intermediate, and finally advanced words if needed.
 List<Word> getWordsForGame(List<Word> vocabulary, int wordsQty) {
@@ -37,11 +43,7 @@ List<Word> getWordsForGame(List<Word> vocabulary, int wordsQty) {
 Word? getRandomWord(
   List<Word> vocabulary, {
   Language? language,
-  Map<WordLevel, int>? weights = const {
-    WordLevel.beginner: 5,
-    WordLevel.intermediate: 3,
-    WordLevel.advanced: 1,
-  },
+  Map<WordLevel, int>? weights = defaultWordLevelWeights,
 }) {
   final filteredVocabulary =
       language != null

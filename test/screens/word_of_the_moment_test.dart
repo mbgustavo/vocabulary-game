@@ -32,7 +32,7 @@ class FakeLanguagesNotifier extends LanguagesNotifier {
   FakeLanguagesNotifier(super.ref, Language language) {
     state = {
       'loading': false,
-      'app_language': 'english',
+      'app_language': 'en',
       'languages': [language],
       'learning_language': language.value,
     };
