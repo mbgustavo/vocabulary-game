@@ -374,16 +374,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String get wordOfTheMomentWholeVocabulary => 'Whole vocabulary';
 
   @override
-  String get wordOfTheMomentCustomWeightsTitle =>
-      'Use custom weights for word levels';
+  String get wordOfTheMomentCustomWeightsTitle => 'Use custom weights';
 
   @override
   String get wordOfTheMomentCustomWeightsSubtitle =>
       'Higher values mean higher probability of a word of that level being selected.';
 
   @override
-  String get wordOfTheMomentNotificationsEnabled =>
-      'Enable Word of the Moment notifications';
+  String get wordOfTheMomentNotificationsEnabled => 'Enable notifications';
 
   @override
   String wordOfTheMomentNotificationsScheduled(int count) {

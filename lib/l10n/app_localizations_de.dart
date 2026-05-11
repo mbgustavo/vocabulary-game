@@ -383,7 +383,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get wordOfTheMomentCustomWeightsTitle =>
-      'Benutzerdefinierte Gewichtungen für Wortstufen verwenden';
+      'Benutzerdefinierte Gewichtungen';
 
   @override
   String get wordOfTheMomentCustomWeightsSubtitle =>
@@ -391,7 +391,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get wordOfTheMomentNotificationsEnabled =>
-      'Benachrichtigungen für Wort des Moments aktivieren';
+      'Benachrichtigungen aktivieren';
 
   @override
   String wordOfTheMomentNotificationsScheduled(int count) {

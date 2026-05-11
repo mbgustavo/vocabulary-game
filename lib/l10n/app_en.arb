@@ -223,9 +223,9 @@
     }
   },
   "wordOfTheMomentWholeVocabulary": "Whole vocabulary",
-  "wordOfTheMomentCustomWeightsTitle": "Use custom weights for word levels",
+  "wordOfTheMomentCustomWeightsTitle": "Use custom weights",
   "wordOfTheMomentCustomWeightsSubtitle": "Higher values mean higher probability of a word of that level being selected.",
-  "wordOfTheMomentNotificationsEnabled": "Enable Word of the Moment notifications",
+  "wordOfTheMomentNotificationsEnabled": "Enable notifications",
   "wordOfTheMomentNotificationsScheduled": "{count} notifications are going to be scheduled, reopen the app for new ones",
   "@wordOfTheMomentNotificationsScheduled": {
     "description": "Message shown when notifications are scheduled",

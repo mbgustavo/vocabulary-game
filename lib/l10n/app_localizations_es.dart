@@ -378,16 +378,14 @@ class AppLocalizationsEs extends AppLocalizations {
   String get wordOfTheMomentWholeVocabulary => 'Todo el vocabulario';
 
   @override
-  String get wordOfTheMomentCustomWeightsTitle =>
-      'Usar pesos personalizados para los niveles de palabras';
+  String get wordOfTheMomentCustomWeightsTitle => 'Usar pesos personalizados';
 
   @override
   String get wordOfTheMomentCustomWeightsSubtitle =>
       'Valores más altos significan mayor probabilidad de seleccionar una palabra de ese nivel.';
 
   @override
-  String get wordOfTheMomentNotificationsEnabled =>
-      'Habilitar notificaciones de Palabra del Momento';
+  String get wordOfTheMomentNotificationsEnabled => 'Habilitar notificaciones';
 
   @override
   String wordOfTheMomentNotificationsScheduled(int count) {

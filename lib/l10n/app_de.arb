@@ -23,9 +23,9 @@
     }
   },
   "wordOfTheMomentWholeVocabulary": "Gesamter Wortschatz",
-  "wordOfTheMomentCustomWeightsTitle": "Benutzerdefinierte Gewichtungen für Wortstufen verwenden",
+  "wordOfTheMomentCustomWeightsTitle": "Benutzerdefinierte Gewichtungen",
   "wordOfTheMomentCustomWeightsSubtitle": "Höhere Werte bedeuten eine höhere Wahrscheinlichkeit, dass ein Wort dieser Stufe ausgewählt wird.",
-  "wordOfTheMomentNotificationsEnabled": "Benachrichtigungen für Wort des Moments aktivieren",
+  "wordOfTheMomentNotificationsEnabled": "Benachrichtigungen aktivieren",
   "wordOfTheMomentNotificationsScheduled": "{count} Benachrichtigungen werden geplant, öffnen Sie die App erneut, damit die neuen Benachrichtigungen wirksam werden",
   "@wordOfTheMomentNotificationsScheduled": {
     "description": "Message shown when notifications are scheduled",

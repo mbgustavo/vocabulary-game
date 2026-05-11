@@ -126,11 +126,8 @@ void main() {
         findsOneWidget,
       );
       expect(find.text('Whole vocabulary'), findsOneWidget);
-      expect(find.text('Use custom weights for word levels'), findsOneWidget);
-      expect(
-        find.text('Enable Word of the Moment notifications'),
-        findsOneWidget,
-      );
+      expect(find.text('Use custom weights'), findsOneWidget);
+      expect(find.text('Enable notifications'), findsOneWidget);
     });
 
     testWidgets('shows custom weight controls after switch is enabled', (
@@ -140,7 +137,7 @@ void main() {
       await tester.pumpAndSettle();
 
       final customWeightsSwitch = find.descendant(
-        of: find.widgetWithText(ListTile, 'Use custom weights for word levels'),
+        of: find.widgetWithText(ListTile, 'Use custom weights'),
         matching: find.byWidgetPredicate((widget) => widget is Switch),
       );
       expect(customWeightsSwitch, findsOneWidget);
@@ -163,10 +160,7 @@ void main() {
       await tester.pumpAndSettle();
 
       final notificationsSwitch = find.descendant(
-        of: find.widgetWithText(
-          ListTile,
-          'Enable Word of the Moment notifications',
-        ),
+        of: find.widgetWithText(ListTile, 'Enable notifications'),
         matching: find.byWidgetPredicate((widget) => widget is Switch),
       );
       expect(notificationsSwitch, findsOneWidget);
@@ -189,10 +183,7 @@ void main() {
 
       await tester.tap(
         find.descendant(
-          of: find.widgetWithText(
-            ListTile,
-            'Enable Word of the Moment notifications',
-          ),
+          of: find.widgetWithText(ListTile, 'Enable notifications'),
           matching: find.byWidgetPredicate((widget) => widget is Switch),
         ),
       );
@@ -223,10 +214,7 @@ void main() {
 
       await tester.tap(
         find.descendant(
-          of: find.widgetWithText(
-            ListTile,
-            'Enable Word of the Moment notifications',
-          ),
+          of: find.widgetWithText(ListTile, 'Enable notifications'),
           matching: find.byWidgetPredicate((widget) => widget is Switch),
         ),
       );

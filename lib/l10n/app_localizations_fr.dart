@@ -378,15 +378,14 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get wordOfTheMomentCustomWeightsTitle =>
-      'Utiliser des poids personnalisés pour les niveaux de mots';
+      'Utiliser des poids personnalisés';
 
   @override
   String get wordOfTheMomentCustomWeightsSubtitle =>
       'Des valeurs plus élevées signifient une probabilité plus élevée qu\'un mot de ce niveau soit sélectionné.';
 
   @override
-  String get wordOfTheMomentNotificationsEnabled =>
-      'Activer les notifications Mot du Moment';
+  String get wordOfTheMomentNotificationsEnabled => 'Activer les notifications';
 
   @override
   String wordOfTheMomentNotificationsScheduled(int count) {

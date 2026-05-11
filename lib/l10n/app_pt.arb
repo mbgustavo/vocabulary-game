@@ -23,9 +23,9 @@
     }
   },
   "wordOfTheMomentWholeVocabulary": "Vocabulário completo",
-  "wordOfTheMomentCustomWeightsTitle": "Usar pesos personalizados para os níveis de palavras",
+  "wordOfTheMomentCustomWeightsTitle": "Usar pesos personalizados",
   "wordOfTheMomentCustomWeightsSubtitle": "Valores mais altos significam maior probabilidade de selecionar uma palavra desse nível.",
-  "wordOfTheMomentNotificationsEnabled": "Ativar notificações Palavra do Momento",
+  "wordOfTheMomentNotificationsEnabled": "Ativar notificações",
   "wordOfTheMomentNotificationsScheduled": "{count} notificações serão agendadas, reabra o app para agendar novas",
   "@wordOfTheMomentNotificationsScheduled": {
     "description": "Message shown when notifications are scheduled",

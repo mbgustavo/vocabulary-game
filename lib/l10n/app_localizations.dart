@@ -769,7 +769,7 @@ abstract class AppLocalizations {
   /// No description provided for @wordOfTheMomentCustomWeightsTitle.
   ///
   /// In en, this message translates to:
-  /// **'Use custom weights for word levels'**
+  /// **'Use custom weights'**
   String get wordOfTheMomentCustomWeightsTitle;
 
   /// No description provided for @wordOfTheMomentCustomWeightsSubtitle.
@@ -781,7 +781,7 @@ abstract class AppLocalizations {
   /// No description provided for @wordOfTheMomentNotificationsEnabled.
   ///
   /// In en, this message translates to:
-  /// **'Enable Word of the Moment notifications'**
+  /// **'Enable notifications'**
   String get wordOfTheMomentNotificationsEnabled;
 
   /// Message shown when notifications are scheduled
