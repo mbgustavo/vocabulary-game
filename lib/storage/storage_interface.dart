@@ -1,4 +1,5 @@
 import 'package:vocabulary_game/models/language.dart';
+import 'package:vocabulary_game/models/settings.dart';
 import 'package:vocabulary_game/models/word.dart';
 
 abstract class StorageInterface {
@@ -58,4 +59,10 @@ abstract class StorageInterface {
 
   // Restore data from a backup file
   Future<void> restoreFromBackup(String filePath);
+
+  // Get settings data
+  Future<AppSettings?> getSettings();
+
+  // Save settings data
+  Future<void> saveSettings(AppSettings settings);
 }

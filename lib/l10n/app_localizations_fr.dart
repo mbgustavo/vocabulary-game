@@ -36,6 +36,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get homeVocabulary => 'Vocabulaire';
 
   @override
+  String get homeWordOfTheMoment => 'Mot du Moment';
+
+  @override
   String get languagesTitle => 'Langues d\'apprentissage';
 
   @override
@@ -351,4 +354,66 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get dataRestoreButton => 'Restaurer';
+
+  @override
+  String get wordOfTheMomentTitle => 'Mot du Moment';
+
+  @override
+  String get wordOfTheMomentNoWords =>
+      'Aucun mot disponible pour les paramètres choisis.';
+
+  @override
+  String get wordOfTheMomentGenerateNewWord => 'Générer un nouveau mot';
+
+  @override
+  String get wordOfTheMomentVocabularyScope => 'Portée du vocabulaire';
+
+  @override
+  String wordOfTheMomentLearningLanguageOnly(String language) {
+    return 'Langue d\'apprentissage uniquement ($language)';
+  }
+
+  @override
+  String get wordOfTheMomentWholeVocabulary => 'Tout le vocabulaire';
+
+  @override
+  String get wordOfTheMomentCustomWeightsTitle =>
+      'Utiliser des poids personnalisés';
+
+  @override
+  String get wordOfTheMomentCustomWeightsSubtitle =>
+      'Des valeurs plus élevées signifient une probabilité plus élevée qu\'un mot de ce niveau soit sélectionné.';
+
+  @override
+  String get wordOfTheMomentNotificationsEnabled => 'Activer les notifications';
+
+  @override
+  String wordOfTheMomentNotificationsScheduled(int count) {
+    return '$count notifications vont être programmées, rouvrez l\'application pour que nouvelles notifications';
+  }
+
+  @override
+  String get wordOfTheMomentInterval => 'Intervalle';
+
+  @override
+  String get wordOfTheMomentStartTime => 'Heure de début';
+
+  @override
+  String get wordOfTheMomentPickTime => 'Choisir l\'heure';
+
+  @override
+  String wordOfTheMomentSaveSettingsError(String error) {
+    return 'Échec de l\'enregistrement des paramètres : $error';
+  }
+
+  @override
+  String wordOfTheMomentLevel(String level) {
+    return 'Niveau : $level';
+  }
+
+  @override
+  String get wordOfTheMomentIntervalHours => 'Heures';
+
+  @override
+  String get wordOfTheMomentIntervalDays => 'Jours';
 }

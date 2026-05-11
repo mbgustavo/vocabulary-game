@@ -154,6 +154,12 @@ abstract class AppLocalizations {
   /// **'Vocabulary'**
   String get homeVocabulary;
 
+  /// No description provided for @homeWordOfTheMoment.
+  ///
+  /// In en, this message translates to:
+  /// **'Word Of The Moment'**
+  String get homeWordOfTheMoment;
+
   /// No description provided for @languagesTitle.
   ///
   /// In en, this message translates to:
@@ -723,6 +729,108 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Restore'**
   String get dataRestoreButton;
+
+  /// No description provided for @wordOfTheMomentTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Word Of The Moment'**
+  String get wordOfTheMomentTitle;
+
+  /// No description provided for @wordOfTheMomentNoWords.
+  ///
+  /// In en, this message translates to:
+  /// **'No available word for the chosen settings.'**
+  String get wordOfTheMomentNoWords;
+
+  /// No description provided for @wordOfTheMomentGenerateNewWord.
+  ///
+  /// In en, this message translates to:
+  /// **'Generate new word'**
+  String get wordOfTheMomentGenerateNewWord;
+
+  /// No description provided for @wordOfTheMomentVocabularyScope.
+  ///
+  /// In en, this message translates to:
+  /// **'Vocabulary scope'**
+  String get wordOfTheMomentVocabularyScope;
+
+  /// Label for using only the learning language
+  ///
+  /// In en, this message translates to:
+  /// **'Learning language only ({language})'**
+  String wordOfTheMomentLearningLanguageOnly(String language);
+
+  /// No description provided for @wordOfTheMomentWholeVocabulary.
+  ///
+  /// In en, this message translates to:
+  /// **'Whole vocabulary'**
+  String get wordOfTheMomentWholeVocabulary;
+
+  /// No description provided for @wordOfTheMomentCustomWeightsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Use custom weights'**
+  String get wordOfTheMomentCustomWeightsTitle;
+
+  /// No description provided for @wordOfTheMomentCustomWeightsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Higher values mean higher probability of a word of that level being selected.'**
+  String get wordOfTheMomentCustomWeightsSubtitle;
+
+  /// No description provided for @wordOfTheMomentNotificationsEnabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable notifications'**
+  String get wordOfTheMomentNotificationsEnabled;
+
+  /// Message shown when notifications are scheduled
+  ///
+  /// In en, this message translates to:
+  /// **'{count} notifications are going to be scheduled, reopen the app for new ones'**
+  String wordOfTheMomentNotificationsScheduled(int count);
+
+  /// No description provided for @wordOfTheMomentInterval.
+  ///
+  /// In en, this message translates to:
+  /// **'Interval'**
+  String get wordOfTheMomentInterval;
+
+  /// No description provided for @wordOfTheMomentStartTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Start time'**
+  String get wordOfTheMomentStartTime;
+
+  /// No description provided for @wordOfTheMomentPickTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick time'**
+  String get wordOfTheMomentPickTime;
+
+  /// Error message shown when word of the moment settings fail to save
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to save settings: {error}'**
+  String wordOfTheMomentSaveSettingsError(String error);
+
+  /// Word level label shown in the word card
+  ///
+  /// In en, this message translates to:
+  /// **'Level: {level}'**
+  String wordOfTheMomentLevel(String level);
+
+  /// No description provided for @wordOfTheMomentIntervalHours.
+  ///
+  /// In en, this message translates to:
+  /// **'Hours'**
+  String get wordOfTheMomentIntervalHours;
+
+  /// No description provided for @wordOfTheMomentIntervalDays.
+  ///
+  /// In en, this message translates to:
+  /// **'Days'**
+  String get wordOfTheMomentIntervalDays;
 }
 
 class _AppLocalizationsDelegate

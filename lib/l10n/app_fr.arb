@@ -8,6 +8,59 @@
   "homeVocabularyTooSmall": "Vous avez besoin d'au moins 5 mots pour commencer un jeu",
   "homeLanguages": "Langues d'apprentissage",
   "homeVocabulary": "Vocabulaire",
+  "homeWordOfTheMoment": "Mot du Moment",
+  "wordOfTheMomentNoWords": "Aucun mot disponible pour les paramètres choisis.",
+  "wordOfTheMomentGenerateNewWord": "Générer un nouveau mot",
+  "wordOfTheMomentVocabularyScope": "Portée du vocabulaire",
+  "wordOfTheMomentLearningLanguageOnly": "Langue d'apprentissage uniquement ({language})",
+  "@wordOfTheMomentLearningLanguageOnly": {
+    "description": "Label for using only the learning language",
+    "placeholders": {
+      "language": {
+        "type": "String",
+        "example": "Français"
+      }
+    }
+  },
+  "wordOfTheMomentWholeVocabulary": "Tout le vocabulaire",
+  "wordOfTheMomentCustomWeightsTitle": "Utiliser des poids personnalisés",
+  "wordOfTheMomentCustomWeightsSubtitle": "Des valeurs plus élevées signifient une probabilité plus élevée qu'un mot de ce niveau soit sélectionné.",
+  "wordOfTheMomentNotificationsEnabled": "Activer les notifications",
+  "wordOfTheMomentNotificationsScheduled": "{count} notifications vont être programmées, rouvrez l'application pour que nouvelles notifications",
+  "@wordOfTheMomentNotificationsScheduled": {
+    "description": "Message shown when notifications are scheduled",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "wordOfTheMomentInterval": "Intervalle",
+  "wordOfTheMomentStartTime": "Heure de début",
+  "wordOfTheMomentPickTime": "Choisir l'heure",
+  "wordOfTheMomentSaveSettingsError": "Échec de l'enregistrement des paramètres : {error}",
+  "@wordOfTheMomentSaveSettingsError": {
+    "description": "Error message shown when word of the moment settings fail to save",
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Espace disque plein"
+      }
+    }
+  },
+  "wordOfTheMomentLevel": "Niveau : {level}",
+  "@wordOfTheMomentLevel": {
+    "description": "Word level label shown in the word card",
+    "placeholders": {
+      "level": {
+        "type": "String",
+        "example": "Débutant"
+      }
+    }
+  },
+  "wordOfTheMomentIntervalHours": "Heures",
+  "wordOfTheMomentIntervalDays": "Jours",
   "languagesTitle": "Langues d'apprentissage",
   "languagesAdd": "Ajouter une langue",
   "languagesSelect": "Sélectionner la langue d'apprentissage",
@@ -139,5 +192,6 @@
   "dataConfirmRestoreMessage": "Cela remplacera toutes vos données actuelles par les données de la sauvegarde. Cette action ne peut pas être annulée.\n\nÊtes-vous sûr de vouloir continuer ?",
   "dataRestoreSuccessMessage": "Sauvegarde restaurée avec succès",
   "dataRestoreDefaultsButton": "Restaurer les paramètres par défaut",
-  "dataRestoreButton": "Restaurer"
+  "dataRestoreButton": "Restaurer",
+  "wordOfTheMomentTitle": "Mot du Moment"
 }

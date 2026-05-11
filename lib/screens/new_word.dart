@@ -147,7 +147,7 @@ class _NewWordScreenState extends ConsumerState<NewWordScreen> {
                 ),
                 SizedBox(height: 10),
                 DropdownButtonFormField(
-                  value: _selectedLevel,
+                  initialValue: _selectedLevel,
                   decoration: InputDecoration(
                     labelText: l10n.fluencyLevel,
                     helper: Text(

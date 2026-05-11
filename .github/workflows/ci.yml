@@ -18,7 +18,7 @@ jobs:
       - name: Set Up Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.29.3'
+          flutter-version: '3.41.6'
           channel: stable
 
       - name: Install Lefthook
@@ -48,7 +48,7 @@ jobs:
       - name: Set Up Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.29.3'
+          flutter-version: '3.41.6'
           channel: stable
 
       - name: Install Dependencies
@@ -69,7 +69,7 @@ jobs:
       - name: Set Up Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.29.3'
+          flutter-version: '3.41.6'
           channel: stable
 
       - name: Install Linux Dependencies
@@ -113,7 +113,7 @@ jobs:
       - name: Set Up Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.29.3'
+          flutter-version: '3.41.6'
           channel: stable
 
       - name: Install Dependencies
@@ -126,7 +126,7 @@ jobs:
         run: flutter build appbundle --debug
 
       - name: Upload Artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: flutter-builds
           path: |

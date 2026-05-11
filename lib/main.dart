@@ -3,7 +3,9 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vocabulary_game/l10n/app_localizations.dart';
 import 'package:vocabulary_game/providers/languages_provider.dart';
+import 'package:vocabulary_game/providers/settings_provider.dart';
 import 'package:vocabulary_game/providers/vocabulary_provider.dart';
+import 'package:vocabulary_game/providers/word_of_the_moment_notification_service_provider.dart';
 import 'package:vocabulary_game/screens/home.dart';
 
 void main() {
@@ -60,7 +62,11 @@ class _AppBuilder extends ConsumerWidget {
   Widget build(BuildContext context, ref) {
     final loading =
         ref.watch(languagesProvider)['loading'] ||
-        ref.watch(vocabularyProvider)['loading'];
+        ref.watch(vocabularyProvider)['loading'] ||
+        ref.watch(settingsProvider)['loading'];
+
+    // Initialize Word Of The Moment notifications on app startup
+    ref.read(wordOfTheMomentNotificationServiceProvider).initialize();
 
     if (loading) {
       return Scaffold(

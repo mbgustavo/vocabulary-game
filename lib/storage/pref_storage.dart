@@ -4,47 +4,20 @@ import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:vocabulary_game/models/settings.dart';
 import 'package:vocabulary_game/models/word.dart';
+import 'package:vocabulary_game/serializers/language_serializer.dart';
+import 'package:vocabulary_game/serializers/serializer.dart';
+import 'package:vocabulary_game/serializers/word_serializer.dart';
+import 'package:vocabulary_game/serializers/settings_serializer.dart';
 import 'package:vocabulary_game/storage/storage_interface.dart';
 import 'package:vocabulary_game/models/language.dart';
 
 class PrefStorage implements StorageInterface {
   SharedPreferences? _pref;
-
-  Language _mapToLanguage(dynamic language) =>
-      Language(language['name']!, language['icon']!);
-
-  Word _mapToWord(dynamic word) {
-    WordLevel level;
-    try {
-      level = WordLevel.values.byName(word['level'] ?? 'beginner');
-    } catch (e) {
-      level = WordLevel.beginner; // Default to beginner if parsing fails
-    }
-
-    return Word(
-      language: word['language']!,
-      input: word['input']!,
-      translation: word['translation']!,
-      examples: List<String>.from(word['examples'] ?? []),
-      level: level,
-      id: word['id'],
-    );
-  }
-
-  Map<String, String> _languageToMap(Language language) => {
-    'name': language.name,
-    'icon': language.icon,
-  };
-
-  Map<String, dynamic> _wordToMap(Word word) => {
-    'language': word.language,
-    'input': word.input,
-    'translation': word.translation,
-    'examples': word.examples,
-    'level': word.level.name,
-    'id': word.id,
-  };
+  final Serializer<Language> languageSerializer = LanguageSerializer();
+  final Serializer<Word> wordSerializer = WordSerializer();
+  final Serializer<AppSettings> appSettingsSerializer = AppSettingsSerializer();
 
   Future<void> _initialize() async {
     _pref = await SharedPreferences.getInstance();
@@ -59,8 +32,9 @@ class PrefStorage implements StorageInterface {
     final languagesJson = _pref!.getString('languages');
     final languagesMap =
         ((languagesJson != null ? jsonDecode(languagesJson) : [])
-            as List<dynamic>);
-    return languagesMap.map(_mapToLanguage).toList();
+                as List<dynamic>)
+            .cast<Map<String, dynamic>>();
+    return languagesMap.map(languageSerializer.fromMap).toList();
   }
 
   @override
@@ -72,7 +46,7 @@ class PrefStorage implements StorageInterface {
     currentLanguages.add(language);
     await _pref!.setString(
       'languages',
-      jsonEncode(currentLanguages.map(_languageToMap).toList()),
+      jsonEncode(currentLanguages.map(languageSerializer.toMap).toList()),
     );
 
     return currentLanguages;
@@ -99,7 +73,7 @@ class PrefStorage implements StorageInterface {
 
     await _pref!.setString(
       'languages',
-      jsonEncode(currentLanguages.map(_languageToMap).toList()),
+      jsonEncode(currentLanguages.map(languageSerializer.toMap).toList()),
     );
 
     return currentLanguages;
@@ -117,7 +91,7 @@ class PrefStorage implements StorageInterface {
 
     await _pref!.setString(
       'languages',
-      jsonEncode(remainingLanguages.map(_languageToMap).toList()),
+      jsonEncode(remainingLanguages.map(languageSerializer.toMap).toList()),
     );
 
     return remainingLanguages;
@@ -168,8 +142,9 @@ class PrefStorage implements StorageInterface {
     final vocabularyJson = _pref!.getString('vocabulary');
     final vocabularyMap =
         ((vocabularyJson != null ? jsonDecode(vocabularyJson) : [])
-            as List<dynamic>);
-    return vocabularyMap.map(_mapToWord).toList();
+                as List<dynamic>)
+            .cast<Map<String, dynamic>>();
+    return vocabularyMap.map(wordSerializer.fromMap).toList();
   }
 
   @override
@@ -189,7 +164,7 @@ class PrefStorage implements StorageInterface {
 
     await _pref!.setString(
       'vocabulary',
-      jsonEncode(vocabulary.map(_wordToMap).toList()),
+      jsonEncode(vocabulary.map(wordSerializer.toMap).toList()),
     );
 
     return vocabulary;
@@ -222,7 +197,7 @@ class PrefStorage implements StorageInterface {
 
     await _pref!.setString(
       'vocabulary',
-      jsonEncode(updatedVocabulary.map(_wordToMap).toList()),
+      jsonEncode(updatedVocabulary.map(wordSerializer.toMap).toList()),
     );
     return updatedVocabulary;
   }
@@ -239,7 +214,7 @@ class PrefStorage implements StorageInterface {
 
     await _pref!.setString(
       'vocabulary',
-      jsonEncode(remainingVocabulary.map(_wordToMap).toList()),
+      jsonEncode(remainingVocabulary.map(wordSerializer.toMap).toList()),
     );
 
     return remainingVocabulary;
@@ -257,7 +232,7 @@ class PrefStorage implements StorageInterface {
 
     await _pref!.setString(
       'vocabulary',
-      jsonEncode(remainingVocabulary.map(_wordToMap).toList()),
+      jsonEncode(remainingVocabulary.map(wordSerializer.toMap).toList()),
     );
 
     return remainingVocabulary;
@@ -374,6 +349,33 @@ class PrefStorage implements StorageInterface {
     } catch (e) {
       throw Exception(e.toString());
     }
+  }
+
+  @override
+  Future<AppSettings?> getSettings() async {
+    if (_pref == null) {
+      await _initialize();
+    }
+
+    final settingsJson = _pref!.getString('app_settings');
+    if (settingsJson == null) {
+      return null;
+    }
+
+    final settingsMap = jsonDecode(settingsJson) as Map<String, dynamic>;
+    return appSettingsSerializer.fromMap(settingsMap);
+  }
+
+  @override
+  Future<void> saveSettings(AppSettings settings) async {
+    if (_pref == null) {
+      await _initialize();
+    }
+
+    await _pref!.setString(
+      'app_settings',
+      jsonEncode(appSettingsSerializer.toMap(settings)),
+    );
   }
 }
 
