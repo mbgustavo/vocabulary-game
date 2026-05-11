@@ -6,6 +6,7 @@ import 'package:vocabulary_game/models/word.dart';
 import 'package:vocabulary_game/models/language.dart';
 import 'package:vocabulary_game/providers/languages_provider.dart';
 import 'package:vocabulary_game/providers/vocabulary_provider.dart';
+import 'package:vocabulary_game/screens/data.dart';
 import 'package:vocabulary_game/screens/home.dart';
 import 'package:vocabulary_game/screens/game_select.dart';
 import 'package:vocabulary_game/screens/vocabulary.dart';
@@ -213,6 +214,18 @@ void main() {
         await tester.pumpAndSettle();
 
         expect(find.byType(LanguageScreen), findsOneWidget);
+      });
+
+      testWidgets('Data button navigates to DataScreen', (
+        WidgetTester tester,
+      ) async {
+        await tester.pumpWidget(createTestWidget(mockWordsSufficient));
+        await tester.pumpAndSettle();
+
+        await tester.tap(find.byIcon(Icons.storage));
+        await tester.pumpAndSettle();
+
+        expect(find.byType(DataScreen), findsOneWidget);
       });
 
       group('App Language Dropdown Tests', () {

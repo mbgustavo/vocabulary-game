@@ -15,6 +15,33 @@ import 'package:vocabulary_game/screens/vocabulary.dart';
 import 'package:vocabulary_game/screens/word_of_the_moment.dart';
 import 'test_prefs_helper.dart';
 
+Future<void> addWord(
+  WidgetTester tester,
+  String word,
+  String translation,
+) async {
+  await tester.tap(find.text('Vocabulary'));
+  await tester.pumpAndSettle();
+
+  await tester.tap(find.byIcon(Icons.add));
+  await tester.pumpAndSettle();
+
+  await tester.enterText(find.widgetWithText(TextFormField, '').first, word);
+  await tester.pump();
+
+  await tester.enterText(
+    find.widgetWithText(TextFormField, '').first,
+    translation,
+  );
+  await tester.pump();
+
+  await tester.tap(find.text('Save'));
+  await tester.pumpAndSettle();
+
+  await tester.tap(find.byIcon(Icons.arrow_back));
+  await tester.pumpAndSettle();
+}
+
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
@@ -289,12 +316,50 @@ void main() {
       expect(find.text('$testWord ($testTranslation)'), findsOneWidget);
     });
 
+    testWidgets('Clear data flow works correctly', (WidgetTester tester) async {
+      app.main();
+      await tester.pumpAndSettle();
+      await tester.pumpAndSettle(const Duration(seconds: 3));
+
+      await tester.tap(find.byIcon(Icons.storage));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.text('Restore Defaults'));
+      await tester.pumpAndSettle();
+
+      // Find the restore defaults button in dialog by finding the TextButton with the specific styling
+      final dialogRestoreButton = find.descendant(
+        of: find.byType(AlertDialog),
+        matching: find.byWidgetPredicate(
+          (widget) =>
+              widget is TextButton &&
+              widget.child is Text &&
+              (widget.child as Text).data == 'Restore Defaults',
+        ),
+      );
+      await tester.tap(dialogRestoreButton);
+      await tester.pumpAndSettle();
+
+      final startGameButton = find.widgetWithText(ElevatedButton, 'Start game');
+      expect(startGameButton, findsOneWidget);
+
+      final elevatedButton = tester.widget<ElevatedButton>(startGameButton);
+      expect(elevatedButton.onPressed, isNull);
+      expect(
+        find.text('You need at least 5 words to start a game'),
+        findsOneWidget,
+      );
+    });
+
     testWidgets(
       'Word Of The Moment screen works on Linux without notification controls',
       (WidgetTester tester) async {
+        TestPrefsHelper.clearAll();
         app.main();
         await tester.pumpAndSettle();
         await tester.pumpAndSettle(const Duration(seconds: 3));
+
+        await addWord(tester, 'Test Word', 'Test Translation');
 
         expect(find.byType(HomeScreen), findsOneWidget);
 
@@ -303,10 +368,9 @@ void main() {
 
         expect(find.byType(WordOfTheMomentScreen), findsOneWidget);
         expect(find.text('Generate new word'), findsOneWidget);
-        expect(
-          find.text('Enable Word of the Moment notifications'),
-          findsNothing,
-        );
+        expect(find.text('Enable notifications'), findsNothing);
+
+        expect(find.text('Test Word - Test Translation'), findsOneWidget);
       },
     );
   });

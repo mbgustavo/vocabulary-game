@@ -242,10 +242,7 @@ void main() {
 
         expect(
           find.descendant(
-            of: find.widgetWithText(
-              ListTile,
-              'Enable Word of the Moment notifications',
-            ),
+            of: find.widgetWithText(ListTile, 'Enable notifications'),
             matching: find.byWidgetPredicate((widget) => widget is Switch),
           ),
           findsNothing,
