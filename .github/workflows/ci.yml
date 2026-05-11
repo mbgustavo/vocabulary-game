@@ -126,7 +126,7 @@ jobs:
         run: flutter build appbundle --debug
 
       - name: Upload Artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: flutter-builds
           path: |
