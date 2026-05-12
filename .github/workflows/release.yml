@@ -43,7 +43,7 @@ jobs:
         run: tar -czf build/ios_build.tar.gz -C build ios
 
       - name: Upload Artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: flutter-builds
           path: |
@@ -62,7 +62,7 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Download Build Artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           name: flutter-builds
 
