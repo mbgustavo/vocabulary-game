@@ -91,7 +91,7 @@ void main() {
       expect(find.byType(LanguageScreen), findsOneWidget);
     });
 
-    testWidgets('Navigate thourgh different game modes sequentially', (
+    testWidgets('Navigate through different game modes sequentially', (
       WidgetTester tester,
     ) async {
       // Start the app
